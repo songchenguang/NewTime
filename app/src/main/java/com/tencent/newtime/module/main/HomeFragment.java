@@ -28,7 +28,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.tencent.newtime.module.detail.DetailActivity;
-import com.tencent.newtime.util.*;
+import com.tencent.newtime.util.OkHttpUtils;
+import com.tencent.newtime.util.LogUtils;
+import com.tencent.newtime.util.StrUtils;
+import com.tencent.newtime.util.DimensionUtils;
 import com.tencent.newtime.base.BaseFragment;
 import com.tencent.newtime.R;
 import com.tencent.newtime.model.Activity;
@@ -95,8 +98,6 @@ public class HomeFragment extends BaseFragment {
                 }
             }
         });
-
-
 
         mTopAdapter = new TopAdapter(getActivity());
         mTopAdapter.setListener(new View.OnClickListener() {

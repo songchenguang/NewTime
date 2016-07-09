@@ -1,7 +1,11 @@
 package com.tencent.newtime.module.main;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import com.tencent.newtime.R;
 import com.tencent.newtime.base.BaseFragment;
 
 /**
@@ -18,6 +22,16 @@ public class MeFragment extends BaseFragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+
+        View rootView = inflater.inflate(R.layout.fragment_me, container, false);
+        return rootView;
+
+    }
+
+
     @Override
     protected String tag() {
         return TAG;

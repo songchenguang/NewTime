@@ -21,7 +21,7 @@ import com.tencent.newtime.util.*;
 /**
  * Created by 晨光 on 2016-07-09.
  */
-public class MainActivity extends Activity{
+public class MainActivity extends BaseActivity{
 
     private static final String TAG = "MainActivity";
 
@@ -120,5 +120,8 @@ public class MainActivity extends Activity{
             return PAGE_COUNT;
         }
     }
-
+    @Override
+    protected String tag() {
+        return TAG;
+    }
 }
