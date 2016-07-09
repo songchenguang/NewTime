@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">食光</string>
+    <string name="action_settings">Settings</string>
+    <string name="network_error">网络异常</string>
+    <string name="minute_ago">分钟前</string>
+    <string name="hour_ago">小时前</string>
+    <string name="day_ago">天前</string>
+    <string name="week_ago">周前</string>
+    <string name="month_ago">个月前</string>
+    <string name="year_ago">年前</string>
+    <string name="hunderds_meters">百米</string>
+    <string name="thousand_meters">KM</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_mobile">手机号</string>
+    <string name="prompt_password">密码</string>
+    <string name="action_sign_in">登录</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="register_user">注册用户</string>
+    <string name="forget_password">忘记密码?</string>
+    <string name="account_or_password_not_null">帐号和密码不能为空</string>
+    <string name="login_fail">登录失败</string>
+    <string name="login_success">登录成功</string>
+
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="dummy_content">食光\n唯有美食与爱不可辜负</string>
+    <string name="splash_content">食光\n唯有美食与爱\n不可辜负</string>
+    <string name="home">首页</string>
+    <string name="orders">订单</string>
+    <string name="me">我的</string>
+    <string name="title_activity_detaile">DetaileActivity</string>
+</resources>
