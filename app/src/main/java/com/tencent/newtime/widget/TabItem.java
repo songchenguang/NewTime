@@ -11,15 +11,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.tencent.newtime.R;
 import com.tencent.newtime.util.BitmapUtils;
 import com.tencent.newtime.util.DimensionUtils;
+import com.tencent.newtime.R;
 
-
-/**
- * Created by Liujilong on 16/1/24.
- * liujilong.me@gmail.com
- */
 public class TabItem extends LinearLayout {
     private Context mContext;
     private ImageView mImageView;
@@ -40,9 +35,9 @@ public class TabItem extends LinearLayout {
     public TabItem(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TabItem);
-        mDrawableCommon = a.getDrawable(R.styleable.TabItem_image);
-        mText = a.getString(R.styleable.TabItem_text);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.mTabItem);
+        mDrawableCommon = a.getDrawable(R.styleable.mTabItem_image);
+        mText = a.getString(R.styleable.mTabItem_text);
         a.recycle();
 
         mColorEnabled = mContext.getResources().getColor(R.color.colorPrimary);

@@ -1,5 +1,6 @@
 package com.tencent.newtime.module.main;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ import com.tencent.newtime.util.*;
 /**
  * Created by 晨光 on 2016-07-09.
  */
-public class MainActivity extends BaseActivity{
+public class MainActivity extends Activity{
 
     private static final String TAG = "MainActivity";
 
@@ -64,7 +65,7 @@ public class MainActivity extends BaseActivity{
 
         mPager = (ViewPager) findViewById(R.id.main_pager);
         wholeLayout = (ViewGroup) findViewById(R.id.whole_layout);
-        mTvTitle = (TextView) findViewById(R.id.main_title);
+//        mTvTitle = (TextView) findViewById(R.id.main_title);
         Adapter mAdapter = new Adapter(getFragmentManager());
         mPager.setAdapter(mAdapter);
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -104,7 +105,7 @@ public class MainActivity extends BaseActivity{
         public Fragment getItem(int position) {
             switch(position){
                 case 0:
-                    return HomeFragment.newInstance();
+                    return MeFragment.newInstance();
                 case 1:
                     return OrdersFragment.newInstance();
                 case 2:
@@ -120,8 +121,4 @@ public class MainActivity extends BaseActivity{
         }
     }
 
-    @Override
-    protected String tag() {
-        return TAG;
-    }
 }

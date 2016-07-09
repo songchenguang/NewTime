@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="TabItem">
+    <declare-styleable name="mTabItem">
         <attr name="image" format="reference" />
         <attr name="text" format="string" />
     </declare-styleable>
+
+
     <declare-styleable name="WSwitch">
         <attr name="colorOn" format="color" />
         <attr name="colorOff" format="color" />

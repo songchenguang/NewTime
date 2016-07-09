@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
+        android:name=".APP"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -31,8 +32,7 @@
             android:name=".module.detail.DetailActivity"
             android:label="@string/title_activity_detaile"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".module.main.MainActivity">
-        </activity>
+        <activity android:name=".module.main.MainActivity"></activity>
     </application>
 
 </manifest>
