@@ -1,4 +1,4 @@
-package com.tencent.newtime.module.main;
+package com.tencent.newtime.module.main_guest;
 
 
 import android.app.Fragment;
@@ -9,21 +9,17 @@ import android.support.v13.app.FragmentPagerAdapter;
 
 
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.tencent.newtime.R;
 import com.tencent.newtime.base.BaseActivity;
-import com.tencent.newtime.module.login.LoginActivity;
 import com.tencent.newtime.widget.TabItem;
-import com.tencent.newtime.util.*;
 
 /**
  * Created by 晨光 on 2016-07-09.
  */
-public class MainActivity extends BaseActivity{
+public class GuestMainActivity extends BaseActivity{
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "GuestMainActivity";
 
     private static final int PAGE_COUNT = 3;
 
@@ -35,38 +31,34 @@ public class MainActivity extends BaseActivity{
 
     private TabItem[] tabItems;
     private ViewPager mPager;
-    private ViewGroup wholeLayout;
-    private TextView mTvTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        if (getIntent().getBooleanExtra(INTENT_LOGOUT, false))
 //        {
-//            Intent i = new Intent(MainActivity.this,LoginActivity.class);
+//            Intent i = new Intent(GuestMainActivity.this,LoginActivity.class);
 //            startActivity(i);
 //            finish();
 //            return;
 //        }
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_guest);
 
         bindViews();
     }
 
     private void bindViews(){
         tabItems = new TabItem[3];
-        tabItems[0] = (TabItem) findViewById(R.id.main_item_home);
-        tabItems[1] = (TabItem) findViewById(R.id.main_item_orders);
-        tabItems[2] = (TabItem) findViewById(R.id.main_item_me);
+        tabItems[0] = (TabItem) findViewById(R.id.main_item_home_guest);
+        tabItems[1] = (TabItem) findViewById(R.id.main_item_orders_guest);
+        tabItems[2] = (TabItem) findViewById(R.id.main_item_me_guest);
         tabItems[0].setEnable(true);
 
 
 //        toolbar.inflateMenu(R.menu.menu_main);
 //        toolbar.setOnMenuItemClickListener(this);
 
-        mPager = (ViewPager) findViewById(R.id.main_pager);
-        wholeLayout = (ViewGroup) findViewById(R.id.whole_layout);
-//        mTvTitle = (TextView) findViewById(R.id.main_title);
+        mPager = (ViewPager) findViewById(R.id.main_pager_guest);
         Adapter mAdapter = new Adapter(getFragmentManager());
         mPager.setAdapter(mAdapter);
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -95,7 +87,7 @@ public class MainActivity extends BaseActivity{
 
     }
 
-    public class Adapter extends FragmentPagerAdapter {
+    private class Adapter extends FragmentPagerAdapter {
 
         public Adapter(FragmentManager fm) {
             super(fm);
@@ -105,11 +97,11 @@ public class MainActivity extends BaseActivity{
         public Fragment getItem(int position) {
             switch(position){
                 case 0:
-                    return HomeFragment.newInstance();
+                    return GuestHomeFragment.newInstance();
                 case 1:
-                    return OrdersFragment.newInstance();
+                    return GuestOrdersFragment.newInstance();
                 case 2:
-                    return MeFragment.newInstance();
+                    return GuestMeFragment.newInstance();
                 default:
                     throw new RuntimeException("position can not be larger than 3");
             }

@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/whole_layout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/main_pager_host"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp"/>
+    <View
+        android:background="@color/colorGray"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <com.tencent.newtime.widget.TabItem
+            app:image="@drawable/main_tab_item_home"
+            app:text="@string/home"
+            android:id="@+id/main_item_dish_host"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"/>
+        <com.tencent.newtime.widget.TabItem
+            app:image="@drawable/main_tab_item_orders"
+            app:text="@string/orders"
+            android:id="@+id/main_item_orders_host"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"/>
+        <com.tencent.newtime.widget.TabItem
+            app:image="@drawable/main_tab_item_me"
+            app:text="@string/me"
+            android:id="@+id/main_item_me_host"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+</LinearLayout>

@@ -146,7 +146,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:src="@mipmap/main_tab_item_orders" />
+            android:src="@drawable/main_tab_item_orders" />
 
         <TextView
             android:layout_width="wrap_content"

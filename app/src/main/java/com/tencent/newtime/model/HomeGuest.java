@@ -5,10 +5,10 @@ import org.json.JSONObject;
 /**
  * Created by 晨光 on 2016-07-10.
  */
-public class Home {
+public class HomeGuest {
     public int id;
-    public static Home fromJSON(JSONObject j){
-        Home a = new Home();
+    public static HomeGuest fromJSON(JSONObject j){
+        HomeGuest a = new HomeGuest();
         a.id = j.optInt("id");
         return a;
     }

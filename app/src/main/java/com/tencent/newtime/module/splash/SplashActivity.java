@@ -11,7 +11,8 @@ import android.view.View;
 
 import com.tencent.newtime.R;
 import com.tencent.newtime.module.login.LoginActivity;
-import com.tencent.newtime.module.main.MainActivity;
+import com.tencent.newtime.module.main_guest.GuestMainActivity;
+import com.tencent.newtime.module.main_host.HostMainActivity;
 import com.tencent.newtime.util.*;
 
 /**
@@ -47,11 +48,10 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {SharedPreferences sp = getSharedPreferences(StrUtils.SP_USER, MODE_PRIVATE);
                 String token = sp.getString(StrUtils.SP_USER_TOKEN, "");
                 if (token.equals("")) {
-//                    login();
-                    main();
+                    choice();
                     overridePendingTransition(0,0);
                 }else{
-                    main();
+                    mainGuest();
                     overridePendingTransition(0,0);
                 }
                 finish();
@@ -59,13 +59,18 @@ public class SplashActivity extends AppCompatActivity {
         },DELAY_MILLIS);
 }
 
-    private void login(){
-        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+    private void choice(){
+        Intent intent = new Intent(SplashActivity.this, ChoiceActivity.class);
         startActivity(intent);
     }
 
-    private void main(){
-        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+    private void mainGuest(){
+        Intent intent = new Intent(SplashActivity.this, GuestMainActivity.class);
+        startActivity(intent);
+    }
+
+    private void mainHost(){
+        Intent intent = new Intent(SplashActivity.this, HostMainActivity.class);
         startActivity(intent);
     }
 }

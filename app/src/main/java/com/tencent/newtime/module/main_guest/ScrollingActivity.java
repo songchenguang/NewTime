@@ -1,4 +1,4 @@
-package com.tencent.newtime.module.main;
+package com.tencent.newtime.module.main_guest;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

@@ -1,4 +1,4 @@
-package com.tencent.newtime.module.main;
+package com.tencent.newtime.module.main_host;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,29 +9,25 @@ import com.tencent.newtime.R;
 import com.tencent.newtime.base.BaseFragment;
 
 /**
- * Created by 晨光 on 2016-07-09.
+ * Created by 晨光 on 2016-07-11.
  */
-public class MeFragment extends BaseFragment {
+public class HostMeFragment extends BaseFragment {
 
+    private static final String TAG = "HostMeFragment";
 
-    private final String TAG = "MeFragment";
-
-    public static MeFragment newInstance() {
+    public static HostMeFragment newInstance() {
         Bundle args = new Bundle();
-        MeFragment fragment = new MeFragment();
+        HostMeFragment fragment = new HostMeFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_me, container, false);
+
         return rootView;
-
     }
-
-
-    @Override
     protected String tag() {
         return TAG;
     }

@@ -17,10 +17,10 @@
     <string name="prompt_password">密码</string>
     <string name="action_sign_in">登录</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
+    <string name="error_invalid_email">手机号无效</string>
+    <string name="error_invalid_password">密码太短</string>
+    <string name="error_incorrect_password">密码不正确</string>
+    <string name="error_field_required">需要填写完整信息</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
@@ -34,6 +34,7 @@
     <string name="dummy_content">食光\n唯有美食与爱不可辜负</string>
     <string name="splash_content">食光\n唯有美食与爱\n不可辜负</string>
     <string name="home">首页</string>
+    <string name="dish">菜品</string>
     <string name="orders">订单</string>
     <string name="me">我的</string>
     <string name="location">腾讯大厦</string>
@@ -46,6 +47,8 @@
     <string name="creditworthiness">信誉度</string>
     <string name="shop_name">张大妈的家</string>
     <string name="shop_address">帝景花园</string>
+    <string name="guest">我是食客  </string>
+    <string name="host">  我是掌柜</string>
     <string name="sales_volume_month">月销量</string>
     <string name="average">人均</string>
     <string name="kind">亲切度</string>

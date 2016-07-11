@@ -1,4 +1,4 @@
-package com.tencent.newtime.module.main;
+package com.tencent.newtime.module.main_guest;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,13 +14,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.tencent.newtime.R;
 import com.tencent.newtime.base.BaseFragment;
-import com.tencent.newtime.model.Home;
-import com.tencent.newtime.module.detail.DetailActivity;
+import com.tencent.newtime.model.HomeGuest;
+import com.tencent.newtime.module.shop_detail.ShopDetailActivity;
 import com.tencent.newtime.util.LogUtils;
 import com.tencent.newtime.util.DimensionUtils;
 import com.tencent.newtime.widget.PageIndicator;
@@ -36,18 +37,21 @@ import java.util.List;
  * Created by 晨光 on 2016-07-09.
  */
 
-public class HomeFragment extends BaseFragment {
+public class GuestHomeFragment extends BaseFragment {
 
-    private static final String TAG = "HomeFragment";
+    private static final String TAG = "GuestHomeFragment";
     // views
     private SwipeRefreshLayout mSwipeLayout;
     private BannerAdapter mBannerAdapter;
     private Adapter mRvAdapter;
 
+    private RelativeLayout location_layout;
+    private TextView location_textview;
 
-    public static HomeFragment newInstance() {
+
+    public static GuestHomeFragment newInstance() {
         Bundle args = new Bundle();
-        HomeFragment fragment = new HomeFragment();
+        GuestHomeFragment fragment = new GuestHomeFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,6 +65,8 @@ public class HomeFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home,container,false);
+        location_layout = (RelativeLayout) rootView.findViewById(R.id.location_layout);
+        location_textview = (TextView) rootView.findViewById(R.id.location_tetview);
         mSwipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.fragment_home_swipe_layout);
         mSwipeLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -96,7 +102,7 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 int id = (int) v.getTag();
-                Intent detail = new Intent(getActivity(), DetailActivity.class);
+                Intent detail = new Intent(getActivity(), ShopDetailActivity.class);
                 detail.putExtra("activityid", id);
                 //LogUtils.d(TAG, "id:" + mActivityList.get(getAdapterPosition() - 1).activityID);
                 startActivity(detail);
@@ -125,25 +131,25 @@ public class HomeFragment extends BaseFragment {
 
     private void loadPage(int page){
 
-        List<Home> homeList = new ArrayList<>();
-        mRvAdapter.setHomeList(homeList);
+        List<HomeGuest> homeGuestList = new ArrayList<>();
+        mRvAdapter.setHomeList(homeGuestList);
         mRvAdapter.notifyDataSetChanged();
         isRefreshing = false;
         isLoading = false;
         mSwipeLayout.setRefreshing(false);
     }
 
-    class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    private class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         static final int TYPE_BANNER = 1;
         static final int TYPE_BUTTON = 2;
         static final int TYPE_ITEM = 3;
-        List<Home> mHomeList;
+        List<HomeGuest> mHomeGuestList;
 
         public Adapter(){}
 
 
-        public void setHomeList(List<Home> homeList){
-            this.mHomeList = homeList;
+        public void setHomeList(List<HomeGuest> homeGuestList){
+            this.mHomeGuestList = homeGuestList;
         }
 
         @Override
@@ -171,7 +177,6 @@ public class HomeFragment extends BaseFragment {
                 banner.mViewPager.setAdapter(mBannerAdapter);
                 banner.mIndicator.setViewPager(banner.mViewPager);
             }else if(holder instanceof ButtonViewHolder){
-                ButtonViewHolder button = (ButtonViewHolder) holder;
 
             }else if(holder instanceof ItemViewHolder){
 
@@ -180,10 +185,10 @@ public class HomeFragment extends BaseFragment {
 
         @Override
         public int getItemCount() {
-            if (mHomeList == null){
+            if (mHomeGuestList == null){
                 return 2;
             }else{
-                return 2 + mHomeList.size();
+                return 2 + mHomeGuestList.size();
             }
         }
 
@@ -236,7 +241,7 @@ public class HomeFragment extends BaseFragment {
                 this.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent detail = new Intent(getActivity(), DetailActivity.class);
+                        Intent detail = new Intent(getActivity(), ShopDetailActivity.class);
                         startActivity(detail);
                     }
                 });

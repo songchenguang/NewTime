@@ -1,4 +1,4 @@
-package com.tencent.newtime.module.detail;
+package com.tencent.newtime.module.shop_detail;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.tencent.newtime.R;
 
-public class DetailActivity extends AppCompatActivity {
+public class ShopDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
