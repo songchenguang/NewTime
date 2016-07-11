@@ -4,6 +4,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorPrimary">#3e5d9e</color>
     <color name="colorGray">#c5c5da</color>
+    <color name="colorBase">#FF67</color>
 
     <color name="blue_50">#e7e9fd</color>
     <color name="blue_100">#d0d0ff</color>

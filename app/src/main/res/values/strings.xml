@@ -10,7 +10,7 @@
     <string name="year_ago">年前</string>
     <string name="hunderds_meters">百米</string>
     <string name="thousand_meters">KM</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_login">登录</string>
 
     <!-- Strings related to login -->
     <string name="prompt_mobile">手机号</string>
@@ -36,9 +36,24 @@
     <string name="home">首页</string>
     <string name="orders">订单</string>
     <string name="me">我的</string>
+    <string name="location">腾讯大厦</string>
+    <string name="distance">距离</string>
+    <string name="score">评分</string>
+    <string name="price">价格</string>
+    <string name="sales_volume">销量</string>
     <string name="about">关于食光</string>
+    <string name="one_hundred">100</string>
+    <string name="creditworthiness">信誉度</string>
+    <string name="shop_name">张大妈的家</string>
+    <string name="shop_address">帝景花园</string>
+    <string name="sales_volume_month">月销量</string>
+    <string name="average">人均</string>
+    <string name="kind">亲切度</string>
+    <string name="zeal">热情度</string>
     <string name="quit">退出登录</string>
     <string name="title_activity_detaile">DetaileActivity</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="large_text">"Material is the metaphor.\n\n"</string>
 </resources>

@@ -6,20 +6,23 @@
     <ImageView
         android:id="@+id/user_photo"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="@dimen/text_size"
+        android:layout_height="100dp"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:src="@drawable/user"/>
 
     <TextView
+        android:id="@+id/user_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_margin"
+        android:layout_marginBottom="@dimen/text_margin"
         android:text="@string/app_name"
         android:gravity="center_horizontal"
         android:textSize="@dimen/text_size"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="70dp"
         android:orientation="horizontal"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin">
@@ -28,6 +31,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/creditworthiness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_margin2"
+                android:gravity="center_horizontal"
+                android:text="@string/creditworthiness"/>
+
+            <TextView
+                android:id="@+id/creditworthiness_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/creditworthiness"
+                android:layout_marginTop="@dimen/text_margin2"
+                android:gravity="center_horizontal"
+                android:text="@string/one_hundred"/>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -39,13 +60,30 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
+            <TextView
+                android:id="@+id/kind"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_margin2"
+                android:gravity="center_horizontal"
+                android:text="@string/kind"/>
+
+            <TextView
+                android:id="@+id/kind_num"
+                android:layout_below="@+id/kind"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_margin2"
+                android:gravity="center_horizontal"
+                android:text="@string/one_hundred"/>
+
             <View
-                android:layout_width="2dp"
+                android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:background="@color/grey_gap" />
             <View
-                android:layout_width="2dp"
+                android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:background="@color/grey_gap" />
@@ -61,6 +99,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
+            <TextView
+                android:id="@+id/zeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_margin2"
+                android:gravity="center_horizontal"
+                android:text="@string/zeal"/>
+            <TextView
+                android:id="@+id/zeal_num"
+                android:layout_below="@+id/zeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_margin2"
+                android:gravity="center_horizontal"
+                android:text="@string/one_hundred"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -72,6 +125,7 @@
 
     <View
         android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_height="1dp"
         android:layout_marginEnd="16dp"
         android:layout_marginLeft="16dp"
@@ -102,7 +156,18 @@
             android:textSize="16sp" />
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:background="@color/grey_gap" />
+
     <Button
+        android:id="@+id/quit_button"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"

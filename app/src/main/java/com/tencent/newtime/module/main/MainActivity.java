@@ -1,6 +1,6 @@
 package com.tencent.newtime.module.main;
 
-import android.app.Activity;
+
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
@@ -49,6 +49,7 @@ public class MainActivity extends BaseActivity{
 //            return;
 //        }
         setContentView(R.layout.activity_main);
+
         bindViews();
     }
 
@@ -73,7 +74,6 @@ public class MainActivity extends BaseActivity{
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
             @Override
             public void onPageSelected(int position) {
-                mTvTitle.setText(mTitleTexts[position]);
                 for(int i = 0;i<PAGE_COUNT; i++){
                     tabItems[i].setEnable(i==position);
                 }
@@ -105,7 +105,7 @@ public class MainActivity extends BaseActivity{
         public Fragment getItem(int position) {
             switch(position){
                 case 0:
-                    return MeFragment.newInstance();
+                    return HomeFragment.newInstance();
                 case 1:
                     return OrdersFragment.newInstance();
                 case 2:

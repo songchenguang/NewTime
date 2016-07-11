@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.util.ArrayMap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,27 +14,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.tencent.newtime.R;
+import com.tencent.newtime.base.BaseFragment;
+import com.tencent.newtime.model.Home;
+import com.tencent.newtime.module.detail.DetailActivity;
+import com.tencent.newtime.util.LogUtils;
+import com.tencent.newtime.util.DimensionUtils;
+import com.tencent.newtime.widget.PageIndicator;
 
-import org.json.JSONArray;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.tencent.newtime.module.detail.DetailActivity;
-import com.tencent.newtime.util.OkHttpUtils;
-import com.tencent.newtime.util.LogUtils;
-import com.tencent.newtime.util.StrUtils;
-import com.tencent.newtime.util.DimensionUtils;
-import com.tencent.newtime.base.BaseFragment;
-import com.tencent.newtime.R;
-import com.tencent.newtime.model.Activity;
-import com.tencent.newtime.widget.PageIndicator;
 
 
 /**
@@ -45,18 +39,11 @@ import com.tencent.newtime.widget.PageIndicator;
 public class HomeFragment extends BaseFragment {
 
     private static final String TAG = "HomeFragment";
-
     // views
     private SwipeRefreshLayout mSwipeLayout;
-
-    private TopAdapter mTopAdapter;
+    private BannerAdapter mBannerAdapter;
     private Adapter mRvAdapter;
 
-    // data
-    int page = 1;
-    boolean isLoading = false;
-    boolean isRefreshing = false;
-    boolean canLoadMore = true;
 
     public static HomeFragment newInstance() {
         Bundle args = new Bundle();
@@ -64,6 +51,11 @@ public class HomeFragment extends BaseFragment {
         fragment.setArguments(args);
         return fragment;
     }
+    // data
+    int page = 1;
+    boolean isLoading = false;
+    boolean isRefreshing = false;
+    boolean canLoadMore = true;
 
     @Nullable
     @Override
@@ -81,9 +73,10 @@ public class HomeFragment extends BaseFragment {
                 }
             }
         });
+
         RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_home_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -98,9 +91,8 @@ public class HomeFragment extends BaseFragment {
                 }
             }
         });
-
-        mTopAdapter = new TopAdapter(getActivity());
-        mTopAdapter.setListener(new View.OnClickListener() {
+        mBannerAdapter = new BannerAdapter(getActivity());
+        mBannerAdapter.setListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int id = (int) v.getTag();
@@ -112,183 +104,149 @@ public class HomeFragment extends BaseFragment {
         });
         mRvAdapter = new Adapter();
         mRecyclerView.setAdapter(mRvAdapter);
+
         refresh();
         return rootView;
     }
 
-    private void refresh(){
+
+    public void refresh(){
         isRefreshing = true;
         canLoadMore = true;
-        ArrayMap<String,String> params = new ArrayMap<>(3);
-        params.put("token",StrUtils.token());
-        OkHttpUtils.post(StrUtils.GET_TOP_ACTIVITY_URL, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
-            @Override
-            public void onResponse(String s) {
-                //LogUtils.i(TAG, s);
-                JSONObject j = OkHttpUtils.parseJSON(getActivity(),s);
-                if(j==null){
-                    return;
-                }
-                JSONArray array = j.optJSONArray("result");
-                if (array == null) return;
-                List<TopInfo> infoList = new ArrayList<>();
-                for (int i = 0; i < array.length(); i++) {
-                    TopInfo info = TopInfo.fromJSON(array.optJSONObject(i));
-                    infoList.add(info);
-                }
-                mTopAdapter.setInfoList(infoList);
-                mTopAdapter.notifyDataSetChanged();
-            }
-        });
-        loadPage(1);
+        List<TopInfo> infoList = new ArrayList<>();
+        TopInfo test = new TopInfo();
+        test.id = 0;
+        test.url = "http://pic30.nipic.com/20130626/8174275_085522448172_2.jpg";
+        infoList.add(test);
+        mBannerAdapter.setInfoList(infoList);
+        mBannerAdapter.notifyDataSetChanged();
     }
 
-    private void loadPage(int p){
-        ArrayMap<String,String> params = new ArrayMap<>(3);
-        params.put("token",StrUtils.token());
-        params.put("page",p+"");
-        isLoading = true;
-        OkHttpUtils.post(StrUtils.GET_ACTIVITY_INFO_URL, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
 
-            @Override
-            public void onResponse(String s) {
-                //LogUtils.i(TAG, s);
-                JSONObject j = OkHttpUtils.parseJSON(getActivity(),s);
-                if(j==null){
-                    return;
-                }
-                int returnedPage = j.optInt("pages");
-                if(page != returnedPage){
-                    page = returnedPage;
-                }
-                JSONArray array = j.optJSONArray("result");
-                if(array == null) return;
-                if(array.length()==0){
-                    canLoadMore = false;
-                    return;
-                }
-                List<Activity> activityList = new ArrayList<>();
-                for(int i = 0; i<array.length(); i++){
-                    Activity activity = Activity.fromJSON(array.optJSONObject(i));
-                    activityList.add(activity);
-                }
-                mRvAdapter.setActivityList(activityList);
-                mRvAdapter.notifyDataSetChanged();
-                isRefreshing = false;
-                isLoading = false;
-                mSwipeLayout.setRefreshing(false);
-            }
-        });
-    }
+    private void loadPage(int page){
 
-    @Override
-    protected String tag() {
-        return TAG;
+        List<Home> homeList = new ArrayList<>();
+        mRvAdapter.setHomeList(homeList);
+        mRvAdapter.notifyDataSetChanged();
+        isRefreshing = false;
+        isLoading = false;
+        mSwipeLayout.setRefreshing(false);
     }
 
     class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
-        static final int TYPE_TOP = 1;
-        static final int TYPE_ACTIVITY = 2;
-        List<Activity> mActivityList;
+        static final int TYPE_BANNER = 1;
+        static final int TYPE_BUTTON = 2;
+        static final int TYPE_ITEM = 3;
+        List<Home> mHomeList;
 
         public Adapter(){}
 
-        public void setActivityList(List<Activity> activityList) {
-            this.mActivityList = activityList;
+
+        public void setHomeList(List<Home> homeList){
+            this.mHomeList = homeList;
         }
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             RecyclerView.ViewHolder vh;
-            if(viewType==TYPE_TOP){
-                View v = LayoutInflater.from(getActivity()).inflate(R.layout.top_pager, parent, false);
+            if (viewType == TYPE_BANNER){
+                View v = LayoutInflater.from(getActivity()).inflate(R.layout.banner_pager, parent, false);
                 ViewGroup.LayoutParams params = v.getLayoutParams();
                 params.height = DimensionUtils.getDisplay().widthPixels/2;
                 v.setLayoutParams(params);
-                vh = new TopViewHolder(v);
+                vh = new BannerViewHolder(v);
+            }else if(viewType == TYPE_BUTTON){
+                View v = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_home_button, parent, false);
+                vh = new ButtonViewHolder(v);
             }else{
-                View v = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_home_item,parent,false);
+                View v = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_home_item, parent, false);
                 vh = new ItemViewHolder(v);
             }
             return vh;
         }
-
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            if(holder instanceof TopViewHolder){
-                TopViewHolder top = (TopViewHolder) holder;
-                top.mViewPager.setAdapter(mTopAdapter);
-                top.mIndicator.setViewPager(top.mViewPager);
-            }else{
-                Activity activity = mActivityList.get(position-1);
-                ItemViewHolder item = (ItemViewHolder) holder;
-                item.mTvTitle.setText(activity.title);
-                item.mAvatar.setImageURI(Uri.parse(StrUtils.thumForID(activity.authorID + "")));
-                String count = activity.signNumber+"/"+activity.capacity;
-                item.mTvCount.setText(count);
-                item.mTvTime.setText(activity.time);
-                item.mTvLocation.setText(activity.location);
-                item.mTimeState.setText(activity.timeState);
-                if(activity.timeState.equals("已结束")){
-                    item.mTimeState.setTextColor(0xffc8c8dc);
-                }else{
-                    item.mTimeState.setTextColor(getActivity().getResources().getColor(R.color.colorPrimary));
-                }
-                int cc = Integer.parseInt(activity.top);
-                if(cc!=0){
-                    item.mTopImage.setVisibility(View.VISIBLE);
-                }else{
-                    item.mTopImage.setVisibility(View.GONE);
-                }
+            if(holder instanceof BannerViewHolder){
+                BannerViewHolder banner = (BannerViewHolder) holder;
+                banner.mViewPager.setAdapter(mBannerAdapter);
+                banner.mIndicator.setViewPager(banner.mViewPager);
+            }else if(holder instanceof ButtonViewHolder){
+                ButtonViewHolder button = (ButtonViewHolder) holder;
+
+            }else if(holder instanceof ItemViewHolder){
+
             }
         }
 
         @Override
         public int getItemCount() {
-            return mActivityList==null?1:1+mActivityList.size();
+            if (mHomeList == null){
+                return 2;
+            }else{
+                return 2 + mHomeList.size();
+            }
         }
 
         @Override
-        public int getItemViewType(int position) {
-            return position==0?TYPE_TOP:TYPE_ACTIVITY;
-        }
-
-        class TopViewHolder extends RecyclerView.ViewHolder{
-            ViewPager mViewPager;
-            PageIndicator mIndicator;
-            public TopViewHolder(View itemView) {
-                super(itemView);
-                mViewPager = (ViewPager) itemView.findViewById(R.id.top_pager_view);
-                mIndicator = (PageIndicator) itemView.findViewById(R.id.top_pager_indicator);
+        public int getItemViewType(int position){
+            switch (position){
+                case 0:
+                    return TYPE_BANNER;
+                case 1:
+                    return TYPE_BUTTON;
+                default:
+                    return TYPE_ITEM;
             }
         }
+
+        class BannerViewHolder extends RecyclerView.ViewHolder{
+            ViewPager mViewPager;
+            PageIndicator mIndicator;
+            public BannerViewHolder(View bannerView){
+                super(bannerView);
+                mViewPager = (ViewPager) bannerView.findViewById(R.id.banner_pager_view);
+                mIndicator = (PageIndicator) bannerView.findViewById(R.id.banner_pager_indicator);
+            }
+        }
+
+        class ButtonViewHolder extends RecyclerView.ViewHolder{
+            TextView distanceButton;
+            TextView scoreButton;
+            TextView priceButton;
+            TextView salesVulumeButton;
+            public ButtonViewHolder(View ButtonView){
+                super(ButtonView);
+                distanceButton = (TextView) ButtonView.findViewById(R.id.distance_button);
+                scoreButton = (TextView) ButtonView.findViewById(R.id.score_button);
+                priceButton = (TextView) ButtonView.findViewById(R.id.price_button);
+                salesVulumeButton = (TextView) ButtonView.findViewById(R.id.sales_volume_button);
+            }
+        }
+
         class ItemViewHolder extends RecyclerView.ViewHolder{
-            SimpleDraweeView mAvatar;
-            TextView mTvTitle;
-            TextView mTvCount;
-            TextView mTvTime;
-            TextView mTvLocation;
-            TextView mTimeState;
-            ImageView mTopImage;
-
-
-            public ItemViewHolder(View itemView) {
+            SimpleDraweeView shopFoodImage;
+            SimpleDraweeView shopImage;
+            TextView shopName;
+            TextView shopAddress;
+            TextView shopSalesVolumeMonth;
+            TextView shopScore;
+            TextView shopAverage;
+            public ItemViewHolder(View itemView){
                 super(itemView);
-                itemView.setOnClickListener(new View.OnClickListener() {
+                this.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent detail = new Intent(getActivity(), DetailActivity.class);
-//                        detail.putExtra(DetailActivity.INT//ENT, mActivityList.get(getAdapterPosition() - 1).activityID);
-                        LogUtils.d(TAG, "id:" + mActivityList.get(getAdapterPosition() - 1).activityID);
                         startActivity(detail);
                     }
                 });
-                mAvatar = (SimpleDraweeView) itemView.findViewById(R.id.fragment_home_item_image);
-                RoundingParams roundingParams = RoundingParams.fromCornersRadius(5f);
-                roundingParams.setRoundAsCircle(true);
-                mAvatar.getHierarchy().setRoundingParams(roundingParams);
-                mTvTitle = (TextView) itemView.findViewById(R.id.fragment_home_item_title);
-                mTopImage.setRotation(45);
+                shopFoodImage = (SimpleDraweeView) itemView.findViewById(R.id.fragment_home_item_food_image);
+                shopImage = (SimpleDraweeView) itemView.findViewById(R.id.fragment_home_item_shop_image);
+                shopName = (TextView) itemView.findViewById(R.id.fragment_home_item_shop_name);
+                shopAddress = (TextView) itemView.findViewById(R.id.fragment_home_item_shop_address);
+                shopSalesVolumeMonth = (TextView) itemView.findViewById(R.id.fragment_home_item_sales_volume_month);
+                shopScore = (TextView) itemView.findViewById(R.id.fragment_home_item_shop_score);
+                shopAverage = (TextView) itemView.findViewById(R.id.fragment_home_item_shop_average);
             }
         }
     }
@@ -304,12 +262,12 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
-    private static class TopAdapter extends PagerAdapter {
+    private static class BannerAdapter extends PagerAdapter{
         List<TopInfo> infoList;
         Context context;
         View.OnClickListener mListener;
 
-        public TopAdapter(Context context){
+        public BannerAdapter(Context context){
             this.context = context;
         }
 
@@ -335,6 +293,7 @@ public class HomeFragment extends BaseFragment {
             SimpleDraweeView image = new SimpleDraweeView(context);
             Uri uri = Uri.parse(infoList.get(position).url);
             image.setImageURI(uri);
+            LogUtils.d(TAG, "uri:"+ uri.toString());
             image.setTag(infoList.get(position).id);
             image.setOnClickListener(mListener);
             container.addView(image);
@@ -347,5 +306,8 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
+    protected String tag() {
+        return TAG;
+    }
 
 }

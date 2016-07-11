@@ -27,6 +27,13 @@ public class OrdersFragment extends BaseFragment {
         return fragment;
     }
 
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        View rootView = inflater.inflate(R.layout.activity_scrolling, container, false);
+        return rootView;
+
+    }
     @Override
     protected String tag() {
         return TAG;

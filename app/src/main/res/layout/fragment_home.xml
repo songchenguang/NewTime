@@ -1,7 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/text_size"
+            android:layout_centerHorizontal="true"
+            android:drawablePadding="1dp"
+            android:textSize="@dimen/text_size2"
+            android:text="@string/location"/>
+        <ImageView
+            android:layout_width="@dimen/text_size2"
+            android:layout_height="@dimen/text_size2"
+            android:layout_toLeftOf="@+id/location"
+            android:layout_centerVertical="true"
+            android:src="@drawable/location"/>
+
+        <ImageView
+            android:layout_width="@dimen/text_size2"
+            android:layout_height="@dimen/text_size2"
+            android:layout_toRightOf="@+id/location"
+            android:layout_centerVertical="true"
+            android:src="@drawable/refresh"/>
+    </RelativeLayout>
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/fragment_home_swipe_layout"
         android:layout_width="match_parent"
