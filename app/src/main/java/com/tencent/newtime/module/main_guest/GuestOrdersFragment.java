@@ -29,6 +29,7 @@ public class GuestOrdersFragment extends BaseFragment {
     private SwipeRefreshLayout mSwipeLayout;
     private Adapter mRvAdapter;
     private Button ordersOn;
+    private Button ordersToGo;
     private Button ordersOff;
     RecyclerView mRecyclerView;
 
@@ -43,15 +44,17 @@ public class GuestOrdersFragment extends BaseFragment {
     boolean isLoading = false;
     boolean isRefreshing = false;
     boolean canLoadMore = true;
-    boolean orderState = false;
+    int orderState = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.fragment_orders_guest, container, false);
         ordersOn = (Button) rootView.findViewById(R.id.button_orders_on_guest);
+        ordersToGo = (Button) rootView.findViewById(R.id.button_orders_to_go_guest);
         ordersOff = (Button) rootView.findViewById(R.id.button_orders_off_guest);
         ordersOn.setOnClickListener(listener);
         ordersOff.setOnClickListener(listener);
+        ordersToGo.setOnClickListener(listener);
 
         mSwipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.fragment_orders_swipe_layout_guest);
         mSwipeLayout.setColorSchemeResources(R.color.colorPrimary);
@@ -81,11 +84,15 @@ public class GuestOrdersFragment extends BaseFragment {
         public void onClick(View v){
             switch (v.getId()){
                 case R.id.button_orders_on_guest:
-                    orderState = true;
+                    orderState = 0;
+                    refresh();
+                    break;
+                case R.id.button_orders_to_go_guest:
+                    orderState = 1;
                     refresh();
                     break;
                 case R.id.button_orders_off_guest:
-                    orderState = false;
+                    orderState = 2;
                     refresh();
                     break;
             }

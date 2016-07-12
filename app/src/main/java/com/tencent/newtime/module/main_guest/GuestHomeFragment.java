@@ -91,15 +91,19 @@ public class GuestHomeFragment extends BaseFragment {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                int visibleItemCount = recyclerView.getChildCount();
                 int totalItemCount = layoutManager.getItemCount();
-                int firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
-                if (!isLoading && (totalItemCount - visibleItemCount)
-                        <= (firstVisibleItem + 2) && canLoadMore) {
-                    Log.i(TAG, "scroll to end  load page " + (page + 1));
-                    loadPage(page + 1);
+                int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+                if (lastVisibleItem >= totalItemCount - 4 && dy > 0) {
+                    if(canLoadMore){
+                        Log.d(TAG,"ignore manually load!");
+                    } else{
+                        loadPage(page + 1);//这里多线程也要手动控制isLoadingMore
+                        Log.d(TAG,"load page:" + page);
+                        canLoadMore = false;
+                    }
                 }
             }
+
         });
         mBannerAdapter = new BannerAdapter(getActivity());
         mBannerAdapter.setListener(new View.OnClickListener() {
@@ -146,7 +150,7 @@ public class GuestHomeFragment extends BaseFragment {
                 mBannerAdapter.notifyDataSetChanged();
             }
         });
-        loadPage(1);
+        loadPage(page);
     }
 
 
@@ -155,7 +159,7 @@ public class GuestHomeFragment extends BaseFragment {
 //        params.put("token", StrUtils.token());
         params.put("token", "123456");
         params.put("page", "" + page);
-
+        isLoading = true;
         OkHttpUtils.post(StrUtils.CUSTOMER_HOME_PAGE, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
             @Override
             public void onResponse(String s) {
@@ -165,8 +169,10 @@ public class GuestHomeFragment extends BaseFragment {
                     return;
                 }
                 JSONArray array = j.optJSONArray("sellerView");
+                LogUtils.d(TAG, j.toString());
                 if (array == null) return;
                 List<HomeGuest> infoList = new ArrayList<>();
+
                 for (int i = 0; i < array.length(); i++) {
                     HomeGuest info = HomeGuest.fromJSON(array.optJSONObject(i));
                     infoList.add(info);
@@ -178,12 +184,6 @@ public class GuestHomeFragment extends BaseFragment {
                 mSwipeLayout.setRefreshing(false);
             }
         });
-        List<HomeGuest> homeGuestList = new ArrayList<>();
-        mRvAdapter.setHomeList(homeGuestList);
-        mRvAdapter.notifyDataSetChanged();
-        isRefreshing = false;
-        isLoading = false;
-        mSwipeLayout.setRefreshing(false);
     }
 
     private class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
@@ -203,7 +203,7 @@ public class GuestHomeFragment extends BaseFragment {
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             RecyclerView.ViewHolder vh;
             if (viewType == TYPE_BANNER){
-                View v = LayoutInflater.from(getActivity()).inflate(R.layout.banner_pager, parent, false);
+                View v = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_home_banner_pager, parent, false);
                 ViewGroup.LayoutParams params = v.getLayoutParams();
                 params.height = DimensionUtils.getDisplay().widthPixels/2;
                 v.setLayoutParams(params);

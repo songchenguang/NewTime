@@ -28,16 +28,26 @@ public final class StrUtils {
     public static final String PHONE_PATTERN =
             "^1[34578]\\d{9}$";
 
-
-
     /** ####################### URLs ############################### **/
-    private static final String BASE_URL = "http:/119.29.233.72:5000/";
+    private static final String BASE_URL = "http:/119.29.233.72:3000/";
 
     private static final String BASE_URL_NGINX = "http://218.244.147.240/";
 
     public static final String LOGIN_URL = BASE_URL + "applogin";
 
     public static final String CUSTOMER_HOME_PAGE = BASE_URL +  "customerHomePage";
+
+    public static final String CUSTOMER_ORDER0 = BASE_URL + "customerOrder/0";
+
+    public static final String CUSTOMER_ORDER1 = BASE_URL + "customerOrder/1";
+
+    public static final String CUSTOMER_ORDER2 = BASE_URL + "customerOrder/2";
+
+    public static final String SELLER_ORDER0 = "sellerOrder/0";
+
+    public static final String SELLER_ORDER1 = "sellerOrder/1";
+
+    public static final String SELLER_ORDER2 = "sellerOrder/2";
 
     public static final String REGISTER_URL = BASE_URL + "register";
 
