@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.tencent.newtime.R;
 
-public class GuestRegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

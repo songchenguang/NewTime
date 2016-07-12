@@ -51,7 +51,7 @@
         <activity
             android:name=".module.main_host.HostMainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".module.register.GuestRegisterActivity" />
+        <activity android:name=".module.register.RegisterActivity" />
         <activity android:name=".module.register.HostRegisterActivity"></activity>
     </application>
 
