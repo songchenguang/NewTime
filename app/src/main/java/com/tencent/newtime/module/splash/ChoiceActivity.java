@@ -1,14 +1,13 @@
 package com.tencent.newtime.module.splash;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
 import com.tencent.newtime.R;
 import com.tencent.newtime.module.login.LoginActivity;
-import com.tencent.newtime.module.main_guest.GuestMainActivity;
 import com.tencent.newtime.module.main_host.HostMainActivity;
 
 public class ChoiceActivity extends AppCompatActivity {
@@ -33,11 +32,12 @@ public class ChoiceActivity extends AppCompatActivity {
                 case R.id.button_guest:
                     Intent intentGuest = new Intent(ChoiceActivity.this, LoginActivity.class);
                     startActivity(intentGuest);
+                    finish();
                     break;
                 case R.id.button_host:
                     Intent intentHost = new Intent(ChoiceActivity.this, HostMainActivity.class);
                     startActivity(intentHost);
-
+                    finish();
                     break;
             }
         }

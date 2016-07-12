@@ -9,13 +9,11 @@ import android.view.View;
 
 import com.tencent.newtime.R;
 import com.tencent.newtime.base.BaseActivity;
-import com.tencent.newtime.module.main_guest.GuestHomeFragment;
-import com.tencent.newtime.module.main_guest.GuestMeFragment;
-import com.tencent.newtime.module.main_guest.GuestOrdersFragment;
 import com.tencent.newtime.widget.TabItem;
 
 /**
  * Created by 晨光 on 2016-07-11.
+ * carlcgsong
  */
 public class HostMainActivity extends BaseActivity {
 
@@ -39,6 +37,7 @@ public class HostMainActivity extends BaseActivity {
 //            finish();
 //            return;
 //        }
+
         setContentView(R.layout.activity_main_host);
 
         initViews();

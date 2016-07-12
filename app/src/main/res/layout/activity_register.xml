@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingBottom="16dp">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:text="@string/register_newtime_user"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:orientation="vertical">
+            <EditText
+                android:id="@+id/phone"
+                android:layout_height="48dp"
+                android:layout_marginTop="4dp"
+                android:paddingTop="16dp"
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:inputType="phone"
+                android:hint="@string/register_phone_number"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:padding="8dp" />
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="20dp">
+
+                <EditText
+                    android:id="@+id/verification_code"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="4dp"
+                    android:paddingTop="16dp"
+                    android:textSize="16sp"
+                    style="@style/InputEditText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:inputType="number"
+                    android:hint="@string/verification_code" />
+
+                <Button
+                    android:enabled="false"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:id="@+id/gain_verification_code"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_selector"
+                    android:text="@string/gain_verification"
+                    android:textColor="#ffffff" />
+            </LinearLayout>
+
+
+            <EditText
+                android:id="@+id/login_password"
+                style="@style/InputEditText"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:hint="@string/set_password"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:padding="8dp"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/login_copy_password"
+                android:inputType="textPassword"
+                android:layout_height="48dp"
+                android:layout_marginTop="4dp"
+                android:paddingTop="16dp"
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:hint="@string/copy_password"
+                android:maxLines="1"
+                android:padding="8dp"
+                android:singleLine="true" />
+
+            <TextView
+                android:id="@+id/aty_register_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:textColor="@color/red" />
+            <TextView
+                android:enabled="false"
+                android:id="@+id/register"
+                style="@style/InputEditText"
+                android:layout_width="match_parent"
+                android:layout_marginRight="@dimen/horizontal_margin"
+                android:layout_marginLeft="@dimen/horizontal_margin"
+                android:background="@drawable/button_selector"
+                android:gravity="center_horizontal"
+                android:text="@string/register"
+                android:textColor="#ffffff"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

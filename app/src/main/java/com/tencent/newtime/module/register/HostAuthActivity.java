@@ -5,11 +5,11 @@ import android.os.Bundle;
 
 import com.tencent.newtime.R;
 
-public class HostRegisterActivity extends AppCompatActivity {
+public class HostAuthActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_host_register);
+        setContentView(R.layout.activity_host_auth);
     }
 }

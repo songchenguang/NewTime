@@ -1,47 +1,23 @@
 package com.tencent.newtime.module.login;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.tencent.newtime.APP;
 import com.tencent.newtime.R;
 import com.tencent.newtime.module.main_guest.GuestMainActivity;
+import com.tencent.newtime.module.register.RegisterActivity;
 import com.tencent.newtime.util.LogUtils;
 import com.tencent.newtime.util.OkHttpUtils;
 import com.tencent.newtime.util.StrUtils;
@@ -49,7 +25,10 @@ import com.tencent.newtime.util.StrUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static android.Manifest.permission.READ_CONTACTS;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A login screen that offers login via email/password.
@@ -96,7 +75,7 @@ public class LoginActivity extends AppCompatActivity{
                     attemptLogin();
                     break;
                 case R.id.login_text_view_register:
-                    attemptLogin();
+                    register();
                     break;
                 case R.id.login_text_view_forget_password:
                     attemptLogin();
@@ -179,14 +158,16 @@ public class LoginActivity extends AppCompatActivity{
         }
     }
 
+    public void register(){
+        startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+        finish();
+    }
+
     private boolean isMobileValid(String mobile) {
-        //TODO: Replace this with your own logic
-        Pattern p = null;
-        Matcher m = null;
-        boolean b = false;
-        p = Pattern.compile("^[1][3,4,5,8][0-9]{9}$"); // 验证手机号
-        m = p.matcher(mobile);
-        b = m.matches();
+
+        Pattern p = Pattern.compile("^[1][3,4,5,8][0-9]{9}$"); // 验证手机号
+        Matcher m = p.matcher(mobile);
+        boolean b = m.matches();
         return b;
     }
 

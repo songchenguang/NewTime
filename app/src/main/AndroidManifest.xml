@@ -47,12 +47,20 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".module.splash.ChoiceActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_choice"
+            />
         <activity
-            android:name=".module.main_host.HostMainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".module.register.RegisterActivity" />
-        <activity android:name=".module.register.HostRegisterActivity"></activity>
+            android:name=".module.main_host.HostMainActivity" />
+        <activity
+            android:name=".module.register.RegisterActivity"
+            android:label="@string/title_activity_register"
+            />
+
+        <activity
+            android:name=".module.register.HostAuthActivity"
+            android:label="@string/go_auth">
+
+        </activity>
     </application>
 
 </manifest>
