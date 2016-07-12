@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -24,9 +25,12 @@ import com.tencent.newtime.model.HomeGuest;
 import com.tencent.newtime.module.shop_detail.ShopDetailActivity;
 import com.tencent.newtime.util.LogUtils;
 import com.tencent.newtime.util.DimensionUtils;
+import com.tencent.newtime.util.OkHttpUtils;
+import com.tencent.newtime.util.StrUtils;
 import com.tencent.newtime.widget.PageIndicator;
 
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -119,18 +123,61 @@ public class GuestHomeFragment extends BaseFragment {
     public void refresh(){
         isRefreshing = true;
         canLoadMore = true;
-        List<TopInfo> infoList = new ArrayList<>();
-        TopInfo test = new TopInfo();
-        test.id = 0;
-        test.url = "http://pic30.nipic.com/20130626/8174275_085522448172_2.jpg";
-        infoList.add(test);
-        mBannerAdapter.setInfoList(infoList);
-        mBannerAdapter.notifyDataSetChanged();
+        ArrayMap<String,String> params = new ArrayMap<>(3);
+//        params.put("token", StrUtils.token());
+        params.put("token", "123456");
+        params.put("page", "1");
+        OkHttpUtils.post(StrUtils.CUSTOMER_HOME_PAGE, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
+            @Override
+            public void onResponse(String s) {
+                //LogUtils.i(TAG, s);
+                JSONObject j = OkHttpUtils.parseJSON(getActivity(),s);
+                if(j==null){
+                    return;
+                }
+                JSONArray array = j.optJSONArray("bannerImgUrls");
+                if (array == null) return;
+                List<BannerInfo> infoList = new ArrayList<>();
+                for (int i = 0; i < array.length(); i++) {
+                    BannerInfo info = BannerInfo.fromJSON(array.optJSONObject(i));
+                    infoList.add(info);
+                }
+                mBannerAdapter.setInfoList(infoList);
+                mBannerAdapter.notifyDataSetChanged();
+            }
+        });
+        loadPage(1);
     }
 
 
     private void loadPage(int page){
+        ArrayMap<String,String> params = new ArrayMap<>(3);
+//        params.put("token", StrUtils.token());
+        params.put("token", "123456");
+        params.put("page", "" + page);
 
+        OkHttpUtils.post(StrUtils.CUSTOMER_HOME_PAGE, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
+            @Override
+            public void onResponse(String s) {
+                //LogUtils.i(TAG, s);
+                JSONObject j = OkHttpUtils.parseJSON(getActivity(),s);
+                if(j==null){
+                    return;
+                }
+                JSONArray array = j.optJSONArray("sellerView");
+                if (array == null) return;
+                List<HomeGuest> infoList = new ArrayList<>();
+                for (int i = 0; i < array.length(); i++) {
+                    HomeGuest info = HomeGuest.fromJSON(array.optJSONObject(i));
+                    infoList.add(info);
+                }
+                mRvAdapter.setHomeList(infoList);
+                mRvAdapter.notifyDataSetChanged();
+                isRefreshing = false;
+                isLoading = false;
+                mSwipeLayout.setRefreshing(false);
+            }
+        });
         List<HomeGuest> homeGuestList = new ArrayList<>();
         mRvAdapter.setHomeList(homeGuestList);
         mRvAdapter.notifyDataSetChanged();
@@ -178,8 +225,20 @@ public class GuestHomeFragment extends BaseFragment {
                 banner.mIndicator.setViewPager(banner.mViewPager);
             }else if(holder instanceof ButtonViewHolder){
 
-            }else if(holder instanceof ItemViewHolder){
 
+
+            }else if(holder instanceof ItemViewHolder){
+                HomeGuest homeGuest = mHomeGuestList.get(position - 2);
+                ItemViewHolder item = (ItemViewHolder) holder;
+                Uri uriFoodImg = Uri.parse(homeGuest.foodImg);
+                Uri uriShopImg = Uri.parse(homeGuest.headImg);
+                item.shopFoodImage.setImageURI(uriFoodImg);
+                item.shopImage.setImageURI(uriShopImg);
+                item.shopName.setText(homeGuest.sellerName);
+                item.shopAddress.setText(homeGuest.location);
+                item.shopSalesVolumeMonth.setText(""+ homeGuest.monthSales);
+                item.shopScore.setText("" + homeGuest.scores);
+                item.shopAverage.setText("" + homeGuest.personPrice);
             }
         }
 
@@ -256,19 +315,19 @@ public class GuestHomeFragment extends BaseFragment {
         }
     }
 
-    private static class TopInfo{
+    private static class BannerInfo {
         public int id;
         public String url;
-        public static TopInfo fromJSON(JSONObject j){
-            TopInfo info = new TopInfo();
-            info.id = j.optInt("activityid");
-            info.url = j.optString("imageurl");
+        public static BannerInfo fromJSON(JSONObject j){
+            BannerInfo info = new BannerInfo();
+            info.id = j.optInt("rank");
+            info.url = j.optString("imgUrls");
             return info;
         }
     }
 
     private static class BannerAdapter extends PagerAdapter{
-        List<TopInfo> infoList;
+        List<BannerInfo> infoList;
         Context context;
         View.OnClickListener mListener;
 
@@ -276,7 +335,7 @@ public class GuestHomeFragment extends BaseFragment {
             this.context = context;
         }
 
-        public void setInfoList(List<TopInfo> infoList) {
+        public void setInfoList(List<BannerInfo> infoList) {
             this.infoList = infoList;
         }
         public void setListener(View.OnClickListener listener){

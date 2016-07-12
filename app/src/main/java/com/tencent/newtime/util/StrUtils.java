@@ -31,11 +31,13 @@ public final class StrUtils {
 
 
     /** ####################### URLs ############################### **/
-    private static final String BASE_URL = "http://218.244.147.240:8080/";
+    private static final String BASE_URL = "http:/119.29.233.72:5000/";
 
     private static final String BASE_URL_NGINX = "http://218.244.147.240/";
 
-    public static final String LOGIN_URL = BASE_URL + "login";
+    public static final String LOGIN_URL = BASE_URL + "applogin";
+
+    public static final String CUSTOMER_HOME_PAGE = BASE_URL +  "customerHomePage";
 
     public static final String REGISTER_URL = BASE_URL + "register";
 
@@ -219,8 +221,6 @@ public final class StrUtils {
         return String.format("%.1f",distance/1000)+APP.context().getString(R.string.thousand_meters);
 
     }
-
-
 
 
     public static String token(){

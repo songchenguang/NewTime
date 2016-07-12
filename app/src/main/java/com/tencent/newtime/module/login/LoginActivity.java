@@ -56,11 +56,6 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class LoginActivity extends AppCompatActivity{
 
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
-
     // UI references.
     private AutoCompleteTextView mMobileView;
     private EditText mPasswordView;
@@ -91,8 +86,8 @@ public class LoginActivity extends AppCompatActivity{
         mSignInButton.setOnClickListener(listener);
         TextView mForgetPassword = (TextView) findViewById(R.id.login_text_view_forget_password);
         mForgetPassword.setOnClickListener(listener);
-
-
+        TextView mRegister = (TextView) findViewById(R.id.login_text_view_register);
+        mRegister.setOnClickListener(listener);
     }
     Button.OnClickListener listener = new Button.OnClickListener(){
         public void onClick(View v){
@@ -100,19 +95,16 @@ public class LoginActivity extends AppCompatActivity{
                 case R.id.email_sign_in_button:
                     attemptLogin();
                     break;
+                case R.id.login_text_view_register:
+                    attemptLogin();
+                    break;
+                case R.id.login_text_view_forget_password:
+                    attemptLogin();
+                    break;
             }
         }
 
     };
-
-
-
-
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
     private void attemptLogin() {
 
         // Reset errors.
@@ -152,7 +144,7 @@ public class LoginActivity extends AppCompatActivity{
             String passMd5 = StrUtils.md5(password);
             Map<String,String> map = new HashMap<>();
             map.put("username", mobile);
-            map.put("password",passMd5);
+            map.put("password",password);
 
             OkHttpUtils.post(StrUtils.LOGIN_URL, map, TAG, new OkHttpUtils.SimpleOkCallBack() {
                 @Override
@@ -178,6 +170,7 @@ public class LoginActivity extends AppCompatActivity{
                         finish();
                     } else {
                         String reason = j.optString("reason");
+                        Toast.makeText(LoginActivity.this, reason, Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
