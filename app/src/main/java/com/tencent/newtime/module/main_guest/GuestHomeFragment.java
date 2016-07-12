@@ -68,10 +68,10 @@ public class GuestHomeFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_home,container,false);
+        View rootView = inflater.inflate(R.layout.fragment_home_guest,container,false);
         location_layout = (RelativeLayout) rootView.findViewById(R.id.location_layout);
         location_textview = (TextView) rootView.findViewById(R.id.location_tetview);
-        mSwipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.fragment_home_swipe_layout);
+        mSwipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.fragment_home_swipe_layout_guest);
         mSwipeLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -84,7 +84,7 @@ public class GuestHomeFragment extends BaseFragment {
             }
         });
 
-        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_home_recycler_view);
+        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_home_recycler_view_guest);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
             @Override
@@ -212,7 +212,7 @@ public class GuestHomeFragment extends BaseFragment {
                 View v = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_home_button, parent, false);
                 vh = new ButtonViewHolder(v);
             }else{
-                View v = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_home_item, parent, false);
+                View v = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_home_item_guest, parent, false);
                 vh = new ItemViewHolder(v);
             }
             return vh;

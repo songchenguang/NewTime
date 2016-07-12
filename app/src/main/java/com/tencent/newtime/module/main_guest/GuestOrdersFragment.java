@@ -48,8 +48,8 @@ public class GuestOrdersFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.fragment_orders_guest, container, false);
-        ordersOn = (Button) rootView.findViewById(R.id.button_orders_on);
-        ordersOff = (Button) rootView.findViewById(R.id.button_orders_off);
+        ordersOn = (Button) rootView.findViewById(R.id.button_orders_on_guest);
+        ordersOff = (Button) rootView.findViewById(R.id.button_orders_off_guest);
         ordersOn.setOnClickListener(listener);
         ordersOff.setOnClickListener(listener);
 
@@ -80,11 +80,11 @@ public class GuestOrdersFragment extends BaseFragment {
     Button.OnClickListener listener = new Button.OnClickListener(){
         public void onClick(View v){
             switch (v.getId()){
-                case R.id.button_orders_on:
+                case R.id.button_orders_on_guest:
                     orderState = true;
                     refresh();
                     break;
-                case R.id.button_orders_off:
+                case R.id.button_orders_off_guest:
                     orderState = false;
                     refresh();
                     break;
@@ -109,7 +109,7 @@ public class GuestOrdersFragment extends BaseFragment {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             RecyclerView.ViewHolder vh;
-            View view= LayoutInflater.from(getActivity()).inflate(R.layout.orders_item_guest, parent, false);
+            View view= LayoutInflater.from(getActivity()).inflate(R.layout.fragment_orders_item_guest, parent, false);
             vh = new GuestOrdersItemViewHolder(view);
             return vh;
         }
@@ -131,7 +131,7 @@ public class GuestOrdersFragment extends BaseFragment {
                 super(itemView);
                 SimpleDraweeView shopImage = (SimpleDraweeView) itemView.findViewById(R.id.fragment_orders_item_shop_image_guest);
                 TextView orderCancel = (TextView) itemView.findViewById(R.id.fragment_orders_item_cancel_guest);
-                TextView orderState = (TextView) itemView.findViewById(R.id.fragment_orders_item_state);
+                TextView orderState = (TextView) itemView.findViewById(R.id.fragment_orders_item_state_guest);
                 TextView shopName = (TextView) itemView.findViewById(R.id.fragment_orders_item_shop_name_guest);
                 TextView dishName = (TextView) itemView.findViewById(R.id.fragment_orders_item_dish_name_guest);
                 TextView dishPrice = (TextView) itemView.findViewById(R.id.fragment_orders_item_dish_price_guest);

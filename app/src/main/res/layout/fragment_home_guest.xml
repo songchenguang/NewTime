@@ -37,12 +37,12 @@
     </RelativeLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/fragment_home_swipe_layout"
+        android:id="@+id/fragment_home_swipe_layout_guest"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <android.support.v7.widget.RecyclerView
             android:background="#f0eff5"
-            android:id="@+id/fragment_home_recycler_view"
+            android:id="@+id/fragment_home_recycler_view_guest"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </android.support.v4.widget.SwipeRefreshLayout>

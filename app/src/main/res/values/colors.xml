@@ -5,6 +5,7 @@
     <color name="colorPrimary">#FF67</color>
     <color name="colorGray">#c5c5da</color>
     <color name="colorBase">#FF67</color>
+    <color name="colorPrimaryBlue">#0099cc</color>
 
     <color name="blue_50">#e7e9fd</color>
     <color name="blue_100">#d0d0ff</color>

@@ -32,7 +32,7 @@
                 android:text="取消" />
 
             <TextView
-                android:id="@+id/fragment_orders_item_state"
+                android:id="@+id/fragment_orders_item_state_guest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/fragment_orders_item_shop_image_guest"
@@ -92,7 +92,7 @@
                     android:textAppearance="?android:attr/textAppearanceSmall" />
 
                 <TextView
-                    android:id="@+id/fragment_orders_item_time_togo"
+                    android:id="@+id/fragment_orders_item_time_togo_guest"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
