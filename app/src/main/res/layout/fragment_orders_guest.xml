@@ -18,16 +18,7 @@
             android:textColor="@color/colorPrimaryDark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="可接" />
-
-
-        <Button
-            android:background="@drawable/rect_center_shape"
-            android:id="@+id/button_orders_Todo_guest"
-            android:textColor="@color/colorPrimaryDark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="已接单" />
+            android:text="未完成" />
 
         <Button
             android:background="@drawable/right_corner_shape"
@@ -35,7 +26,7 @@
             android:id="@+id/button_orders_off_guest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="完成单" />
+            android:text="已完成" />
 
     </LinearLayout>
 

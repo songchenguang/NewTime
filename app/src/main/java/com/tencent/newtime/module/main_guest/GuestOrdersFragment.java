@@ -136,7 +136,7 @@ public class GuestOrdersFragment extends BaseFragment {
                 TextView dishName = (TextView) itemView.findViewById(R.id.fragment_orders_item_dish_name_guest);
                 TextView dishPrice = (TextView) itemView.findViewById(R.id.fragment_orders_item_dish_price_guest);
                 TextView orderTime = (TextView) itemView.findViewById(R.id.fragment_orders_item_time_guest);
-                TextView orderTimeTogo = (TextView) itemView.findViewById(R.id.fragment_orders_item_time_togo);
+                TextView orderTimeTogo = (TextView) itemView.findViewById(R.id.fragment_orders_item_time_togo_guest);
 
             }
 
