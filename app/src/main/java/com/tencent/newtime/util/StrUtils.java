@@ -61,6 +61,18 @@ public final class StrUtils {
 
     public static final String GET_ACTIVITY_INFO_URL = BASE_URL + "getactivityinformation";
 
+    public static final String SELLER_CONFIRM_ORDER = BASE_URL + "sellerConfirmOrder";
+
+    public static final String SELLER_CANCEL_ORDER = BASE_URL + "sellerCancelOrder";
+
+    public static final String CUSTOMER_CANCEL_ORDER = BASE_URL + "customerCancelOrder";
+
+    public static final String SELLER_REQUEST_PAY = BASE_URL + "sellerRequestPay";
+
+    public static final String CUSTOMER_CONFIRM_PAY = BASE_URL + "customerConfirmPay";
+
+    public static final String CUNSTOMER_RATED_ORDER = BASE_URL + "ratedOrder";
+
     public static final String TOP_BROAD_URL = BASE_URL + "topofficial";
 
     public static final String GET_PERSON_INFO = BASE_URL + "getprofile";

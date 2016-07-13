@@ -1,19 +1,26 @@
 package com.tencent.newtime.module.main_host;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.tencent.newtime.APP;
 import com.tencent.newtime.R;
 import com.tencent.newtime.base.BaseFragment;
 import com.tencent.newtime.model.OrdersHost;
@@ -130,7 +137,20 @@ public class HostOrdersFragment extends BaseFragment {
         params.put("token", "123456");
         params.put("page", "" + page);
         isLoading = true;
-        OkHttpUtils.post(StrUtils.SELLER_ORDER0, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
+        String post = StrUtils.SELLER_ORDER0;
+        switch (orderState){
+            case 0:
+                post = StrUtils.SELLER_ORDER0;
+                break;
+            case 1:
+                post = StrUtils.SELLER_ORDER1;
+                break;
+            case 2:
+                post = StrUtils.SELLER_ORDER2;
+                break;
+
+        }
+        OkHttpUtils.post(post, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
             @Override
             public void onResponse(String s) {
                 LogUtils.d(TAG, "response" + s);
@@ -194,14 +214,20 @@ public class HostOrdersFragment extends BaseFragment {
                 case 0:
                     item.orderPrice.setText(ordersHost.orderPrice);
                     item.orderTime.setText(ordersHost.planeEatTime);
+                    item.orderStateButton.setText("婉拒");
+                    item.cashState.setText("接单");
                     break;
                 case 1:
                     item.orderPrice.setText(ordersHost.orderPrice);
                     item.orderTime.setText(ordersHost.orderPayTime);
+                    item.orderStateButton.setText("取消接单");
+                    item.cashState.setText("去结算");
                     break;
                 case 2:
                     item.orderPrice.setText(ordersHost.orderPayPrice);
                     item.orderTime.setText(ordersHost.orderPayTime);
+                    item.orderStateButton.setText("原价：" + ordersHost.orderPrice);
+                    item.cashState.setText("折扣价：" + ordersHost.orderPayPrice);
                     break;
             }
         }
@@ -216,6 +242,8 @@ public class HostOrdersFragment extends BaseFragment {
             TextView orderPeopleNumber;
             TextView orderPrice;
             TextView orderTime;
+            TextView orderStateButton;
+            TextView cashState;
             public ItemViewHolder(View itemView){
                 super(itemView);
                 customerHeadImg = (SimpleDraweeView) itemView.findViewById(R.id.fragment_orders_item_guest_image_host);
@@ -228,6 +256,210 @@ public class HostOrdersFragment extends BaseFragment {
                 orderPeopleNumber = (TextView) itemView.findViewById(R.id.fragment_orders_item_people_number_host);
                 orderPrice = (TextView) itemView.findViewById(R.id.fragment_orders_item_order_price_host);
                 orderTime = (TextView) itemView.findViewById(R.id.fragment_orders_item_time_host);
+                orderStateButton = (TextView) itemView.findViewById(R.id.fragment_orders_item_order_state_host);
+                cashState = (TextView) itemView.findViewById(R.id.fragment_orders_item_cash_state_host);
+                orderStateButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        switch (orderState){
+                            case 0:
+                                // 拒绝订单
+                                DialogInterface.OnClickListener dialogOnclicListener=new DialogInterface.OnClickListener(){
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        switch(which){
+                                            case Dialog.BUTTON_POSITIVE:
+                                                ArrayMap<String,String> params = new ArrayMap<>(3);
+                                                //        params.put("token", StrUtils.token());
+                                                params.put("token", "123456");
+                                                params.put("orderId", "" + mOrdersHostList.get(getAdapterPosition()).orderId);
+                                                isLoading = true;
+                                                OkHttpUtils.post(StrUtils.SELLER_CANCEL_ORDER, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
+                                                    @Override
+                                                    public void onResponse(String s) {
+                                                        LogUtils.d(TAG, "response" + s);
+                                                        JSONObject j = OkHttpUtils.parseJSON(getActivity(),s);
+                                                        if(j==null){
+                                                            return;
+                                                        }
+                                                        if(j.optString("state").equals("successful")){
+                                                            Toast.makeText(APP.context(), "取消订单成功", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                });
+
+                                                break;
+                                            case Dialog.BUTTON_NEGATIVE:
+                                                Toast.makeText(getActivity(), "取消", Toast.LENGTH_SHORT).show();
+                                                dialog.dismiss();
+                                                break;
+                                        }
+                                    }
+                                };
+                                //dialog参数设置
+                                AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());  //先得到构造器
+                                builder.setTitle("提示"); //设置标题
+                                builder.setMessage("是否确认取消订单?"); //设置内容
+                                builder.setIcon(R.mipmap.ic_launcher);//设置图标，图片id即可
+                                builder.setPositiveButton("确认",dialogOnclicListener);
+                                builder.setNegativeButton("取消", dialogOnclicListener);
+                                builder.create().show();
+                                break;
+                            case 1:
+                                //取消订单
+                                DialogInterface.OnClickListener dialogOnclicListener_1=new DialogInterface.OnClickListener(){
+
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        switch(which){
+                                            case Dialog.BUTTON_POSITIVE:
+                                                ArrayMap<String,String> params = new ArrayMap<>(3);
+                                                //        params.put("token", StrUtils.token());
+                                                params.put("token", "123456");
+                                                params.put("orderId", "" + mOrdersHostList.get(getAdapterPosition()).orderId);
+                                                isLoading = true;
+                                                OkHttpUtils.post(StrUtils.SELLER_CANCEL_ORDER, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
+                                                    @Override
+                                                    public void onResponse(String s) {
+                                                        LogUtils.d(TAG, "response" + s);
+                                                        JSONObject j = OkHttpUtils.parseJSON(getActivity(),s);
+                                                        if(j==null){
+                                                            return;
+                                                        }
+                                                        if(j.optString("state").equals("successful")){
+                                                            Toast.makeText(APP.context(), "取消订单成功", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                });
+
+                                                break;
+                                            case Dialog.BUTTON_NEGATIVE:
+                                                dialog.dismiss();
+                                                Toast.makeText(getActivity(), "取消" + which, Toast.LENGTH_SHORT).show();
+                                                break;
+                                        }
+                                    }
+                                };
+                                //dialog参数设置
+                                AlertDialog.Builder builder_1=new AlertDialog.Builder(getActivity());  //先得到构造器
+                                builder_1.setTitle("提示"); //设置标题
+                                builder_1.setMessage("是否确认取消订单?"); //设置内容
+                                builder_1.setIcon(R.mipmap.ic_launcher);//设置图标，图片id即可
+                                builder_1.setPositiveButton("确认",dialogOnclicListener_1);
+                                builder_1.setNegativeButton("取消", dialogOnclicListener_1);
+                                builder_1.create().show();
+                                break;
+                            case 2:
+                                break;
+                        }
+                    }
+                });
+
+                cashState.setOnClickListener(new View.OnClickListener(){
+
+                    @Override
+                    public void onClick(View v) {
+                        switch (orderState){
+                            case 0:
+                                // 卖家接受订单
+                                DialogInterface.OnClickListener dialogOnclicListener=new DialogInterface.OnClickListener(){
+
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        switch(which){
+                                            case Dialog.BUTTON_POSITIVE:
+                                                ArrayMap<String,String> params = new ArrayMap<>(3);
+                                                //        params.put("token", StrUtils.token());
+                                                params.put("token", "123456");
+                                                params.put("orderId", "" + mOrdersHostList.get(getAdapterPosition()).orderId);
+                                                isLoading = true;
+                                                OkHttpUtils.post(StrUtils.SELLER_CONFIRM_ORDER, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
+                                                    @Override
+                                                    public void onResponse(String s) {
+                                                        LogUtils.d(TAG, "response" + s);
+                                                        JSONObject j = OkHttpUtils.parseJSON(getActivity(),s);
+                                                        if(j==null){
+                                                            return;
+                                                        }
+                                                        if(j.optString("state").equals("successful")){
+                                                            Toast.makeText(APP.context(), "接受订单成功", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                });
+                                                break;
+                                            case Dialog.BUTTON_NEGATIVE:
+                                                Toast.makeText(getActivity(), "取消" + which, Toast.LENGTH_SHORT).show();
+                                                dialog.dismiss();
+                                                break;
+                                        }
+                                    }
+                                };
+                                //dialog参数设置
+                                AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());  //先得到构造器
+                                builder.setTitle("提示"); //设置标题
+                                builder.setMessage("是否接受订单?"); //设置内容
+                                builder.setIcon(R.mipmap.ic_launcher);//设置图标，图片id即可
+                                builder.setPositiveButton("确认",dialogOnclicListener);
+                                builder.setNegativeButton("取消", dialogOnclicListener);
+                                builder.create().show();
+                                break;
+                            case 1:
+                                final EditText editText = new EditText(getActivity());
+                                editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                                //先new出一个监听器，设置好监听
+                                DialogInterface.OnClickListener dialogOnclicListener_1=new DialogInterface.OnClickListener(){
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        switch(which){
+                                            case Dialog.BUTTON_POSITIVE:
+                                                String price = editText.getText().toString();
+                                                ArrayMap<String,String> params = new ArrayMap<>(6);
+                                                //        params.put("token", StrUtils.token());
+                                                params.put("token", "123456");
+                                                params.put("orderId", "" + mOrdersHostList.get(getAdapterPosition()).orderId);
+                                                params.put("discount", price);
+                                                params.put("price", mOrdersHostList.get(getAdapterPosition()).orderPrice);
+                                                params.put("payprice", "" + Integer.valueOf(price) * Integer.valueOf(mOrdersHostList.get(getAdapterPosition()).orderPrice));
+
+                                                isLoading = true;
+                                                OkHttpUtils.post(StrUtils.SELLER_REQUEST_PAY, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
+                                                    @Override
+                                                    public void onResponse(String s) {
+                                                        LogUtils.d(TAG, "response" + s);
+                                                        JSONObject j = OkHttpUtils.parseJSON(getActivity(),s);
+                                                        if(j==null){
+                                                            return;
+                                                        }
+                                                        if(j.optString("state").equals("successful")){
+                                                            Toast.makeText(APP.context(), "发起付款请求", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                });
+                                                Toast.makeText(getActivity(), "确认" + which, Toast.LENGTH_SHORT).show();
+                                                break;
+                                            case Dialog.BUTTON_NEGATIVE:
+                                                Toast.makeText(getActivity(), "取消" + which, Toast.LENGTH_SHORT).show();
+                                                dialog.dismiss();
+                                                break;
+                                        }
+                                    }
+                                };
+                                //dialog参数设置
+                                AlertDialog.Builder builder_1=new AlertDialog.Builder(getActivity());  //先得到构造器
+                                builder_1.setTitle("请选择您给食客的折扣(0-10折)"); //设置标题
+                                builder_1.setView(editText); // 输入折扣
+                                builder_1.setIcon(R.mipmap.ic_launcher);//设置图标，图片id即可
+                                builder_1.setPositiveButton("确认",dialogOnclicListener_1);
+                                builder_1.setNegativeButton("取消", dialogOnclicListener_1);
+                                builder_1.create().show();
+                                break;
+                            case 2:
+
+                                break;
+                        }
+                    }
+                });
+
             }
         }
         @Override
