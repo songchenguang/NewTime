@@ -1,9 +1,12 @@
 package com.tencent.newtime.module.main_guest;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +18,13 @@ import com.tencent.newtime.R;
 import com.tencent.newtime.base.BaseFragment;
 import com.tencent.newtime.model.OrdersGuest;
 import com.tencent.newtime.util.LogUtils;
+import com.tencent.newtime.util.OkHttpUtils;
+import com.tencent.newtime.util.StrUtils;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,6 +41,7 @@ public class GuestOrdersFragment extends BaseFragment {
     private Button ordersToGo;
     private Button ordersOff;
     RecyclerView mRecyclerView;
+
 
     public static GuestOrdersFragment newInstance() {
         Bundle args = new Bundle();
@@ -64,18 +74,38 @@ public class GuestOrdersFragment extends BaseFragment {
                 if (isRefreshing) {
                     LogUtils.d(TAG, "ignore manually update!");
                 } else {
-                    refresh();
+                    loadPage(page);
+
                 }
             }
         });
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_orders_recycler_view_guest);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int totalItemCount = layoutManager.getItemCount();
+                int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+                if (lastVisibleItem >= totalItemCount - 4 && dy > 0) {
+                    if(canLoadMore){
+                        Log.d(TAG,"ignore manually load!");
+                    } else{
+                        loadPage(page + 1);
+                        Log.d(TAG,"load page:" + page);
+                        canLoadMore = false;
+                    }
+                }
+            }
 
+        });
         mRvAdapter = new Adapter();
         mRecyclerView.setAdapter(mRvAdapter);
 
-        refresh();
+        loadPage(page);
+
         return rootView;
 
     }
@@ -85,24 +115,51 @@ public class GuestOrdersFragment extends BaseFragment {
             switch (v.getId()){
                 case R.id.button_orders_on_guest:
                     orderState = 0;
-                    refresh();
+                    loadPage(page);
                     break;
                 case R.id.button_orders_to_go_guest:
                     orderState = 1;
-                    refresh();
+                    loadPage(page);
                     break;
                 case R.id.button_orders_off_guest:
                     orderState = 2;
-                    refresh();
+                    loadPage(page);
                     break;
             }
         }
     };
 
-    private void refresh(){
+    private void loadPage(int page){
+        ArrayMap<String,String> params = new ArrayMap<>(3);
+//        params.put("token", StrUtils.token());
+        params.put("token", "123456");
+        params.put("page", "" + page);
+        isLoading = true;
+        OkHttpUtils.post(StrUtils.CUSTOMER_ORDER0, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
+            @Override
+            public void onResponse(String s) {
+                LogUtils.d(TAG, "response" + s);
+                JSONObject j = OkHttpUtils.parseJSON(getActivity(),s);
+                if(j==null){
+                    return;
+                }
+                JSONArray array = j.optJSONArray("availableOrder");
+                LogUtils.d(TAG, j.toString());
+                if (array == null) return;
+                List<OrdersGuest> infoList = new ArrayList<>();
 
+                for (int i = 0; i < array.length(); i++) {
+                    OrdersGuest info = OrdersGuest.fromJSON(array.optJSONObject(i));
+                    infoList.add(info);
+                }
+                mRvAdapter.setOrdersList(infoList);
+                mRvAdapter.notifyDataSetChanged();
+                isRefreshing = false;
+                isLoading = false;
+                mSwipeLayout.setRefreshing(false);
+            }
+        });
     }
-
 
     private class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         List<OrdersGuest> mOrdersList;
@@ -117,14 +174,20 @@ public class GuestOrdersFragment extends BaseFragment {
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             RecyclerView.ViewHolder vh;
             View view= LayoutInflater.from(getActivity()).inflate(R.layout.fragment_orders_item_guest, parent, false);
-            vh = new GuestOrdersItemViewHolder(view);
+            vh = new ItemViewHolder(view);
             return vh;
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            OrdersGuest item = mOrdersList.get(position);
-
+            OrdersGuest ordersGuest = mOrdersList.get(position);
+            ItemViewHolder item = (ItemViewHolder) holder;
+            Uri uriFoodImg = Uri.parse(ordersGuest.sellerHeadImg);
+            item.shopImage.setImageURI(uriFoodImg);
+            item.dishName.setText(ordersGuest.foodName);
+            item.dishPrice.setText(ordersGuest.orderPrice);
+            item.orderTime.setText(ordersGuest.orderTime);
+            item.orderTimeTogo.setText(ordersGuest.orderPlanEatTime);
         }
 
         @Override
@@ -132,18 +195,26 @@ public class GuestOrdersFragment extends BaseFragment {
             return mOrdersList==null?0:mOrdersList.size();
         }
 
-        class GuestOrdersItemViewHolder extends RecyclerView.ViewHolder{
 
-            public GuestOrdersItemViewHolder(View itemView){
+        class ItemViewHolder extends RecyclerView.ViewHolder{
+            SimpleDraweeView shopImage;
+            TextView orderCancel;
+            TextView orderState;
+            TextView shopName;
+            TextView dishName;
+            TextView dishPrice;
+            TextView orderTime;
+            TextView orderTimeTogo;
+            public ItemViewHolder(View itemView){
                 super(itemView);
-                SimpleDraweeView shopImage = (SimpleDraweeView) itemView.findViewById(R.id.fragment_orders_item_shop_image_guest);
-                TextView orderCancel = (TextView) itemView.findViewById(R.id.fragment_orders_item_cancel_guest);
-                TextView orderState = (TextView) itemView.findViewById(R.id.fragment_orders_item_state_guest);
-                TextView shopName = (TextView) itemView.findViewById(R.id.fragment_orders_item_shop_name_guest);
-                TextView dishName = (TextView) itemView.findViewById(R.id.fragment_orders_item_dish_name_guest);
-                TextView dishPrice = (TextView) itemView.findViewById(R.id.fragment_orders_item_dish_price_guest);
-                TextView orderTime = (TextView) itemView.findViewById(R.id.fragment_orders_item_time_guest);
-                TextView orderTimeTogo = (TextView) itemView.findViewById(R.id.fragment_orders_item_time_togo_guest);
+                shopImage = (SimpleDraweeView) itemView.findViewById(R.id.fragment_orders_item_shop_image_guest);
+                orderCancel = (TextView) itemView.findViewById(R.id.fragment_orders_item_cancel_guest);
+                orderState = (TextView) itemView.findViewById(R.id.fragment_orders_item_state_guest);
+                shopName = (TextView) itemView.findViewById(R.id.fragment_orders_item_shop_name_guest);
+                dishName = (TextView) itemView.findViewById(R.id.fragment_orders_item_dish_name_guest);
+                dishPrice = (TextView) itemView.findViewById(R.id.fragment_orders_item_dish_price_guest);
+                orderTime = (TextView) itemView.findViewById(R.id.fragment_orders_item_time_guest);
+                orderTimeTogo = (TextView) itemView.findViewById(R.id.fragment_orders_item_time_togo_guest);
 
             }
 

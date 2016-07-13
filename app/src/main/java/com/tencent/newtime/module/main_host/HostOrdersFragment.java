@@ -1,6 +1,7 @@
 package com.tencent.newtime.module.main_host;
 
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,9 +13,16 @@ import android.view.ViewGroup;
 import com.tencent.newtime.R;
 import com.tencent.newtime.base.BaseFragment;
 import com.tencent.newtime.model.DishHost;
+import com.tencent.newtime.model.OrdersGuest;
 import com.tencent.newtime.model.OrdersHost;
 import com.tencent.newtime.util.LogUtils;
+import com.tencent.newtime.util.OkHttpUtils;
+import com.tencent.newtime.util.StrUtils;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,15 +75,19 @@ public class HostOrdersFragment extends BaseFragment {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                int visibleItemCount = recyclerView.getChildCount();
                 int totalItemCount = layoutManager.getItemCount();
-                int firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
-                if (!isLoading && (totalItemCount - visibleItemCount)
-                        <= (firstVisibleItem + 2) && canLoadMore) {
-                    Log.i(TAG, "scroll to end  load page " + (page + 1));
-                    loadPage(page + 1);
+                int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+                if (lastVisibleItem >= totalItemCount - 4 && dy > 0) {
+                    if(canLoadMore){
+                        Log.d(TAG,"ignore manually load!");
+                    } else{
+                        loadPage(page + 1);
+                        Log.d(TAG,"load page:" + page);
+                        canLoadMore = false;
+                    }
                 }
             }
+
         });
 
         mRvAdapter = new Adapter();
@@ -87,7 +99,35 @@ public class HostOrdersFragment extends BaseFragment {
     }
 
     private void loadPage(int page){
+        ArrayMap<String,String> params = new ArrayMap<>(3);
+//        params.put("token", StrUtils.token());
+        params.put("token", "123456");
+        params.put("page", "" + page);
+        isLoading = true;
+        OkHttpUtils.post(StrUtils.CUSTOMER_ORDER0, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
+            @Override
+            public void onResponse(String s) {
+                LogUtils.d(TAG, "response" + s);
+                JSONObject j = OkHttpUtils.parseJSON(getActivity(),s);
+                if(j==null){
+                    return;
+                }
+                JSONArray array = j.optJSONArray("availableOrder");
+                LogUtils.d(TAG, j.toString());
+                if (array == null) return;
+                List<OrdersHost> infoList = new ArrayList<>();
 
+                for (int i = 0; i < array.length(); i++) {
+                    OrdersHost info = OrdersHost.fromJSON(array.optJSONObject(i));
+                    infoList.add(info);
+                }
+                mRvAdapter.setOrdersHostList(infoList);
+                mRvAdapter.notifyDataSetChanged();
+                isRefreshing = false;
+                isLoading = false;
+                mSwipeLayout.setRefreshing(false);
+            }
+        });
     }
 
     class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{

@@ -97,7 +97,7 @@ public class GuestHomeFragment extends BaseFragment {
                     if(canLoadMore){
                         Log.d(TAG,"ignore manually load!");
                     } else{
-                        loadPage(page + 1);//这里多线程也要手动控制isLoadingMore
+                        loadPage(page + 1);
                         Log.d(TAG,"load page:" + page);
                         canLoadMore = false;
                     }

@@ -49,6 +49,8 @@ public final class StrUtils {
 
     public static final String SELLER_ORDER2 = "sellerOrder/2";
 
+    public static final String SELLER_HOME_PAGE = BASE_URL + "sellerHomePage";
+
     public static final String REGISTER_URL = BASE_URL + "register";
 
     public static final String REGISTER_PHONE = BASE_URL + "registerphone";
