@@ -35,8 +35,6 @@ package="com.tencent.newtime">
 <!-- 腾讯定位 sdk 要求的权限 (结束) -->
 
 
-
-
 <application
     android:name=".APP"
     android:allowBackup="true"
@@ -49,9 +47,8 @@ package="com.tencent.newtime">
         android:label="@string/title_activity_login" />
     <activity
         android:name=".module.splash.SplashActivity"
-        android:configChanges="orientation|keyboardHidden|screenSize"
         android:label="@string/app_name"
-        android:theme="@style/FullscreenTheme">
+>
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 
