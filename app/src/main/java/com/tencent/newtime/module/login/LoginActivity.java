@@ -123,7 +123,7 @@ public class LoginActivity extends AppCompatActivity{
             String passMd5 = StrUtils.md5(password);
             Map<String,String> map = new HashMap<>();
             map.put("username", mobile);
-            map.put("password",password);
+            map.put("password",passMd5);
 
             OkHttpUtils.post(StrUtils.LOGIN_URL, map, TAG, new OkHttpUtils.SimpleOkCallBack() {
                 @Override

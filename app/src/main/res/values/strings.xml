@@ -77,4 +77,71 @@
     <string name="year_ago">年前</string>
     <string name="hunderds_meters">百米</string>
     <string name="thousand_meters">KM</string>
+
+
+    //食堂
+    <string name="kitchen_detail_certification">实名认证</string>
+    <string name="kitchen_detail_guest_count">就餐人数:</string>
+    <string name="kitchen_dishes_month_sales">月销</string>
+    <string name="kitchen_place_order">下订单</string>
+
+    //订单order 2_3
+    <string name="order_name">订单名称：</string>
+    <string name="order_location">就餐地点：</string>
+    <string name="order_predict_bill">预计金额：</string>
+    <string name="wait_confirm">等待确认</string>
+    <string name="breakfast_dish_time">早餐</string>
+    <string name="lunch_dish_time">午餐</string>
+    <string name="supper_dish_time">晚餐</string>
+    <string name="snack_dish_time">夜宵</string>
+    <string name="order_attention_1">系统将提醒房东接单，房东可视当前接单状况等因素选择接受或者取消订单。</string>
+    <string name="order_attention_2">为了不影响你的就餐体验，房东端放弃或者15分钟内未接单系统将自动取消订单。</string>
+    <string name="order_back_main_activity">回到主界面</string>
+
+    //订单pay2_2
+    <string name="pay_array_time_text">到达时间：</string>
+    <string name="pay_array_data">%1$s月 %1$s日</string>
+    <string name="pay_note">订单备注：</string>
+    <string name="pay_note_default">自我介绍一下更受家庭欢迎哦！</string>
+    <string name="pay_dishes">菜品:</string>
+    <string name="pay_bill">总计</string>
+    <string name="pay_confirm_place_order">确认下单</string>
+    <string name="pay_set_time_title">请选择就餐时间日期</string>
+    <string name="title_activity_kitchen_scrolling">KitchenScrollingActivity</string>
+    <string name="title_activity_test_scrolling">TestScrollingActivity</string>
+    //认证D1
+    <string name="auth_name">姓名：</string>
+    <string name="auth_gender">性别：</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
+    <string name="auth_identification">身份证号：</string>
+    <string name="auth_kitchen_photo">厨房生活照</string>
+    <string name="auth_kitchen_environment_photo">厨房环境照</string>
+    <string name="auth_specialty_photo">拿手菜品照</string>
+    <string name="auth_address">家庭住址：</string>
+    <string name="submit">提交</string>
+
+    //接口
+    <string name="baseUrl_z">http://119.29.233.72:3000/</string>
+    <string name="imgBaseUrl_z">http://119.29.233.72:3001/</string>
+
+    <string name="getKitchen_z">userInfo</string>
+    <string name="commitOrder_z">commitOrderList</string>
+    <string name="imageUpload_z">uploadpicture</string>
+    <string name="auth_z">confirmUser</string>
+    <string name="commitDish_z">publishFood</string>
+
+    //添加/编辑食物
+
+    <string name="dish_name_z">菜品名</string>
+    <string name="dish_description_z">菜品描述</string>
+    <string name="dish_price_z">价格</string>
+    <string name="dish_photo_z">菜品图片</string>
+    <string name="dish_price_digits_z">1234567890.</string>
+
+
+    //错误提示
+    <string name="get_kitchen_error">获取厨房数据失败</string>
+
+
 </resources>

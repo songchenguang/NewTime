@@ -31,4 +31,8 @@ dependencies {
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile files('src/libs/httpcore-4.4.4.jar')
+    compile files('src/libs/TencentLocationSDK_v4.7.7.8.jar')
+    compile files('src/libs/TencentMapSDK_Raster_v1.1.2.16281.jar')
+    compile files('src/libs/TencentSearch1.1.2.16095.jar')
 }

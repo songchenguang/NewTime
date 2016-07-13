@@ -19,10 +19,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.tencent.map.geolocation.TencentLocation;
+import com.tencent.map.geolocation.TencentLocationListener;
+import com.tencent.map.geolocation.TencentLocationManager;
+import com.tencent.map.geolocation.TencentLocationRequest;
 import com.tencent.newtime.R;
 import com.tencent.newtime.base.BaseFragment;
 import com.tencent.newtime.model.HomeGuest;
-import com.tencent.newtime.module.shop_detail.ShopDetailActivity;
+import com.tencent.newtime.module.shop_detail.KitchenNdActivity;
 import com.tencent.newtime.util.LogUtils;
 import com.tencent.newtime.util.DimensionUtils;
 import com.tencent.newtime.util.OkHttpUtils;
@@ -41,7 +45,7 @@ import java.util.List;
  * Created by 晨光 on 2016-07-09.
  */
 
-public class GuestHomeFragment extends BaseFragment {
+public class GuestHomeFragment extends BaseFragment  implements TencentLocationListener {
 
     private static final String TAG = "GuestHomeFragment";
     // views
@@ -51,7 +55,9 @@ public class GuestHomeFragment extends BaseFragment {
 
     private RelativeLayout location_layout;
     private TextView location_textview;
-
+    // 商家数据
+    List<HomeGuest> infoList;
+    private TencentLocationManager mLocationManager;
 
     public static GuestHomeFragment newInstance() {
         Bundle args = new Bundle();
@@ -64,12 +70,23 @@ public class GuestHomeFragment extends BaseFragment {
     boolean isLoading = false;
     boolean isRefreshing = false;
     boolean canLoadMore = true;
+    String longititude;
+    String latitude;
+
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home_guest,container,false);
         location_layout = (RelativeLayout) rootView.findViewById(R.id.location_layout);
+        mLocationManager=TencentLocationManager.getInstance(getActivity());
+        location_layout.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                refreshLocation();
+            }
+        });
         location_textview = (TextView) rootView.findViewById(R.id.location_tetview);
         mSwipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.fragment_home_swipe_layout_guest);
         mSwipeLayout.setColorSchemeResources(R.color.colorPrimary);
@@ -110,8 +127,8 @@ public class GuestHomeFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 int id = (int) v.getTag();
-                Intent detail = new Intent(getActivity(), ShopDetailActivity.class);
-                detail.putExtra("activityid", id);
+                Intent detail = new Intent(getActivity(), KitchenNdActivity.class);
+                detail.putExtra("token", infoList.get(id).sellerId);
                 //LogUtils.d(TAG, "id:" + mActivityList.get(getAdapterPosition() - 1).activityID);
                 startActivity(detail);
             }
@@ -119,18 +136,75 @@ public class GuestHomeFragment extends BaseFragment {
         mRvAdapter = new Adapter();
         mRecyclerView.setAdapter(mRvAdapter);
 
+
         refresh();
         return rootView;
     }
 
+    @Override
+    public void onStatusUpdate(String s, int i, String s1) {
+        Log.d(TAG,"S="+s+"     I="+i+"     s1="+s1);
+    }
+
+    public  void startLocation(){
+        TencentLocationRequest request = TencentLocationRequest.create()
+                .setInterval(2000)  // 设置定位周期
+                .setRequestLevel(TencentLocationRequest.REQUEST_LEVEL_ADMIN_AREA);  	// 设置定位level
+        int errorNo=mLocationManager.requestLocationUpdates(request, this);
+        Log.d(TAG,"注册监听返回码："+errorNo);
+    }
+
+
+    public void stopLocation(){
+        mLocationManager.removeUpdates(this);
+    }
+
+    @Override
+    public void onLocationChanged(TencentLocation tencentLocation, int error, String reason) {
+        String msg = null;
+        if (error == TencentLocation.ERROR_OK) {
+            // 定位成功
+//            msg = locationToString(tencentLocation);
+            msg = tencentLocation.getStreetNo();
+            longititude = ""+(float)tencentLocation.getLongitude();
+            latitude = ""+(float)tencentLocation.getLatitude();
+            Log.d(TAG, "location："+ longititude + " " + latitude + " " + tencentLocation.getLatitude()+" " +tencentLocation.getLongitude());
+            location_textview.setText(msg);
+            stopLocation();
+        } else {
+            // 定位失败
+            msg = "定位失败: " + reason;
+            location_textview.setText(msg);
+        }
+        Log.d("位置改变",error+":"+msg);
+    }
+
+
+    private  String locationToString(TencentLocation location) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("latitude=").append(location.getLatitude()).append(",");
+        sb.append("longitude=").append(location.getLongitude()).append(",");
+        sb.append("altitude=").append(location.getAltitude()).append(",");
+        sb.append("accuracy=").append(location.getAccuracy()).append(",");
+        sb.append("nation=").append(location.getNation()).append(",");
+        sb.append("province=").append(location.getProvince()).append(",");
+        sb.append("city=").append(location.getCity()).append(",");
+        sb.append("district=").append(location.getDistrict()).append(",");
+        sb.append("town=").append(location.getTown()).append(",");
+        sb.append("village=").append(location.getVillage()).append(",");
+        sb.append("street=").append(location.getStreet()).append(",");
+        sb.append("streetNo=").append(location.getStreetNo()).append(",");
+        return sb.toString();
+    }
 
     public void refresh(){
         isRefreshing = true;
         canLoadMore = true;
-        ArrayMap<String,String> params = new ArrayMap<>(3);
+        ArrayMap<String,String> params = new ArrayMap<>(4);
 //        params.put("token", StrUtils.token());
         params.put("token", "123456");
         params.put("page", "1");
+
         OkHttpUtils.post(StrUtils.CUSTOMER_HOME_PAGE, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
             @Override
             public void onResponse(String s) {
@@ -151,6 +225,11 @@ public class GuestHomeFragment extends BaseFragment {
             }
         });
         loadPage(page);
+        startLocation();
+    }
+
+    public void refreshLocation(){
+        startLocation();
     }
 
 
@@ -171,7 +250,7 @@ public class GuestHomeFragment extends BaseFragment {
                 JSONArray array = j.optJSONArray("sellerView");
                 LogUtils.d(TAG, j.toString());
                 if (array == null) return;
-                List<HomeGuest> infoList = new ArrayList<>();
+                infoList = new ArrayList<>();
 
                 for (int i = 0; i < array.length(); i++) {
                     HomeGuest info = HomeGuest.fromJSON(array.optJSONObject(i));
@@ -300,7 +379,9 @@ public class GuestHomeFragment extends BaseFragment {
                 this.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent detail = new Intent(getActivity(), ShopDetailActivity.class);
+                        LogUtils.d(TAG, "id:" + (getAdapterPosition() - 2) + " "+ infoList.get(getAdapterPosition() - 2).sellerId);
+                        Intent detail = new Intent(getActivity(), KitchenNdActivity.class);
+                        detail.putExtra("token", "" + infoList.get(getAdapterPosition() - 2).sellerId);
                         startActivity(detail);
                     }
                 });

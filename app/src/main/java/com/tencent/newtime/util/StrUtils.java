@@ -37,19 +37,19 @@ public final class StrUtils {
 
     public static final String CUSTOMER_HOME_PAGE = BASE_URL +  "customerHomePage";
 
+    public static final String SELLER_HOME_PAGE = BASE_URL + "sellerHomePage";
+
     public static final String CUSTOMER_ORDER0 = BASE_URL + "customerOrder/0";
 
     public static final String CUSTOMER_ORDER1 = BASE_URL + "customerOrder/1";
 
     public static final String CUSTOMER_ORDER2 = BASE_URL + "customerOrder/2";
 
-    public static final String SELLER_ORDER0 = "sellerOrder/0";
+    public static final String SELLER_ORDER0 = BASE_URL + "sellerOrder/0";
 
-    public static final String SELLER_ORDER1 = "sellerOrder/1";
+    public static final String SELLER_ORDER1 = BASE_URL + "sellerOrder/1";
 
-    public static final String SELLER_ORDER2 = "sellerOrder/2";
-
-    public static final String SELLER_HOME_PAGE = BASE_URL + "sellerHomePage";
+    public static final String SELLER_ORDER2 = BASE_URL + "sellerOrder/2";
 
     public static final String REGISTER_URL = BASE_URL + "register";
 
@@ -165,7 +165,6 @@ public final class StrUtils {
 
     public static final String DELETE_POST_URL = BASE_URL + "deletepost";
 
-
     public static final String GET_AVATAR = BASE_URL_NGINX + "avatar/";
 
     public static final String UPLOAD_AVATAR_URL = BASE_URL_NGINX + "uploadavatar";
@@ -186,7 +185,6 @@ public final class StrUtils {
 
     public static String backgroundForID(String id){return GET_BACKGROUND + id;}
 
-
     /** ################## SharedPreferences ####################### **/
 
     public static final String SP_USER = "StrUtils_sp_user";
@@ -195,44 +193,6 @@ public final class StrUtils {
     public static final String SP_USER_GENDER = SP_USER + "_gender";
     public static final String SP_USER_CAN_FOUND = SP_USER +"_can_found";
 
-
-
-    public static final MediaType MEDIA_TYPE_IMG = MediaType.parse("image/*");
-
-    public static String timeTransfer(String timestamp){
-        SimpleDateFormat sdf = new SimpleDateFormat("EE, d LLLL yyyy HH:mm:ss zzzz", Locale.US);
-        try {
-            Date date = sdf.parse(timestamp);
-            long seconds = date.getTime();
-            long gmtDif = TimeZone.getDefault().getRawOffset();
-            long now = System.currentTimeMillis();
-            long dif = (now -seconds+gmtDif)/1000;
-            return timeTransfer(dif);
-        } catch (ParseException e) {
-            return "";
-        }
-    }
-
-    public static String timeTransfer(long dif){
-        if(dif<3600){
-            return (dif/60)+APP.context().getString(R.string.minute_ago);
-        }else if (dif<24*3600){
-            return (dif/3600) + APP.context().getString(R.string.hour_ago);
-        }else if(dif<7*24*3600){
-            return (dif/3600/24) + APP.context().getString(R.string.day_ago);
-        }else if(dif<30*24*3600){
-            return (dif/3600/24/7) + APP.context().getString(R.string.week_ago);
-        }else if(dif<365*30*24*3600){
-            return (dif/3600/24/30) + APP.context().getString(R.string.month_ago);
-        }else{
-            return (dif/3600/24/365) + APP.context().getString(R.string.year_ago);
-        }
-    }
-
-    public static String distanceTransfer(double distance){
-        return String.format("%.1f",distance/1000)+APP.context().getString(R.string.thousand_meters);
-
-    }
 
 
     public static String token(){
@@ -265,28 +225,4 @@ public final class StrUtils {
         }
         return new String(hexChars);
     }
-
-
-    private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
-
-    /**
-     * Generate a value suitable for use in setId(int)
-     * This value will not collide with ID values generated at build time by aapt for R.id.
-     *
-     * @return a generated ID value
-     */
-    public static int generateViewId() {
-        for (;;) {
-            final int result = sNextGeneratedId.get();
-            // aapt-generated IDs have the high byte nonzero; clamp to the range under that.
-            int newValue = result + 1;
-            if (newValue > 0x00FFFFFF) newValue = 1; // Roll over to 1, not 0.
-            if (sNextGeneratedId.compareAndSet(result, newValue)) {
-                return result;
-            }
-        }
-    }
-
-
-    public static final String cropFilePath = Environment.getExternalStorageDirectory().getPath() + "/" + "small.jpg";
 }

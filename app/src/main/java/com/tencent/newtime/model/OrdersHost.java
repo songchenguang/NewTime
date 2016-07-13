@@ -28,14 +28,11 @@ public class OrdersHost {
         a.customerFriendly = j.optString("customerFriendly");
         a.customerHonesty = j.optString("customerHonesty");
         a.customerPassion = j.optString("customerPassion");
-
         a.customerHeadImg = j.optString("customerHeadImg");
         a.customerId = j.optString("customerId");
         a.customerName = j.optString("customerName");
-
         a.foodCounts = j.optString("foodCounts");
         a.foodName = j.optString("foodName");
-
         a.orderId = j.optString("orderId");
         a.orderPayPrice = j.optString("orderPayPrice"); //支付时的价格
         a.orderPayTime = j.optString("orderPayTime"); //支付时间

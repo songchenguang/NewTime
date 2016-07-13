@@ -36,7 +36,7 @@ public class HostDishFragment extends BaseFragment {
     // views
     private SwipeRefreshLayout mSwipeLayout;
     private Adapter mRvAdapter;
-
+    RecyclerView mRecyclerView;
     // data
     int page = 1;
     boolean isLoading = false;
@@ -51,7 +51,7 @@ public class HostDishFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.fragment_home_host, container, false);
         mSwipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.fragment_home_swipe_layout_host);
         mSwipeLayout.setColorSchemeColors(R.color.colorPrimary);
@@ -66,7 +66,7 @@ public class HostDishFragment extends BaseFragment {
             }
         });
 
-        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_home_recycler_view_host);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_home_recycler_view_host);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
             @Override
@@ -90,10 +90,9 @@ public class HostDishFragment extends BaseFragment {
 
         mRvAdapter = new Adapter();
         mRecyclerView.setAdapter(mRvAdapter);
-
+        loadPage(page);
         return rootView;
     }
-
 
     private void loadPage(int page){
         ArrayMap<String,String> params = new ArrayMap<>(3);
@@ -101,7 +100,7 @@ public class HostDishFragment extends BaseFragment {
         params.put("token", "123456");
         params.put("page", "" + page);
         isLoading = true;
-        OkHttpUtils.post(StrUtils.CUSTOMER_ORDER0, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
+        OkHttpUtils.post(StrUtils.SELLER_HOME_PAGE, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
             @Override
             public void onResponse(String s) {
                 LogUtils.d(TAG, "response" + s);
@@ -109,16 +108,15 @@ public class HostDishFragment extends BaseFragment {
                 if(j==null){
                     return;
                 }
-                JSONArray array = j.optJSONArray("availableOrder");
+                JSONArray array = j.optJSONArray("foodList");
                 LogUtils.d(TAG, j.toString());
                 if (array == null) return;
                 List<DishHost> infoList = new ArrayList<>();
-
                 for (int i = 0; i < array.length(); i++) {
                     DishHost info = DishHost.fromJSON(array.optJSONObject(i));
                     infoList.add(info);
                 }
-                mRvAdapter.setmDishHostList(infoList);
+                mRvAdapter.setDishHostList(infoList);
                 mRvAdapter.notifyDataSetChanged();
                 isRefreshing = false;
                 isLoading = false;
@@ -133,8 +131,8 @@ public class HostDishFragment extends BaseFragment {
 
         public Adapter(){}
 
-        public void setmDishHostList(List<DishHost> activityList) {
-            this.mDishHostList = activityList;
+        public void setDishHostList(List<DishHost> dishHostList) {
+            this.mDishHostList = dishHostList;
         }
 
 
@@ -145,11 +143,13 @@ public class HostDishFragment extends BaseFragment {
             View v = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_home_item_host, parent, false);
             vh = new ItemViewHolder(v);
             return vh;
-
         }
 
             @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+                if(mDishHostList == null){
+                    return;
+                }
             DishHost dishHost = mDishHostList.get(position);
             ItemViewHolder item = (ItemViewHolder) holder;
             Uri uriFoodImg = Uri.parse(dishHost.foodImg);
@@ -171,7 +171,6 @@ public class HostDishFragment extends BaseFragment {
             TextView foodPrice;
             Button is_publish;
 
-
             public ItemViewHolder(View itemView){
                 super(itemView);
                 foodImageView = (SimpleDraweeView) itemView.findViewById(R.id.home_item_food_image_host);
@@ -184,7 +183,7 @@ public class HostDishFragment extends BaseFragment {
         }
         @Override
         public int getItemCount() {
-            return mDishHostList==null?1:1+mDishHostList.size();
+            return mDishHostList==null?0:mDishHostList.size();
         }
     }
 

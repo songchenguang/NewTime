@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -35,17 +36,17 @@ public class HostOrdersFragment extends BaseFragment {
 
     // views
     private SwipeRefreshLayout mSwipeLayout;
-
-
     private Adapter mRvAdapter;
-
+    RecyclerView mRecyclerView;
     // data
     int page = 1;
     boolean isLoading = false;
     boolean isRefreshing = false;
     boolean canLoadMore = true;
     int orderState = 0;
-
+    private Button ordersOn;
+    private Button ordersToGo;
+    private Button ordersOff;
     public static HostOrdersFragment newInstance() {
         Bundle args = new Bundle();
         HostOrdersFragment fragment = new HostOrdersFragment();
@@ -55,7 +56,15 @@ public class HostOrdersFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_home_guest, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_orders_host, container, false);
+
+        ordersOn = (Button) rootView.findViewById(R.id.button_orders_on_host);
+        ordersToGo = (Button) rootView.findViewById(R.id.button_orders_Todo_host);
+        ordersOff = (Button) rootView.findViewById(R.id.button_orders_off_host);
+        ordersOn.setOnClickListener(listener);
+        ordersOff.setOnClickListener(listener);
+        ordersToGo.setOnClickListener(listener);
+
         mSwipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.fragment_orders_swipe_layout_host);
         mSwipeLayout.setColorSchemeColors(R.color.colorPrimary);
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -64,12 +73,12 @@ public class HostOrdersFragment extends BaseFragment {
                 if (isRefreshing) {
                     LogUtils.d(TAG, "ignore manually update!");
                 } else {
-                    refresh();
+                    loadPage(page);
                 }
             }
         });
 
-        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_orders_recycler_view_host);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_orders_recycler_view_host);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
             @Override
@@ -93,19 +102,35 @@ public class HostOrdersFragment extends BaseFragment {
 
         mRvAdapter = new Adapter();
         mRecyclerView.setAdapter(mRvAdapter);
+        loadPage(page);
         return rootView;
     }
-    private void refresh(){
 
-    }
-
+    Button.OnClickListener listener = new Button.OnClickListener(){
+        public void onClick(View v){
+            switch (v.getId()){
+                case R.id.button_orders_on_host:
+                    orderState = 0;
+                    loadPage(page);
+                    break;
+                case R.id.button_orders_Todo_host:
+                    orderState = 1;
+                    loadPage(page);
+                    break;
+                case R.id.button_orders_off_host:
+                    orderState = 2;
+                    loadPage(page);
+                    break;
+            }
+        }
+    };
     private void loadPage(int page){
         ArrayMap<String,String> params = new ArrayMap<>(3);
 //        params.put("token", StrUtils.token());
         params.put("token", "123456");
         params.put("page", "" + page);
         isLoading = true;
-        OkHttpUtils.post(StrUtils.CUSTOMER_ORDER0, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
+        OkHttpUtils.post(StrUtils.SELLER_ORDER0, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
             @Override
             public void onResponse(String s) {
                 LogUtils.d(TAG, "response" + s);
@@ -141,18 +166,20 @@ public class HostOrdersFragment extends BaseFragment {
             this.mOrdersHostList = ordersHostList;
         }
 
-
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
             RecyclerView.ViewHolder vh;
-            View v = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_orders_host, parent, false);
+            View v = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_orders_item_host, parent, false);
             vh = new ItemViewHolder(v);
             return vh;
 
         }
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            if (mOrdersHostList == null){
+                return;
+            }
             OrdersHost ordersHost = mOrdersHostList.get(position);
             ItemViewHolder item = (ItemViewHolder) holder;
             Uri uriFoodImg = Uri.parse(ordersHost.customerHeadImg);
@@ -179,7 +206,6 @@ public class HostOrdersFragment extends BaseFragment {
             }
         }
         class ItemViewHolder extends RecyclerView.ViewHolder{
-
             SimpleDraweeView customerHeadImg;
             TextView customerFriendly;
             TextView customerHonesty;
@@ -190,7 +216,6 @@ public class HostOrdersFragment extends BaseFragment {
             TextView orderPeopleNumber;
             TextView orderPrice;
             TextView orderTime;
-
             public ItemViewHolder(View itemView){
                 super(itemView);
                 customerHeadImg = (SimpleDraweeView) itemView.findViewById(R.id.fragment_orders_item_guest_image_host);
@@ -205,13 +230,9 @@ public class HostOrdersFragment extends BaseFragment {
                 orderTime = (TextView) itemView.findViewById(R.id.fragment_orders_item_time_host);
             }
         }
-
-
-
-
         @Override
         public int getItemCount() {
-            return mOrdersHostList==null?1:1+mOrdersHostList.size();
+            return mOrdersHostList==null?0:mOrdersHostList.size();
         }
     }
 

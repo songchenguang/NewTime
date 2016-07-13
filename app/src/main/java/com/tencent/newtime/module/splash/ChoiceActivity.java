@@ -8,7 +8,10 @@ import android.widget.Button;
 
 import com.tencent.newtime.R;
 import com.tencent.newtime.module.login.LoginActivity;
+import com.tencent.newtime.module.main_guest.GuestMainActivity;
 import com.tencent.newtime.module.main_host.HostMainActivity;
+import com.tencent.newtime.module.shop_detail.KitchenNdActivity;
+import com.tencent.newtime.util.LogUtils;
 
 public class ChoiceActivity extends AppCompatActivity {
 

@@ -8,8 +8,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v13.app.FragmentPagerAdapter;
 
 
+import android.util.Log;
 import android.view.View;
 
+import com.tencent.map.geolocation.TencentLocationListener;
+import com.tencent.map.geolocation.TencentLocationManager;
+import com.tencent.map.geolocation.TencentLocationRequest;
 import com.tencent.newtime.R;
 import com.tencent.newtime.base.BaseActivity;
 import com.tencent.newtime.widget.TabItem;
@@ -20,7 +24,7 @@ import com.tencent.newtime.widget.TabItem;
 public class GuestMainActivity extends BaseActivity{
 
     private static final String TAG = "GuestMainActivity";
-
+    private TencentLocationManager mLocationManager;
     private static final int PAGE_COUNT = 3;
 
     private int[] mTitleTexts = new int[]{
@@ -43,7 +47,7 @@ public class GuestMainActivity extends BaseActivity{
 //            return;
 //        }
         setContentView(R.layout.activity_main_guest);
-
+        mLocationManager=TencentLocationManager.getInstance(this);
         bindViews();
     }
 
@@ -116,4 +120,6 @@ public class GuestMainActivity extends BaseActivity{
     protected String tag() {
         return TAG;
     }
+
+
 }

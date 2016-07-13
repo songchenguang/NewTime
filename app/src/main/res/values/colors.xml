@@ -32,4 +32,6 @@
     <color name="popup_bg">#7f202020</color>
 
     <color name="black_overlay">#66000000</color>
+
+    <color name="dividerColor">#aaaaaa</color>
 </resources>

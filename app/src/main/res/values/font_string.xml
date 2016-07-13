@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="if_shoppingCart">&#xe600;</string>
+    <string name="if_add">&#xe601;</string>
+    <string name="if_sub">&#xe602;</string>
+    <string name="if_RMB">&#xe603;</string>
+    <string name="if_delete">&#xe605;</string>
+    <string name="if_frame_add">&#xe604;</string>
+    <string name="if_right">&#xe606;</string>
+    <string name="if_wrong">&#xe607;</string>
+    <string name="if_right_arrow">&#xe608;</string>
+    <string name="if_location_bold">&#xe609;</string>
+    <string name="if_location">&#xe60a;</string>
+    <string name="if_left_arrow">&#xe60b;</string>
+    <string name="if_edit">&#xe60c;</string>
+    <string name="if_search">&#xe60d;</string>
+    <string name="if_question">&#xe60e;</string>
+
+
+</resources>

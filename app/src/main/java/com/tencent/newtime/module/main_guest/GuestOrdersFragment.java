@@ -37,10 +37,10 @@ public class GuestOrdersFragment extends BaseFragment {
     // views
     private SwipeRefreshLayout mSwipeLayout;
     private Adapter mRvAdapter;
+    RecyclerView mRecyclerView;
     private Button ordersOn;
     private Button ordersToGo;
     private Button ordersOff;
-    RecyclerView mRecyclerView;
 
 
     public static GuestOrdersFragment newInstance() {
@@ -75,7 +75,6 @@ public class GuestOrdersFragment extends BaseFragment {
                     LogUtils.d(TAG, "ignore manually update!");
                 } else {
                     loadPage(page);
-
                 }
             }
         });
@@ -103,9 +102,7 @@ public class GuestOrdersFragment extends BaseFragment {
         });
         mRvAdapter = new Adapter();
         mRecyclerView.setAdapter(mRvAdapter);
-
         loadPage(page);
-
         return rootView;
 
     }
@@ -164,8 +161,6 @@ public class GuestOrdersFragment extends BaseFragment {
     private class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         List<OrdersGuest> mOrdersList;
         public Adapter(){}
-
-
         public void setOrdersList(List<OrdersGuest> ordersList){
             this.mOrdersList = ordersList;
         }
@@ -215,9 +210,7 @@ public class GuestOrdersFragment extends BaseFragment {
                 dishPrice = (TextView) itemView.findViewById(R.id.fragment_orders_item_dish_price_guest);
                 orderTime = (TextView) itemView.findViewById(R.id.fragment_orders_item_time_guest);
                 orderTimeTogo = (TextView) itemView.findViewById(R.id.fragment_orders_item_time_togo_guest);
-
             }
-
         }
     }
 

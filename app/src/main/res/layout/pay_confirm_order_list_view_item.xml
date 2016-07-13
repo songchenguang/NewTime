@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+    >
+    <TextView
+        android:id="@+id/pay_order_list_dish_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="鱼香肉丝"/>
+    <TextView
+        android:id="@+id/pay_order_list_dish_total_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="18"
+        />
+    <com.tencent.newtime.widget.IconTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/pay_order_list_dish_total_price"
+        android:layout_marginRight="4dp"
+        android:text="@string/if_RMB"
+        />
+
+    <com.tencent.newtime.widget.IconTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_toLeftOf="@+id/pay_guest_count_textView"
+        android:text="@string/if_wrong"
+        />
+    <TextView
+        android:id="@+id/pay_guest_count_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="80dp"
+        android:text="1"
+        />
+
+</RelativeLayout>
