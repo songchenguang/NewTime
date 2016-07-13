@@ -15,6 +15,7 @@ import com.tencent.newtime.APP;
 import com.tencent.newtime.R;
 import com.tencent.newtime.base.BaseFragment;
 import com.tencent.newtime.module.login.LoginActivity;
+import com.tencent.newtime.module.splash.ChoiceActivity;
 import com.tencent.newtime.util.StrUtils;
 
 /**
@@ -76,7 +77,7 @@ public class GuestMeFragment extends BaseFragment {
     private void logout(){
         SharedPreferences sp = APP.context().getSharedPreferences(StrUtils.SP_USER, Context.MODE_PRIVATE);
         sp.edit().remove(StrUtils.SP_USER_ID).remove(StrUtils.SP_USER_TOKEN).apply();
-        Intent i = new Intent(getActivity(), LoginActivity.class);
+        Intent i = new Intent(getActivity(), ChoiceActivity.class);
         startActivity(i);
         getActivity().finish();
     }

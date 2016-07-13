@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.tencent.newtime.APP;
 import com.tencent.newtime.R;
 import com.tencent.newtime.module.main_guest.GuestMainActivity;
+import com.tencent.newtime.module.main_host.HostDishFragment;
+import com.tencent.newtime.module.main_host.HostMainActivity;
 import com.tencent.newtime.module.register.RegisterActivity;
 import com.tencent.newtime.util.LogUtils;
 import com.tencent.newtime.util.OkHttpUtils;
@@ -41,10 +43,12 @@ public class LoginActivity extends AppCompatActivity{
     Button mSignInButton;
 
     private final String TAG = "LoginActivity";
+    private String identity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        identity = getIntent().getStringExtra("identity");
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mMobileView = (AutoCompleteTextView) findViewById(R.id.mobile);
@@ -144,8 +148,13 @@ public class LoginActivity extends AppCompatActivity{
                         SharedPreferences sp = APP.context().getSharedPreferences(StrUtils.SP_USER, MODE_PRIVATE);
                         sp.edit().putString(StrUtils.SP_USER_TOKEN, token)
                                 .putString(StrUtils.SP_USER_ID, id)
+                                .putString(StrUtils.SP_USER_IDENTITY, identity)
                                 .putString(StrUtils.SP_USER_GENDER,gender).apply();
-                        startActivity(new Intent(LoginActivity.this, GuestMainActivity.class));
+                        if (identity.equals("guest")){
+                            startActivity(new Intent(LoginActivity.this, GuestMainActivity.class));
+                        }else if(identity.equals("host")){
+                            startActivity(new Intent(LoginActivity.this, HostMainActivity.class));
+                        }
                         finish();
                     } else {
                         String reason = j.optString("reason");

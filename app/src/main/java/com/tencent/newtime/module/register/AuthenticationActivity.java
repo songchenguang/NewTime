@@ -1,4 +1,4 @@
-package com.tencent.newtime.module.shop_detail;
+package com.tencent.newtime.module.register;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -90,7 +90,7 @@ public class AuthenticationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG,"提交信息");
-                MapUtils.search(AuthenticationActivity.this,"南京航空航天大学江宁校区");
+
                 boolean flag=false;
                 String token=null;
                 SharedPreferences sp = AuthenticationActivity.this.getSharedPreferences(StrUtils.SP_USER, MODE_PRIVATE);
@@ -115,6 +115,8 @@ public class AuthenticationActivity extends AppCompatActivity {
                     map.put("userLocation",authAddressEditText.getText().toString());
                     //还差经纬度;需要添加
                     // MapUtils.search(AuthenticationActivity.this);
+
+                    MapUtils.search(AuthenticationActivity.this,"南京航空航天大学江宁校区");
 
 
 

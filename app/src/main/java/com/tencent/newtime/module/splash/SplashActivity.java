@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 
 
@@ -21,6 +22,7 @@ import com.tencent.newtime.util.*;
 public class SplashActivity extends AppCompatActivity {
 
     private static final int DELAY_MILLIS = 1000;
+    private static final String TAG = "SplashActivity";
     private View mContentView;
     private View mControlsView;
 
@@ -47,11 +49,16 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {SharedPreferences sp = getSharedPreferences(StrUtils.SP_USER, MODE_PRIVATE);
                 String token = sp.getString(StrUtils.SP_USER_TOKEN, "");
+                String identity = sp.getString(StrUtils.SP_USER_IDENTITY, "");
+                Log.i(TAG, "identity" + identity);
                 if (token.equals("")) {
                     choice();
                     overridePendingTransition(0,0);
-                }else{
+                }else if(!token.equals("") && identity.equals("guest")){
                     mainGuest();
+                    overridePendingTransition(0,0);
+                }else if(!token.equals("") && identity.equals("host")){
+                    mainHost();
                     overridePendingTransition(0,0);
                 }
                 finish();

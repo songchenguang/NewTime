@@ -70,7 +70,7 @@ public class GuestHomeFragment extends BaseFragment  implements TencentLocationL
     boolean isLoading = false;
     boolean isRefreshing = false;
     boolean canLoadMore = true;
-    String longititude;
+    String longitude;
     String latitude;
 
 
@@ -166,9 +166,9 @@ public class GuestHomeFragment extends BaseFragment  implements TencentLocationL
             // 定位成功
 //            msg = locationToString(tencentLocation);
             msg = tencentLocation.getStreetNo();
-            longititude = ""+(float)tencentLocation.getLongitude();
+            longitude = ""+(float)tencentLocation.getLongitude();
             latitude = ""+(float)tencentLocation.getLatitude();
-            Log.d(TAG, "location："+ longititude + " " + latitude + " " + tencentLocation.getLatitude()+" " +tencentLocation.getLongitude());
+            Log.d(TAG, "location："+ longitude + " " + latitude + " " + tencentLocation.getLatitude()+" " +tencentLocation.getLongitude());
             location_textview.setText(msg);
             stopLocation();
         } else {
@@ -204,7 +204,8 @@ public class GuestHomeFragment extends BaseFragment  implements TencentLocationL
 //        params.put("token", StrUtils.token());
         params.put("token", "123456");
         params.put("page", "1");
-
+        params.put("latitude", latitude);
+        params.put("longitude", longitude);
         OkHttpUtils.post(StrUtils.CUSTOMER_HOME_PAGE, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
             @Override
             public void onResponse(String s) {

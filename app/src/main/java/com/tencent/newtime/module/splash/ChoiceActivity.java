@@ -34,11 +34,15 @@ public class ChoiceActivity extends AppCompatActivity {
             switch (v.getId()){
                 case R.id.button_guest:
                     Intent intentGuest = new Intent(ChoiceActivity.this, LoginActivity.class);
+                    intentGuest.putExtra("identity", "guest");
                     startActivity(intentGuest);
+                    finish();
                     break;
                 case R.id.button_host:
-                    Intent intentHost = new Intent(ChoiceActivity.this, HostMainActivity.class);
+                    Intent intentHost = new Intent(ChoiceActivity.this, LoginActivity.class);
+                    intentHost.putExtra("identity", "host");
                     startActivity(intentHost);
+                    finish();
                     break;
             }
         }

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.tencent.lbssearch.TencentSearch;
 import com.tencent.lbssearch.httpresponse.BaseObject;
 import com.tencent.lbssearch.httpresponse.HttpResponseListener;
+import com.tencent.lbssearch.object.Location;
 import com.tencent.lbssearch.object.param.Address2GeoParam;
 import com.tencent.lbssearch.object.result.Address2GeoResultObject;
 
@@ -14,7 +15,7 @@ import com.tencent.lbssearch.object.result.Address2GeoResultObject;
  */
 public class MapUtils {
     private static final String TAG="MapUtils";
-    public static void search(Activity context,final String address){
+    public static void search(Activity context, final String address){
         Log.d(TAG,"进入search()");
       //  final String address="深圳市南山区湾厦村招商路爱榕路2号";//"北京市海淀区彩和坊路海淀西大街74号";
         final String region=null;
@@ -32,6 +33,7 @@ public class MapUtils {
                     //这里的object是所有检索结果的父类
                     //用户需要将其转换为其实际类型以获取检索内容
                     //这里将其转换为Address2GeoResultObject
+
                     Address2GeoResultObject oj =
                             (Address2GeoResultObject)object;
                     String result = "地址转坐标：地址:"+ address+

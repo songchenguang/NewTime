@@ -79,7 +79,7 @@ package="com.tencent.newtime">
         android:name=".module.register.HostAuthActivity"
         android:label="@string/go_auth">
     </activity>
-    <activity android:name=".module.shop_detail.AuthenticationActivity"/>
+    <activity android:name=".module.register.AuthenticationActivity"/>
     <activity android:name=".module.shop_detail.OrderConfirmActivity"/>
     <activity android:name=".module.shop_detail.PayConfirmActivity"/>
     <activity android:name=".module.shop_detail.DishActivity"/>
