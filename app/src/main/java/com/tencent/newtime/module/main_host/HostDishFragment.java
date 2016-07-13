@@ -1,6 +1,6 @@
 package com.tencent.newtime.module.main_host;
 
-import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,12 +10,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.tencent.newtime.R;
 import com.tencent.newtime.base.BaseFragment;
 import com.tencent.newtime.model.DishHost;
-import com.tencent.newtime.model.OrdersGuest;
-import com.tencent.newtime.module.shop_detail.ShopDetailActivity;
 import com.tencent.newtime.util.LogUtils;
 import com.tencent.newtime.util.OkHttpUtils;
 import com.tencent.newtime.util.StrUtils;
@@ -147,20 +148,40 @@ public class HostDishFragment extends BaseFragment {
 
         }
 
+            @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            DishHost dishHost = mDishHostList.get(position);
+            ItemViewHolder item = (ItemViewHolder) holder;
+            Uri uriFoodImg = Uri.parse(dishHost.foodImg);
+            item.foodImageView.setImageURI(uriFoodImg);
+            item.foodName.setText(dishHost.foodName);
+            item.foodPrice.setText(dishHost.foodPrice);
+            item.foodMonthSales.setText(dishHost.foodMonthSales);
+            if (dishHost.disable == "0")
+            {
+                item.is_publish.setEnabled(true);
+            }else {
+                item.is_publish.setEnabled(false);
+            }
+        }
         class ItemViewHolder extends RecyclerView.ViewHolder{
+            SimpleDraweeView foodImageView;
+            TextView foodName;
+            TextView foodMonthSales;
+            TextView foodPrice;
+            Button is_publish;
+
 
             public ItemViewHolder(View itemView){
                 super(itemView);
+                foodImageView = (SimpleDraweeView) itemView.findViewById(R.id.home_item_food_image_host);
+                foodName = (TextView) itemView.findViewById(R.id.home_item_food_name_host);
+                foodMonthSales = (TextView) itemView.findViewById(R.id.home_item_food_month_sales_host);
+                foodPrice = (TextView) itemView.findViewById(R.id.home_item_food_price_host);
+                is_publish = (Button) itemView.findViewById(R.id.is_publish);
 
             }
         }
-
-
-            @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
-        }
-
         @Override
         public int getItemCount() {
             return mDishHostList==null?1:1+mDishHostList.size();

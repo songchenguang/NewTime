@@ -1,5 +1,6 @@
 package com.tencent.newtime.module.main_host;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,11 +10,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.tencent.newtime.R;
 import com.tencent.newtime.base.BaseFragment;
-import com.tencent.newtime.model.DishHost;
-import com.tencent.newtime.model.OrdersGuest;
 import com.tencent.newtime.model.OrdersHost;
 import com.tencent.newtime.util.LogUtils;
 import com.tencent.newtime.util.OkHttpUtils;
@@ -43,7 +44,7 @@ public class HostOrdersFragment extends BaseFragment {
     boolean isLoading = false;
     boolean isRefreshing = false;
     boolean canLoadMore = true;
-
+    int orderState = 0;
 
     public static HostOrdersFragment newInstance() {
         Bundle args = new Bundle();
@@ -145,25 +146,68 @@ public class HostOrdersFragment extends BaseFragment {
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
             RecyclerView.ViewHolder vh;
-            View v = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_home_item_host, parent, false);
+            View v = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_orders_host, parent, false);
             vh = new ItemViewHolder(v);
             return vh;
 
         }
-
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            OrdersHost ordersHost = mOrdersHostList.get(position);
+            ItemViewHolder item = (ItemViewHolder) holder;
+            Uri uriFoodImg = Uri.parse(ordersHost.customerHeadImg);
+            item.customerHeadImg.setImageURI(uriFoodImg);
+            item.customerFriendly.setText(ordersHost.customerFriendly);
+            item.customerHonesty.setText(ordersHost.customerHonesty);
+            item.customerPassion.setText(ordersHost.customerPassion);
+            item.customerName.setText(ordersHost.customerName);
+            item.foodName.setText(ordersHost.foodName);
+            item.foodCounts.setText(ordersHost.foodCounts);
+            switch (orderState){
+                case 0:
+                    item.orderPrice.setText(ordersHost.orderPrice);
+                    item.orderTime.setText(ordersHost.planeEatTime);
+                    break;
+                case 1:
+                    item.orderPrice.setText(ordersHost.orderPrice);
+                    item.orderTime.setText(ordersHost.orderPayTime);
+                    break;
+                case 2:
+                    item.orderPrice.setText(ordersHost.orderPayPrice);
+                    item.orderTime.setText(ordersHost.orderPayTime);
+                    break;
+            }
+        }
         class ItemViewHolder extends RecyclerView.ViewHolder{
+
+            SimpleDraweeView customerHeadImg;
+            TextView customerFriendly;
+            TextView customerHonesty;
+            TextView customerName;
+            TextView customerPassion;
+            TextView foodCounts;
+            TextView foodName;
+            TextView orderPeopleNumber;
+            TextView orderPrice;
+            TextView orderTime;
 
             public ItemViewHolder(View itemView){
                 super(itemView);
-
+                customerHeadImg = (SimpleDraweeView) itemView.findViewById(R.id.fragment_orders_item_guest_image_host);
+                customerFriendly = (TextView) itemView.findViewById(R.id.orders_item_friendly_host);
+                customerHonesty = (TextView) itemView.findViewById(R.id.orders_item_honesty_host);
+                customerName = (TextView) itemView.findViewById(R.id.fragment_orders_item_guest_name_host);
+                customerPassion = (TextView) itemView.findViewById(R.id.orders_item_passion_host);
+                foodCounts = (TextView) itemView.findViewById(R.id.fragment_orders_item_food_counts_host);
+                foodName = (TextView) itemView.findViewById(R.id.fragment_orders_item_food_name_host);
+                orderPeopleNumber = (TextView) itemView.findViewById(R.id.fragment_orders_item_people_number_host);
+                orderPrice = (TextView) itemView.findViewById(R.id.fragment_orders_item_order_price_host);
+                orderTime = (TextView) itemView.findViewById(R.id.fragment_orders_item_time_host);
             }
         }
 
 
-        @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        }
 
         @Override
         public int getItemCount() {
