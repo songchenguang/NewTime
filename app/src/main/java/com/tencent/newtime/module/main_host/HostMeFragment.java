@@ -67,7 +67,7 @@ public class HostMeFragment extends BaseFragment {
                 }
                 String state = j.optString("state", "");
                 if (state.equals("successful")) {
-                    Toast.makeText(getActivity(), "验证成功", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(), "验证成功", Toast.LENGTH_SHORT).show();
                     uriStr=j.optString("headImg","");
                     confirm=j.optString("confirm","");
                     sellerName =j.optString("sellerName","");

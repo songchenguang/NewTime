@@ -1,9 +1,9 @@
 package com.tencent.newtime.module.register;
-
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -23,6 +23,7 @@ import com.tencent.lbssearch.httpresponse.HttpResponseListener;
 import com.tencent.lbssearch.object.param.Address2GeoParam;
 import com.tencent.lbssearch.object.result.Address2GeoResultObject;
 import com.tencent.newtime.R;
+import com.tencent.newtime.module.main_host.HostMainActivity;
 import com.tencent.newtime.util.OkHttpUtils;
 import com.tencent.newtime.util.StrUtils;
 import com.tencent.newtime.util.UriToFilePath;
@@ -31,9 +32,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
 import static com.tencent.newtime.util.UriToFilePath.calculateInSampleSize;
-
 public class AuthenticationActivity extends AppCompatActivity {
     private final String TAG="AuthenticationActivity";
     private final  int RESULT_KITCHEN=1;   //商家头像
@@ -52,6 +51,7 @@ public class AuthenticationActivity extends AppCompatActivity {
     private String userId=null;
     private Handler mHandler;
     private int successNum=0;   //记录图片上传成功的数量。
+    private int failNum=0;      //记录传输失败的图片数量。
 
     //存储各种图片,便于上传.  目前此处只传一张。
 
@@ -138,25 +138,7 @@ public class AuthenticationActivity extends AppCompatActivity {
         });
     }
 
-    private void uploadPhoto(final Map<String,String> map,int bitmapIndex,Handler mHandler) {
-        OkHttpUtils.uploadBitmap(getString(R.string.imgBaseUrl_z) + getString(R.string.imageUpload_z), map,bitmap[bitmapIndex]
-                , null, TAG, new OkHttpUtils.OkCallBack() {
-                    @Override
-                    public void onFailure(IOException e) {
-                        Toast.makeText(AuthenticationActivity.this,"图片上传失败",Toast.LENGTH_LONG).show();
-                    }
 
-                    @Override
-                    public void onResponse(String res) {
-                        //Toast.makeText(AuthenticationActivity.this,"图片上传成功",Toast.LENGTH_LONG).show();
-                        Log.d(TAG,"图片上传成功");
-                        successNum++;
-                        if(successNum==3){
-                            Log.d(TAG,"图片完全上传成功");
-                        }
-                    }
-                });
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -266,6 +248,7 @@ public class AuthenticationActivity extends AppCompatActivity {
             @Override
             public void onResponse(String res) {
                 JSONObject j;
+                Log.d(TAG,"身份验证返回信息"+res);
                 try {
                     j = new JSONObject(res);
                 } catch (JSONException e) {
@@ -274,7 +257,7 @@ public class AuthenticationActivity extends AppCompatActivity {
                     return;
                 }
                 String state = j.optString("state", "");
-                if (state.equals("successful")) {
+                if (state.equals("sucessful")||state.equals("successful")) {
                     Toast.makeText(AuthenticationActivity.this, "验证成功", Toast.LENGTH_SHORT).show();
                     mHandler.post(new Runnable() {
                         @Override
@@ -291,30 +274,84 @@ public class AuthenticationActivity extends AppCompatActivity {
     }
 
     private void submitPhotos(Handler mHandler){
-        Map map=new HashMap();
-        map.put("token",token);
-        map.put("type",10);
-        map.put("number",userId);
-        uploadPhoto(map,0,mHandler); //上传第一张图片.
-        map.put("type",13);
-        map.put("number",userId);
-        uploadPhoto(map,1,mHandler);
-        map.put("type",15);
-        map.put("number",3);
-        uploadPhoto(map,2,mHandler);
+        Map map_1=new HashMap();
+        map_1.put("token",token);
+        map_1.put("type","10");
+        map_1.put("number",userId);
+        uploadPhoto(map_1,0,mHandler); //上传第一张图片.
+        Map map_2=new HashMap();
+        map_2.put("token",token);
+        map_2.put("type","13");
+        map_2.put("number",userId);
+        uploadPhoto(map_2,1,mHandler);
+        Map map_3=new HashMap();
+        map_3.put("token",token);
+        map_3.put("type","15");
+        map_3.put("number",3);
+        uploadPhoto(map_3,2,mHandler);
     }
-
-   /* private void submitPhoto(Map map,int bitmapIndex){
-        //上传图片;
-        map.clear();
-        map.put("token",token);
-        map.put("number",userId); //这里上传userID,应该从sharepreference中或者intent中获取.
-        uploadPhoto(map,bitmapIndex);
-        //这里需要判断是否都上传成功了；
-        //跳转到菜单界面
-       // startActivity(new Intent(AuthenticationActivity.this, AuthenticationActivity.class));
-    }*/
-
+    private void uploadPhoto(final Map<String,String> map, int bitmapIndex, final Handler mHandler) {
+        Log.d(TAG,"图片上传参数："+map.toString());
+        OkHttpUtils.uploadBitmap(getString(R.string.imgBaseUrl_z) + getString(R.string.imageUpload_z), map,bitmap[bitmapIndex]
+                , null, TAG, new OkHttpUtils.OkCallBack() {
+                    @Override
+                    public void onFailure(IOException e) {
+                        Toast.makeText(AuthenticationActivity.this,"图片上传失败",Toast.LENGTH_LONG).show();
+                        //异常处理，此处就不处理了。
+                        //可能只有两张图片传成功了。
+                        failNum++;
+                        if((failNum+successNum==3)&&successNum!=3){
+                            //三张没有都传输成功，全部重传。
+                            submitPhotos(mHandler);
+                        }
+                    }
+                    @Override
+                    public void onResponse(String res) {
+                        JSONObject j;
+                        Log.d(TAG,"验证图片上传返回信息"+res);
+                        try {
+                            j = new JSONObject(res);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(AuthenticationActivity.this, "返回数据解析失败", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        String state = j.optString("state", "");
+                        if (state.equals("successful")) {
+                            //   Toast.makeText(AuthenticationActivity.this, "验证成功", Toast.LENGTH_SHORT).show();
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    successNum++;
+                                    if((failNum+successNum==3)&&successNum!=3){
+                                        //三张没有都传输成功，全部重传。
+                                        submitPhotos(mHandler);
+                                    }
+                                    if(successNum==3){
+                                        Log.d(TAG,"图片完全上传成功");
+                                        new AlertDialog.Builder(AuthenticationActivity.this)
+                                                .setMessage("恭喜您验证成功")
+                                                .setTitle("提示")
+                                                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        dialog.dismiss();
+                                                        Intent i=new Intent(AuthenticationActivity.this,HostMainActivity.class);
+                                                         startActivity(i);
+//                                                        Toast.makeText(AuthenticationActivity.this,"跳转回主界面",Toast.LENGTH_LONG).show();
+                                                    }
+                                                })
+                                                .create().show();
+                                    }
+                                }
+                            });
+                        } else {
+                            String reason = j.optString("reason");
+                            Toast.makeText(AuthenticationActivity.this, reason, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
 
     /**
      * 验证身份证号是否符合规则
@@ -329,16 +366,3 @@ public class AuthenticationActivity extends AppCompatActivity {
         return true;
     }
 }
-
-
-/*
-//压缩图片并将Bitmap保存到本地
-FileOutputStream out = new FileOutputStream(new File(filePath));
-saveBitmap.compress(Bitmap.CompressFormat.JPEG, 60, out);   //60代表压缩40%
-* */
-
-/*  Toast.makeText(AuthenticationActivity.this,uri.toString(),Toast.LENGTH_SHORT).show();
-            Cursor actualimagecursor = managedQuery(uri, proj, null, null, null);
-            int actual_image_column_index = actualimagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            actualimagecursor.moveToFirst();
-            String img_path = actualimagecursor.getString(actual_image_column_index);*/

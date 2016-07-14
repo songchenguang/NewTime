@@ -30,7 +30,7 @@ public class ChoiceActivity extends AppCompatActivity {
         public void onClick(View v){
             switch (v.getId()){
                 case R.id.button_guest:
-                    Intent intentGuest = new Intent(ChoiceActivity.this, WebBannerActivity.class);
+                    Intent intentGuest = new Intent(ChoiceActivity.this, LoginActivity.class);
                     intentGuest.putExtra("identity", "guest");
                     startActivity(intentGuest);
 //                    finish();

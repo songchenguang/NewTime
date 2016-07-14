@@ -68,7 +68,7 @@ public class GuestMeFragment extends BaseFragment {
                 }
                 String state = j.optString("state", "");
                 if (state.equals("successful")) {
-                    Toast.makeText(getActivity(), "验证成功", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(), "验证成功", Toast.LENGTH_SHORT).show();
                     creditworthiness=j.optString("honesty","80");
                     kind=j.optString("friendly","80");
                     zeal=j.optString("passion","80");

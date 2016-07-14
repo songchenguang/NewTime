@@ -260,7 +260,7 @@ public class GuestOrdersFragment extends BaseFragment {
                                     public void onClick(DialogInterface dialog, int which) {
                                         switch(which){
                                             case Dialog.BUTTON_POSITIVE:
-                                                ArrayMap<String,String> params = new ArrayMap<>(3);
+                                                final ArrayMap<String,String> params = new ArrayMap<>(3);
 //                                                params.put("token", StrUtils.token());
                                                 params.put("token", "123456");
                                                 params.put("orderId", "" + mOrdersList.get(getAdapterPosition()).orderId);
@@ -275,6 +275,7 @@ public class GuestOrdersFragment extends BaseFragment {
                                                         }
                                                         if(j.optString("state").equals("successful")){
                                                             Toast.makeText(APP.context(), "取消订单成功", Toast.LENGTH_SHORT).show();
+                                                            loadPage(page);
                                                         }
                                                     }
                                                 });

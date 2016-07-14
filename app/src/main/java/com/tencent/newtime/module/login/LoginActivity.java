@@ -128,8 +128,14 @@ public class LoginActivity extends AppCompatActivity{
             Map<String,String> map = new HashMap<>();
             map.put("username", mobile);
             map.put("password",passMd5);
+            String post = StrUtils.LOGIN_URL;
+            if(identity.equals("host")){
+                post = StrUtils.LOGIN_URL;
+            }else if(identity.equals("guest")){
+                post = StrUtils.LOGIN_URL_CUS;
+            }
 
-            OkHttpUtils.post(StrUtils.LOGIN_URL, map, TAG, new OkHttpUtils.SimpleOkCallBack() {
+            OkHttpUtils.post(post, map, TAG, new OkHttpUtils.SimpleOkCallBack() {
                 @Override
                 public void onResponse(String s) {
                     LogUtils.i(TAG, s);
