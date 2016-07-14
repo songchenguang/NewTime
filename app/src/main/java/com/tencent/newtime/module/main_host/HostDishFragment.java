@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -173,14 +172,14 @@ public class HostDishFragment extends BaseFragment {
             item.foodPrice.setText(dishHost.foodPrice);
             item.foodMonthSales.setText(dishHost.foodMonthSales);
             LogUtils.d(TAG, "disable:" + dishHost.disable);
-            if (dishHost.disable == "1")
+            if (dishHost.disable.equals("1"))
             {
                 isPubulish = false;
-                item.is_publish.setEnabled(false);
+                item.is_publish.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
                 item.is_publish.setText("下架中");
             }else {
                 isPubulish = true;
-                item.is_publish.setEnabled(true);
+                item.is_publish.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimaryBlue));
                 item.is_publish.setText("上架中");
             }
         }
@@ -206,6 +205,7 @@ public class HostDishFragment extends BaseFragment {
 //        params.put("token", "123456");
                         params.put("foodid", mDishHostList.get(getAdapterPosition()).foodId);
                         String disable = mDishHostList.get(getAdapterPosition()).disable.equals("0")?"1":"0";
+                        LogUtils.d(TAG, "setDisable:" + disable);
                         params.put("disable", disable);
                         isLoading = true;
                         OkHttpUtils.post(StrUtils.EDIT_FOOD, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
@@ -218,7 +218,10 @@ public class HostDishFragment extends BaseFragment {
                                 }
                                 String state = j.optString("state");
                                 String reason = j.optString("reason");
-                                Toast.makeText(getActivity(), state, Toast.LENGTH_SHORT).show();
+                                if(state.equals("successful")){
+                                    Toast.makeText(getActivity(), "修改状态成功", Toast.LENGTH_SHORT).show();
+                                }
+                                loadPage(page);
                             }
                         });
                     }

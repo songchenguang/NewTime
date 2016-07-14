@@ -54,14 +54,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".module.shop_detail.ShopDetailActivity"
+            android:name=".module.shop_detail.WebBannerActivity"
             android:label="@string/title_activity_detaile"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".module.main_guest.GuestMainActivity" />
+        <activity android:name=".module.main_host.HostMainActivity" />
         <activity
             android:name=".module.splash.ChoiceActivity"
             android:label="@string/title_activity_choice" />
-        <activity android:name=".module.main_host.HostMainActivity" />
         <activity
             android:name=".module.register.RegisterActivity"
             android:label="@string/title_activity_register" />

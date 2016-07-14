@@ -8,10 +8,7 @@ import android.widget.Button;
 
 import com.tencent.newtime.R;
 import com.tencent.newtime.module.login.LoginActivity;
-import com.tencent.newtime.module.main_guest.GuestMainActivity;
-import com.tencent.newtime.module.main_host.HostMainActivity;
-import com.tencent.newtime.module.shop_detail.KitchenNdActivity;
-import com.tencent.newtime.util.LogUtils;
+import com.tencent.newtime.module.shop_detail.WebBannerActivity;
 
 public class ChoiceActivity extends AppCompatActivity {
 
@@ -33,7 +30,7 @@ public class ChoiceActivity extends AppCompatActivity {
         public void onClick(View v){
             switch (v.getId()){
                 case R.id.button_guest:
-                    Intent intentGuest = new Intent(ChoiceActivity.this, LoginActivity.class);
+                    Intent intentGuest = new Intent(ChoiceActivity.this, WebBannerActivity.class);
                     intentGuest.putExtra("identity", "guest");
                     startActivity(intentGuest);
 //                    finish();

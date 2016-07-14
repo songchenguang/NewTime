@@ -84,12 +84,12 @@
 
             <Button
                 android:id="@+id/is_publish"
-                android:enabled="false"
                 android:layout_margin="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_selector2"
-                android:text="下架"
+                android:text="下架中"
+                android:textColor="@color/white"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_alignParentRight="true"/>
 
