@@ -48,6 +48,7 @@ public class HostMeFragment extends BaseFragment {
     private boolean isConfirm=true;
     private String sellerName ="食光";
     private String token;
+    private int confirmNum = 0;
     private void getDataFromServer(Map map, final Handler mHandler){
         OkHttpUtils.post(getString(R.string.baseUrl_z) + getString(R.string.seller_z), map, TAG, new OkHttpUtils.OkCallBack() {
             @Override
@@ -89,12 +90,12 @@ public class HostMeFragment extends BaseFragment {
         if(uriStr!=null&&!uriStr.equals("")){
             userPhotoHost.setImageURI(Uri.parse(uriStr));
         }
-        if(confirm!=null&&!confirm.equals("1")){    //已认证
+        if(confirm!=null&&!confirm.equals("1")){
             isConfirm=true;
-            auth.setText("恭喜您，已认证！");
+            auth.setText("请您尽快进行商家认证");
         }else {
             isConfirm = false;
-            auth.setText("请您尽快进行商家认证");
+            auth.setText("恭喜您，已认证！"); //已认证
         }
         if(sellerName !=null&&!sellerName.equals("")){
             userNameMeHost.setText(sellerName);
@@ -110,7 +111,7 @@ public class HostMeFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_me_host, container, false);
         auth = (TextView) rootView.findViewById(R.id.auth_state_host);
         logout = (Button) rootView.findViewById(R.id.logout_button_host);
@@ -126,11 +127,14 @@ public class HostMeFragment extends BaseFragment {
         auth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if(!isConfirm){
+               if(isConfirm){
                    Intent intent = new Intent(getActivity(), AuthenticationActivity.class);
                    startActivity(intent);
                }else{
-                   Toast.makeText(getActivity(),"您已通过认证",Toast.LENGTH_LONG).show();
+                   if(confirmNum < 1){
+                       Toast.makeText(getActivity(),"您已通过认证",Toast.LENGTH_LONG).show();
+                   }
+                   confirmNum++;
                }
             }
         });

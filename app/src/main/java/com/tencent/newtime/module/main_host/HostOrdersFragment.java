@@ -269,7 +269,7 @@ public class HostOrdersFragment extends BaseFragment {
                                     public void onClick(DialogInterface dialog, int which) {
                                         switch(which){
                                             case Dialog.BUTTON_POSITIVE:
-                                                ArrayMap<String,String> params = new ArrayMap<>(3);
+                                                final ArrayMap<String,String> params = new ArrayMap<>(3);
                                                         params.put("token", StrUtils.token());
 //                                                params.put("token", "123456");
                                                 params.put("orderId", "" + mOrdersHostList.get(getAdapterPosition()).orderId);
@@ -285,6 +285,7 @@ public class HostOrdersFragment extends BaseFragment {
                                                         if(j.optString("state").equals("successful")){
                                                             Toast.makeText(APP.context(), "取消订单成功", Toast.LENGTH_SHORT).show();
                                                         }
+                                                        loadPage(page);
                                                     }
                                                 });
 
@@ -329,6 +330,8 @@ public class HostOrdersFragment extends BaseFragment {
                                                         if(j.optString("state").equals("successful")){
                                                             Toast.makeText(APP.context(), "取消订单成功", Toast.LENGTH_SHORT).show();
                                                         }
+                                                        loadPage(page);
+
                                                     }
                                                 });
 
@@ -384,6 +387,8 @@ public class HostOrdersFragment extends BaseFragment {
                                                         if(j.optString("state").equals("successful")){
                                                             Toast.makeText(APP.context(), "接受订单成功", Toast.LENGTH_SHORT).show();
                                                         }
+                                                        loadPage(page);
+
                                                     }
                                                 });
                                                 break;
@@ -406,20 +411,22 @@ public class HostOrdersFragment extends BaseFragment {
                             case 1:
                                 final EditText editText = new EditText(getActivity());
                                 editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                                //先new出一个监听器，设置好监听
+                                //卖家支付
                                 DialogInterface.OnClickListener dialogOnclicListener_1=new DialogInterface.OnClickListener(){
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         switch(which){
                                             case Dialog.BUTTON_POSITIVE:
                                                 String price = editText.getText().toString();
-                                                ArrayMap<String,String> params = new ArrayMap<>(6);
+                                                ArrayMap<String,String> params = new ArrayMap<>(4);
                                                         params.put("token", StrUtils.token());
 //                                                params.put("token", "123456");
                                                 params.put("orderId", "" + mOrdersHostList.get(getAdapterPosition()).orderId);
                                                 params.put("discount", price);
                                                 params.put("price", mOrdersHostList.get(getAdapterPosition()).orderPrice);
-                                                params.put("payprice", "" + Integer.valueOf(price) * Integer.valueOf(mOrdersHostList.get(getAdapterPosition()).orderPrice));
+                                                float payprice = Float.parseFloat(price) * Float.parseFloat(mOrdersHostList.get(getAdapterPosition()).orderPrice);
+                                                LogUtils.d(TAG, "price:" + price + " " + mOrdersHostList.get(getAdapterPosition()).orderPrice + " " + payprice);
+                                                params.put("payprice", "" + payprice);
 
                                                 isLoading = true;
                                                 OkHttpUtils.post(StrUtils.SELLER_REQUEST_PAY, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
@@ -433,6 +440,8 @@ public class HostOrdersFragment extends BaseFragment {
                                                         if(j.optString("state").equals("successful")){
                                                             Toast.makeText(APP.context(), "发起付款请求", Toast.LENGTH_SHORT).show();
                                                         }
+                                                        loadPage(page);
+
                                                     }
                                                 });
                                                 Toast.makeText(getActivity(), "确认" + which, Toast.LENGTH_SHORT).show();

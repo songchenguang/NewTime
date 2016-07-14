@@ -115,7 +115,7 @@
     <string name="male">男</string>
     <string name="female">女</string>
     <string name="auth_identification">身份证号：</string>
-    <string name="auth_kitchen_photo">厨房生活照</string>
+    <string name="auth_kitchen_photo">厨师生活照</string>
     <string name="auth_kitchen_environment_photo">厨房环境照</string>
     <string name="auth_specialty_photo">拿手菜品照</string>
     <string name="auth_address">家庭住址：</string>

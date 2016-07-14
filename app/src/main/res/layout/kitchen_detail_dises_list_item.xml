@@ -5,9 +5,9 @@
               android:layout_height="wrap_content">
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/kitchen_dish_photo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:scaleType="fitXY"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_margin="10dp"
         android:src="@mipmap/dish_1"/>
     <LinearLayout
         android:layout_width="0dp"
@@ -25,7 +25,7 @@
             android:id="@+id/kitchen_dish_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="asdfasdfasdfas\ndfasdf"/>
+            android:text="适合大众口味\n值得品尝"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="4dp"
                     android:layout_alignParentBottom="true"
-                    android:textSize="@dimen/dishes_item_rmb_size"
+                    android:textSize="@dimen/text_size1"
                     android:text="@string/kitchen_dishes_month_sales"/>
                 <TextView
                     android:id="@+id/kitchen_dishes_month_sales_textView"
@@ -47,7 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:textSize="@dimen/dishes_item_rmb_size"
+                    android:textSize="@dimen/text_size1"
                     android:text="25"
                     />
                 <com.tencent.newtime.widget.IconTextView
@@ -55,7 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:textSize="@dimen/dishes_item_rmb_size"
+                    android:textSize="@dimen/text_size1"
                     android:text="@string/if_RMB"/>
                 <TextView
                     android:id="@+id/kitchen_dishes_price_textView"
@@ -63,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:textSize="@dimen/dishes_item_rmb_size"
+                    android:textSize="@dimen/text_size1"
                     android:layout_marginRight="8dp"
                     android:text="18"
                     />
