@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin_z"
     android:paddingRight="@dimen/activity_horizontal_margin_z"
     android:paddingTop="@dimen/activity_vertical_margin_z"
-    tools:context="com.tencent.newtime.module.detail.OrderConfirmActivity">
+    tools:context="com.tencent.newtime.module.shop_detail.OrderConfirmActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,12 +28,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size2"
                 android:text="@string/order_name"
                 />
             <TextView
                 android:id="@+id/order_kitchen_name_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size2"
+
                 android:layout_toLeftOf="@+id/order_dish_time_textView"
                 android:layout_marginRight="8dp"
                 android:text="张大妈的家"
@@ -42,6 +45,8 @@
                 android:id="@+id/order_dish_time_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size2"
+
                 android:layout_alignParentRight="true"
                 android:text="@string/lunch_dish_time"
                 />
@@ -62,12 +67,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size2"
+
                 android:text="@string/order_location"
                 />
             <TextView
                 android:id="@+id/order_kitchen_location_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size2"
 
                 android:layout_alignParentRight="true"
                 android:text="深南大道1006号"
@@ -89,12 +97,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/order_location"
+                android:textSize="@dimen/text_size2"
+
                 />
             <com.tencent.newtime.widget.IconTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/order_predict_bill_textView"
-                android:textSize="@dimen/dishes_item_rmb_size"
+                android:textSize="@dimen/text_size2"
                 android:text="@string/if_RMB"
                 />
             <TextView
@@ -102,6 +112,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:textSize="@dimen/text_size2"
+
                 android:text="45"
                 />
         </RelativeLayout>
@@ -147,12 +159,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/order_attention_1"
+                android:textSize="@dimen/text_size2"
+
                 />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
                 android:text="@string/order_attention_2"
+                android:textSize="@dimen/text_size2"
+
                 />
         </LinearLayout>
     </LinearLayout>

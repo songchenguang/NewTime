@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.tencent.newtime.module.detail.DishActivity">
+    tools:context="com.tencent.newtime.module.shop_detail.DishActivity">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:lines="5"
+            android:lines="4"
             android:hint="@string/dish_description_z"
             />
         <EditText
@@ -41,18 +41,20 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/dish_photo_imageView"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginLeft="80dp"
                 android:layout_marginRight="80dp"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dish_photo_height"
-                android:background="@color/chat_bg_grey"
                 android:scaleType="fitXY"
                 android:src="@mipmap/plus_photo"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:layout_marginBottom="5dp"
+                android:textSize="@dimen/text_size2"
+                android:layout_marginTop="5dp"
                 android:text="@string/dish_photo_z"/>
         </LinearLayout>
     </LinearLayout>

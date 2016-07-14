@@ -30,6 +30,7 @@ import com.tencent.newtime.model.Kitchen;
 import com.tencent.newtime.model.Order;
 import com.tencent.newtime.model.OrderItem;
 import com.tencent.newtime.util.OkHttpUtils;
+import com.tencent.newtime.util.StrUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -233,7 +234,7 @@ public class PayConfirmActivity extends AppCompatActivity{
                 ArrayList<Integer> orderItemList;
                 try {
                     orderJSON.put("sellerId",mKitchen.getToken());
-                    orderJSON.put("token","123456");
+                    orderJSON.put("token", StrUtils.token());
                     orderJSON.put("peopleNumber",order.getGuestCount());
                     orderJSON.put("planEatTime",dateStr);
                     for (int i=0;i<list.size();i++){

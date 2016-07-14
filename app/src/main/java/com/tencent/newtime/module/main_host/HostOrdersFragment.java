@@ -424,7 +424,7 @@ public class HostOrdersFragment extends BaseFragment {
                                                 params.put("orderId", "" + mOrdersHostList.get(getAdapterPosition()).orderId);
                                                 params.put("discount", price);
                                                 params.put("price", mOrdersHostList.get(getAdapterPosition()).orderPrice);
-                                                float payprice = Float.parseFloat(price) * Float.parseFloat(mOrdersHostList.get(getAdapterPosition()).orderPrice);
+                                                float payprice = 0.1f * Float.parseFloat(price) * Float.parseFloat(mOrdersHostList.get(getAdapterPosition()).orderPrice);
                                                 LogUtils.d(TAG, "price:" + price + " " + mOrdersHostList.get(getAdapterPosition()).orderPrice + " " + payprice);
                                                 params.put("payprice", "" + payprice);
 

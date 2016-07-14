@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -57,7 +58,7 @@ public class KitchenNdActivity extends AppCompatActivity {
 
 
     //底部
-    private IconTextView shoppingCartImageButton;
+    private LinearLayout shoppingCartImageButton;
     private TextView kitchenOrderPriceTextView;
     private Button  kitchenTakeOrderButton;
 
@@ -183,7 +184,7 @@ public class KitchenNdActivity extends AppCompatActivity {
 
 
         //底部
-        shoppingCartImageButton=(IconTextView)this.findViewById(R.id.kitchen_shopping_cart_imageButton);
+        shoppingCartImageButton=(LinearLayout)this.findViewById(R.id.kitchen_shopping_cart_imageButton);
         kitchenOrderPriceTextView=(TextView)this.findViewById(R.id.kitchen_order_total_price_textView);
         kitchenTakeOrderButton=(Button)this.findViewById(R.id.kitchen_takeOrder_button);
         String token;
@@ -314,6 +315,17 @@ public class KitchenNdActivity extends AppCompatActivity {
                 kitchenOwnerPhotoImageView.setImageURI(ownerPhotoUri);
                 Uri kitchenPhotoUri=Uri.parse(mKitchen.getPhoto());
                 kitchenPhotoImageView.setImageURI(kitchenPhotoUri);
+                kitchenNameTextView.setText(mKitchen.getName());
+                if(mKitchen.isCertification()){
+
+                    kitchenIsCertificationTextView.setText(R.string.if_right);
+                    kitchenCertificationTextView.setText("商家已认证");
+                }else{
+                    kitchenIsCertificationTextView.setText(R.string.if_wrong);
+                    kitchenCertificationTextView.setText("商家未认证");
+                }
+
+
             }else{
                 ViewHolder viewHolder;
                 convertView=getLayoutInflater().inflate(R.layout.kitchen_detail_dises_list_item,null);
@@ -351,8 +363,12 @@ public class KitchenNdActivity extends AppCompatActivity {
                 });
 
                 //图片需要根据String:URL另外加载。此处全部用dish_1测试。
-                Uri dishPhotoUri=Uri.parse("http://218.244.147.240/picture/foodcards/19-37");
-                viewHolder.dishPhoto.setImageURI(dishPhotoUri);
+                if (dishList.get(newPosition).getPhoto() != null){
+                    Uri dishPhotoUri=Uri.parse(dishList.get(newPosition).getPhoto());
+                    viewHolder.dishPhoto.setImageURI(dishPhotoUri);
+
+                }
+
                 viewHolder.dishNameTextView.setText(String.valueOf(dishList.get(newPosition).getName()));
                 viewHolder.dishPriceTextView.setText(String.valueOf(dishList.get(newPosition).getPrice()));
                 viewHolder.dishMonthSalesTextView.setText(String.valueOf(dishList.get(newPosition).getMonthSales()));

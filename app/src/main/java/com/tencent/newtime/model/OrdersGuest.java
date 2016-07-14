@@ -30,7 +30,7 @@ public class OrdersGuest {
         a.orderPayPrice = j.optString("orderPayPrice");
         a.orderPayTime = j.optString("orderPayTime");
         a.orderPeopleNumber = j.optString("orderPeopleNumber");
-        a.orderPlanEatTime = j.optString("orderPrice");
+        a.orderPlanEatTime = j.optString("orderPlanEatTime");
         a.orderPrice = j.optString("orderPrice");
         a.orderTime = j.optString("orderTime");
         a.sellerHeadImg = j.optString("sellerHeadImg");

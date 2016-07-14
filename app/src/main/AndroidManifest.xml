@@ -27,9 +27,11 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".module.login.LoginActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_login" />
         <activity
             android:name=".module.splash.SplashActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,23 +42,36 @@
         <activity
             android:name=".module.shop_detail.WebBannerActivity"
             android:label="@string/title_activity_detaile"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".module.main_guest.GuestMainActivity" />
-        <activity android:name=".module.main_host.HostMainActivity" />
+        <activity android:name=".module.main_guest.GuestMainActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".module.main_host.HostMainActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".module.splash.ChoiceActivity"
-            android:label="@string/title_activity_choice" />
+            android:label="@string/title_activity_choice"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".module.register.RegisterActivity"
-            android:label="@string/title_activity_register" />
+            android:label="@string/title_activity_register"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".module.register.HostAuthActivity"
-            android:label="@string/go_auth" />
-        <activity android:name=".module.register.AuthenticationActivity" />
-        <activity android:name=".module.shop_detail.OrderConfirmActivity" />
-        <activity android:name=".module.shop_detail.PayConfirmActivity" />
-        <activity android:name=".module.shop_detail.DishActivity" />
-        <activity android:name=".module.shop_detail.KitchenNdActivity" />
+            android:label="@string/go_auth"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".module.register.AuthenticationActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".module.shop_detail.OrderConfirmActivity"
+            android:label="确认下单"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".module.shop_detail.PayConfirmActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".module.shop_detail.DishActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".module.shop_detail.KitchenNdActivity"
+            android:label="商家详情页"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="TencentMapSDK"

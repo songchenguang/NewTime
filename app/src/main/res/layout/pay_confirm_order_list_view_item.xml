@@ -7,10 +7,12 @@
         android:id="@+id/pay_order_list_dish_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:textSize="@dimen/text_size2"
         android:text="鱼香肉丝"/>
     <TextView
         android:id="@+id/pay_order_list_dish_total_price"
+        android:layout_marginRight="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

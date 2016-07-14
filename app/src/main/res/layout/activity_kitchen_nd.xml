@@ -106,30 +106,36 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <com.tencent.newtime.widget.IconTextView
+                <LinearLayout
                     android:id="@+id/kitchen_shopping_cart_imageButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:textSize="@dimen/kit_bottom_shopping_cart_size"
-                    android:text="@string/if_shoppingCart"/>
-                <com.tencent.newtime.widget.IconTextView
-                    android:id="@+id/kitchen_bottom_RMB_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:textSize="@dimen/kit_bottom_shopping_cart_size"
-                    android:layout_toRightOf="@id/kitchen_shopping_cart_imageButton"
-                    android:text="@string/if_RMB"/>
-                <TextView
-                    android:layout_centerVertical="true"
-                    android:id="@+id/kitchen_order_total_price_textView"
-                    android:layout_toRightOf="@id/kitchen_bottom_RMB_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textSize="@dimen/kit_bottom_shopping_cart_size"
-                    android:text="35"/>
+                    android:layout_width="match_parent"
+                    android:layout_toLeftOf="@+id/kitchen_takeOrder_button"
+                    android:layout_height="wrap_content">
+                    <com.tencent.newtime.widget.IconTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:textSize="@dimen/kit_bottom_shopping_cart_size"
+                        android:text="@string/if_shoppingCart"/>
+                    <com.tencent.newtime.widget.IconTextView
+                        android:id="@+id/kitchen_bottom_RMB_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:textSize="@dimen/kit_bottom_shopping_cart_size"
+                        android:layout_toRightOf="@id/kitchen_shopping_cart_imageButton"
+                        android:text="@string/if_RMB"/>
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:id="@+id/kitchen_order_total_price_textView"
+                        android:layout_toRightOf="@id/kitchen_bottom_RMB_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textSize="@dimen/kit_bottom_shopping_cart_size"
+                        android:text="35"/>
+                </LinearLayout>
+
                 <Button
                     android:id="@+id/kitchen_takeOrder_button"
                     android:layout_alignParentRight="true"

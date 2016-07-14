@@ -19,11 +19,12 @@ public class Dish implements Serializable{
 
     public static Dish fromJSON(JSONObject j){
         Dish mDish=new Dish();
-        mDish.id=Integer.valueOf(j.optString("foodid","-1"));
-        mDish.name=j.optString("foodname"," ");
-        mDish.description=j.optString("description"," ");
-        mDish.price=Float.valueOf(j.optString("price","-1"));
-        mDish.monthSales=Integer.valueOf(j.optString("monthSales",""));
+        mDish.id=Integer.valueOf(j.optString("foodid"));
+        mDish.name=j.optString("foodname");
+        mDish.description=j.optString("description");
+        mDish.price=Float.valueOf(j.optString("price"));
+        mDish.monthSales=Integer.valueOf(j.optString("monthSales"));
+        mDish.photo = j.optString("imgurl");
         return mDish;
     }
 

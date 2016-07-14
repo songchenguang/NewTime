@@ -95,49 +95,70 @@
         </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/authentication_kitchen_imageView"
-                android:layout_marginLeft="100dp"
-                android:layout_marginRight="100dp"
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/auth_photo_height"
-                android:src="@mipmap/plus_photo"/>
-            <!--android:scaleType="fitXY"
-            android:background="@color/chat_bg_grey"-->
-            <TextView
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/authentication_kitchen_imageView"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginRight="100dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/auth_photo_height"
+                    android:src="@mipmap/plus_photo"/>
+                <!--android:scaleType="fitXY"
+                android:background="@color/chat_bg_grey"-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:textSize="@dimen/text_size2"
+                    android:text="@string/auth_kitchen_photo"/>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="@dimen/text_size2"
-                android:text="@string/auth_kitchen_photo"/>
-            <ImageView
-                android:id="@+id/authentication_kitchen_environment_imageView"
-                android:layout_marginLeft="100dp"
-                android:layout_marginRight="100dp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/authentication_kitchen_environment_imageView"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginRight="100dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/auth_photo_height"
+                    android:src="@mipmap/plus_photo"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textSize="@dimen/text_size2"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:text="@string/auth_kitchen_environment_photo"/>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/auth_photo_height"
-                android:src="@mipmap/plus_photo"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/auth_kitchen_environment_photo"/>
-            <ImageView
-                android:id="@+id/authentication_specialty_imageView"
-                android:layout_marginLeft="100dp"
-                android:layout_marginRight="100dp"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/auth_photo_height"
-                android:textSize="@dimen/text_size2"
-                android:src="@mipmap/plus_photo"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="@dimen/text_size2"
-                android:text="@string/auth_specialty_photo"/>
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/authentication_specialty_imageView"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginRight="100dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/auth_photo_height"
+                    android:textSize="@dimen/text_size2"
+                    android:src="@mipmap/plus_photo"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textSize="@dimen/text_size2"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:text="@string/auth_specialty_photo"/>
+            </RelativeLayout>
+
         </LinearLayout>
     </LinearLayout>
 

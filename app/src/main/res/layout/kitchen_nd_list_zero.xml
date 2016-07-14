@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:Fresco="http://schemas.android.com/apk/res-auto"
     android:id="@+id/chicken_detail_layout"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="200dp"
     android:layout_marginBottom="20dp">
+
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/kitchen_photo_imageView"
         android:layout_width="match_parent"
@@ -13,47 +14,57 @@
         android:scaleType="fitXY"
         />
     <RelativeLayout
-        android:layout_height="100dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_height="50dp"
         android:layout_width="wrap_content">
         <TextView
             android:id="@+id/kitchen_name_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
+            android:textSize="@dimen/text_size1"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
             android:text="张大妈的家"/>
+
         <com.tencent.newtime.widget.IconTextView
             android:id="@+id/kitchen_is_certification_textView"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="4dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
             android:layout_toRightOf="@id/kitchen_name_textView"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_size2"
+            android:layout_centerVertical="true"
             android:textColor="@color/red"
             android:text="@string/if_right"/>
+
         <TextView
             android:id="@+id/kitchen_certification_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size2"
+            android:layout_centerVertical="true"
             android:layout_toRightOf="@id/kitchen_is_certification_textView"
             android:text="@string/kitchen_detail_certification"/>
+
         <TextView
             android:id="@+id/kitchen_introduction_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/kitchen_name_textView"
             android:layout_marginTop="16dp"
-            android:layout_alignBottom="@+id/kitchen_owner_photo_imageView"
-            android:layout_alignLeft="@id/kitchen_name_textView"
-            android:layout_alignRight="@id/kitchen_certification_textView"
-            android:text="asdfasdfasdfasd\nasdfasdfadsf"/>
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/kitchen_certification_textView"
+            android:layout_toLeftOf="@+id/kitchen_owner_photo_imageView"
+            android:text="风味宜人\n适合大多人品尝"/>
+
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/kitchen_owner_photo_imageView"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="20dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="5dp"
             android:layout_alignParentRight="true"
-            android:scaleType="fitXY"
+            Fresco:roundAsCircle="true"
             />
     </RelativeLayout>
 </LinearLayout>

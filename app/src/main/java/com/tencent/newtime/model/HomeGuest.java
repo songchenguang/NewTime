@@ -24,7 +24,7 @@ public class HomeGuest {
         a.headImg = j.optString("headImg");
         a.location = j.optString("location");
         a.monthSales = j.optInt("monthSales");
-        a.personPrice = j.optDouble("scores");
+        a.personPrice = j.optDouble("personPrice");
         a.scores = j.optDouble("scores");
         a.sellerId = j.optString("sellerId");
         a.sellerName = j.optString("sellerName");

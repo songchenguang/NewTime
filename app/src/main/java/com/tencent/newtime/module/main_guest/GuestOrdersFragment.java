@@ -201,10 +201,11 @@ public class GuestOrdersFragment extends BaseFragment {
             ItemViewHolder item = (ItemViewHolder) holder;
             Uri uriFoodImg = Uri.parse(ordersGuest.sellerHeadImg);
             item.shopImage.setImageURI(uriFoodImg);
+            item.shopName.setText(ordersGuest.sellerName);
             item.dishName.setText(ordersGuest.foodName);
             item.dishPrice.setText("订单价格" + ordersGuest.orderPrice);
-            item.orderTime.setText(ordersGuest.orderTime);
-            item.orderTimeTogo.setText(ordersGuest.orderPlanEatTime);
+            item.orderTime.setText("订单时间"+ordersGuest.orderTime);
+            item.orderTimeTogo.setText("预计到店时间 "+ordersGuest.orderPlanEatTime);
             switch (orderState) {
                 case 0:
                     LogUtils.d(TAG, "orderState:" + orderState);
@@ -212,18 +213,21 @@ public class GuestOrdersFragment extends BaseFragment {
 //                    item.orderCancel.setVisibility(View.VISIBLE);
                     item.orderCancel.setText("取消订单");
                     item.orderStateButton.setText("商家未接单");
+                    break;
                 case 1:
                     LogUtils.d(TAG, "orderState:" + orderState);
 //                    item.orderCancel.setVisibility(View.INVISIBLE);
 //                    item.orderStateButton.setVisibility(View.VISIBLE);
                     item.orderStateButton.setText("点击支付");
-                    item.orderCancel.setText("");
+                    item.orderCancel.setText("商家已接单");
+                    break;
                 case 2:
                     LogUtils.d(TAG, "orderState:" + orderState);
 //                    item.orderCancel.setVisibility(View.VISIBLE);
                     item.orderCancel.setText("去评价");
 //                    item.orderStateButton.setVisibility(View.VISIBLE);
                     item.orderStateButton.setText("实付金额："+ordersGuest.orderPayPrice);
+                    break;
 
             }
         }
@@ -266,8 +270,8 @@ public class GuestOrdersFragment extends BaseFragment {
                                         switch(which){
                                             case Dialog.BUTTON_POSITIVE:
                                                 final ArrayMap<String,String> params = new ArrayMap<>(3);
-//                                                params.put("token", StrUtils.token());
-                                                params.put("token", "123456");
+                                                params.put("token", StrUtils.token());
+//                                                params.put("token", "123456");
                                                 params.put("orderId", "" + mOrdersList.get(getAdapterPosition()).orderId);
                                                 isLoading = true;
                                                 OkHttpUtils.post(StrUtils.CUSTOMER_CANCEL_ORDER, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
