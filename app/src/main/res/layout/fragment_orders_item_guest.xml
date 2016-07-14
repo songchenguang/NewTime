@@ -49,6 +49,7 @@
 
                 <TextView
                     android:id="@+id/fragment_orders_item_shop_name_guest"
+                    android:paddingLeft="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="张大妈的家"
@@ -68,6 +69,7 @@
 
                         <TextView
                             android:id="@+id/fragment_orders_item_dish_name_guest"
+                            android:paddingLeft="5dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_toLeftOf="@+id/fragment_orders_item_dish_price_guest"

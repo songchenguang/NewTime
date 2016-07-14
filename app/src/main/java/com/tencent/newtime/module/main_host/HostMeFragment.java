@@ -91,6 +91,10 @@ public class HostMeFragment extends BaseFragment {
         }
         if(confirm!=null&&!confirm.equals("1")){    //已认证
             isConfirm=true;
+            auth.setText("恭喜您，已认证！");
+        }else {
+            isConfirm = false;
+            auth.setText("请您尽快进行商家认证");
         }
         if(sellerName !=null&&!sellerName.equals("")){
             userNameMeHost.setText(sellerName);
@@ -122,7 +126,7 @@ public class HostMeFragment extends BaseFragment {
         auth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if(isConfirm){
+               if(!isConfirm){
                    Intent intent = new Intent(getActivity(), AuthenticationActivity.class);
                    startActivity(intent);
                }else{

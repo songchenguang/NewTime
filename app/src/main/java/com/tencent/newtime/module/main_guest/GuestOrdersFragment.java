@@ -202,23 +202,28 @@ public class GuestOrdersFragment extends BaseFragment {
             Uri uriFoodImg = Uri.parse(ordersGuest.sellerHeadImg);
             item.shopImage.setImageURI(uriFoodImg);
             item.dishName.setText(ordersGuest.foodName);
-            item.dishPrice.setText(ordersGuest.orderPrice);
+            item.dishPrice.setText("订单价格" + ordersGuest.orderPrice);
             item.orderTime.setText(ordersGuest.orderTime);
             item.orderTimeTogo.setText(ordersGuest.orderPlanEatTime);
             switch (orderState) {
                 case 0:
-                    item.orderStateButton.setVisibility(View.GONE);
-                    item.orderCancel.setVisibility(View.VISIBLE);
+                    LogUtils.d(TAG, "orderState:" + orderState);
+//                    item.orderStateButton.setVisibility(View.INVISIBLE);
+//                    item.orderCancel.setVisibility(View.VISIBLE);
+                    item.orderCancel.setText("取消订单");
+                    item.orderStateButton.setText("商家未接单");
                 case 1:
-                    item.orderCancel.setVisibility(View.GONE);
-                    item.orderStateButton.setVisibility(View.VISIBLE);
+                    LogUtils.d(TAG, "orderState:" + orderState);
+//                    item.orderCancel.setVisibility(View.INVISIBLE);
+//                    item.orderStateButton.setVisibility(View.VISIBLE);
                     item.orderStateButton.setText("点击支付");
+                    item.orderCancel.setText("");
                 case 2:
-                    item.orderCancel.setVisibility(View.VISIBLE);
+                    LogUtils.d(TAG, "orderState:" + orderState);
+//                    item.orderCancel.setVisibility(View.VISIBLE);
                     item.orderCancel.setText("去评价");
-                    item.orderStateButton.setVisibility(View.VISIBLE);
-                    item.orderStateButton.setText("付款金额："+ordersGuest.orderPayPrice);
-                    item.orderStateButton.setTextColor(Color.parseColor("#FF7667"));
+//                    item.orderStateButton.setVisibility(View.VISIBLE);
+                    item.orderStateButton.setText("实付金额："+ordersGuest.orderPayPrice);
 
             }
         }

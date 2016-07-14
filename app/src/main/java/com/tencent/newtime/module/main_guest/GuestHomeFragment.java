@@ -27,6 +27,7 @@ import com.tencent.newtime.R;
 import com.tencent.newtime.base.BaseFragment;
 import com.tencent.newtime.model.HomeGuest;
 import com.tencent.newtime.module.shop_detail.KitchenNdActivity;
+import com.tencent.newtime.module.shop_detail.WebBannerActivity;
 import com.tencent.newtime.util.LogUtils;
 import com.tencent.newtime.util.DimensionUtils;
 import com.tencent.newtime.util.OkHttpUtils;
@@ -127,7 +128,7 @@ public class GuestHomeFragment extends BaseFragment  implements TencentLocationL
             @Override
             public void onClick(View v) {
                 int id = (int) v.getTag();
-                Intent detail = new Intent(getActivity(), KitchenNdActivity.class);
+                Intent detail = new Intent(getActivity(), WebBannerActivity.class);
                 detail.putExtra("token", infoList.get(id).sellerId);
                 //LogUtils.d(TAG, "id:" + mActivityList.get(getAdapterPosition() - 1).activityID);
                 startActivity(detail);
@@ -316,9 +317,9 @@ public class GuestHomeFragment extends BaseFragment  implements TencentLocationL
                 item.shopImage.setImageURI(uriShopImg);
                 item.shopName.setText(homeGuest.sellerName);
                 item.shopAddress.setText(homeGuest.location);
-                item.shopSalesVolumeMonth.setText(""+ homeGuest.monthSales);
-                item.shopScore.setText("" + homeGuest.scores);
-                item.shopAverage.setText("" + homeGuest.personPrice);
+                item.shopSalesVolumeMonth.setText("月销量 "+ homeGuest.monthSales);
+                item.shopScore.setText("评分 " + homeGuest.scores);
+                item.shopAverage.setText("人均价格 " + homeGuest.personPrice);
             }
         }
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.common.logging.LoggingDelegate;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.tencent.lbssearch.object.result.TransitResultObject;
 import com.tencent.newtime.APP;
@@ -20,6 +22,7 @@ import com.tencent.newtime.R;
 import com.tencent.newtime.base.BaseFragment;
 import com.tencent.newtime.module.login.LoginActivity;
 import com.tencent.newtime.module.splash.ChoiceActivity;
+import com.tencent.newtime.util.LogUtils;
 import com.tencent.newtime.util.OkHttpUtils;
 import com.tencent.newtime.util.StrUtils;
 
@@ -49,8 +52,8 @@ public class GuestMeFragment extends BaseFragment {
     String zeal="90";
     private Handler mHandler;
 
-    private void getDataFromServer(Map map, final Handler mHandler){
-        OkHttpUtils.post(getString(R.string.baseUrl_z) + getString(R.string.person_z), map, TAG, new OkHttpUtils.OkCallBack() {
+    private void getDataFromServer(Map<String,String> params, final Handler mHandler){
+        OkHttpUtils.post(getString(R.string.baseUrl_z) + getString(R.string.person_z), params, TAG, new OkHttpUtils.OkCallBack() {
             @Override
             public void onFailure(IOException e) {
                 e.printStackTrace();
@@ -61,6 +64,7 @@ public class GuestMeFragment extends BaseFragment {
                 JSONObject j;
                 try {
                     j = new JSONObject(res);
+                    LogUtils.d(TAG, "json"+j.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(getActivity(), "返回数据解析失败", Toast.LENGTH_SHORT).show();
@@ -114,9 +118,11 @@ public class GuestMeFragment extends BaseFragment {
         logoutButton.setOnClickListener(listener);
         mHandler=new Handler();
         String token=StrUtils.token();
-        Map map=new HashMap();
-        map.put("token",token);
-        getDataFromServer(map,mHandler);
+//        Map map=new HashMap();
+        ArrayMap<String,String> params = new ArrayMap<>(3);
+        params.put("token", StrUtils.token());
+//        map.put("token",token);
+        getDataFromServer(params,mHandler);
 
 
         return rootView;
