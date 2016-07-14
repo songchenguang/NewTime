@@ -137,8 +137,8 @@ public class GuestOrdersFragment extends BaseFragment {
 
     private void loadPage(int page){
         ArrayMap<String,String> params = new ArrayMap<>(3);
-//        params.put("token", StrUtils.token());
-        params.put("token", "123456");
+        params.put("token", StrUtils.token());
+//        params.put("token", "123456");
         params.put("page", "" + page);
         isLoading = true;
         String post = StrUtils.CUSTOMER_ORDER0;
@@ -261,7 +261,7 @@ public class GuestOrdersFragment extends BaseFragment {
                                         switch(which){
                                             case Dialog.BUTTON_POSITIVE:
                                                 ArrayMap<String,String> params = new ArrayMap<>(3);
-                                                //        params.put("token", StrUtils.token());
+//                                                params.put("token", StrUtils.token());
                                                 params.put("token", "123456");
                                                 params.put("orderId", "" + mOrdersList.get(getAdapterPosition()).orderId);
                                                 isLoading = true;
@@ -310,8 +310,8 @@ public class GuestOrdersFragment extends BaseFragment {
                                             case Dialog.BUTTON_POSITIVE:
                                                 String orderScore = editText.getText().toString();
                                                 ArrayMap<String,String> params = new ArrayMap<>(4);
-                                                //        params.put("token", StrUtils.token());
-                                                params.put("token", "123456");
+                                                params.put("token", StrUtils.token());
+//                                                params.put("token", "123456");
                                                 params.put("orderId", "" + mOrdersList.get(getAdapterPosition()).orderId);
                                                 params.put("orderScores", orderScore);
 
@@ -369,8 +369,8 @@ public class GuestOrdersFragment extends BaseFragment {
                                             case Dialog.BUTTON_POSITIVE:
                                                 String orderScore = editText.getText().toString();
                                                 ArrayMap<String,String> params = new ArrayMap<>(4);
-                                                //        params.put("token", StrUtils.token());
-                                                params.put("token", "123456");
+                                                params.put("token", StrUtils.token());
+//                                                params.put("token", "123456");
                                                 params.put("orderId", "" + mOrdersList.get(getAdapterPosition()).orderId);
                                                 params.put("orderScores", orderScore);
 

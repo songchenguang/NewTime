@@ -99,7 +99,7 @@ public class DishActivity extends AppCompatActivity {
                                         Map mapPhoto=new HashMap();
                                         mapPhoto.put("token",token);
                                         mapPhoto.put("number",foodId);
-                                        uploadPhoto(TYPE_FOOD_PHOTO,map,mBitmap);
+                                        uploadPhoto(TYPE_FOOD_PHOTO,mapPhoto,mBitmap);
                                     }
                                 });
                             } else {

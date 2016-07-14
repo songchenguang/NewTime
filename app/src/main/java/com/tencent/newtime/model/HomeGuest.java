@@ -15,7 +15,7 @@ public class HomeGuest {
     public int monthSales;
     public double personPrice;
     public double scores;
-    public int sellerId;
+    public String sellerId;
     public String sellerName;
 
     public static HomeGuest fromJSON(JSONObject j){
@@ -26,7 +26,7 @@ public class HomeGuest {
         a.monthSales = j.optInt("monthSales");
         a.personPrice = j.optDouble("scores");
         a.scores = j.optDouble("scores");
-        a.sellerId = j.optInt("sellerId");
+        a.sellerId = j.optString("sellerId");
         a.sellerName = j.optString("sellerName");
         return a;
     }

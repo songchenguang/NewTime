@@ -133,8 +133,8 @@ public class HostOrdersFragment extends BaseFragment {
     };
     private void loadPage(int page){
         ArrayMap<String,String> params = new ArrayMap<>(3);
-//        params.put("token", StrUtils.token());
-        params.put("token", "123456");
+        params.put("token", StrUtils.token());
+//        params.put("token", "123456");
         params.put("page", "" + page);
         isLoading = true;
         String post = StrUtils.SELLER_ORDER0;
@@ -270,8 +270,8 @@ public class HostOrdersFragment extends BaseFragment {
                                         switch(which){
                                             case Dialog.BUTTON_POSITIVE:
                                                 ArrayMap<String,String> params = new ArrayMap<>(3);
-                                                //        params.put("token", StrUtils.token());
-                                                params.put("token", "123456");
+                                                        params.put("token", StrUtils.token());
+//                                                params.put("token", "123456");
                                                 params.put("orderId", "" + mOrdersHostList.get(getAdapterPosition()).orderId);
                                                 isLoading = true;
                                                 OkHttpUtils.post(StrUtils.SELLER_CANCEL_ORDER, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
@@ -314,8 +314,8 @@ public class HostOrdersFragment extends BaseFragment {
                                         switch(which){
                                             case Dialog.BUTTON_POSITIVE:
                                                 ArrayMap<String,String> params = new ArrayMap<>(3);
-                                                //        params.put("token", StrUtils.token());
-                                                params.put("token", "123456");
+                                                        params.put("token", StrUtils.token());
+//                                                params.put("token", "123456");
                                                 params.put("orderId", "" + mOrdersHostList.get(getAdapterPosition()).orderId);
                                                 isLoading = true;
                                                 OkHttpUtils.post(StrUtils.SELLER_CANCEL_ORDER, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
@@ -369,8 +369,8 @@ public class HostOrdersFragment extends BaseFragment {
                                         switch(which){
                                             case Dialog.BUTTON_POSITIVE:
                                                 ArrayMap<String,String> params = new ArrayMap<>(3);
-                                                //        params.put("token", StrUtils.token());
-                                                params.put("token", "123456");
+                                                        params.put("token", StrUtils.token());
+//                                                params.put("token", "123456");
                                                 params.put("orderId", "" + mOrdersHostList.get(getAdapterPosition()).orderId);
                                                 isLoading = true;
                                                 OkHttpUtils.post(StrUtils.SELLER_CONFIRM_ORDER, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
@@ -414,8 +414,8 @@ public class HostOrdersFragment extends BaseFragment {
                                             case Dialog.BUTTON_POSITIVE:
                                                 String price = editText.getText().toString();
                                                 ArrayMap<String,String> params = new ArrayMap<>(6);
-                                                //        params.put("token", StrUtils.token());
-                                                params.put("token", "123456");
+                                                        params.put("token", StrUtils.token());
+//                                                params.put("token", "123456");
                                                 params.put("orderId", "" + mOrdersHostList.get(getAdapterPosition()).orderId);
                                                 params.put("discount", price);
                                                 params.put("price", mOrdersHostList.get(getAdapterPosition()).orderPrice);

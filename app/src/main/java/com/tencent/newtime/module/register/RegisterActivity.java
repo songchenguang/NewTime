@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.tencent.newtime.R;
 import com.tencent.newtime.base.BaseActivity;
 import com.tencent.newtime.module.main_guest.GuestMainActivity;
+import com.tencent.newtime.module.main_host.HostMainActivity;
 import com.tencent.newtime.util.LogUtils;
 import com.tencent.newtime.util.OkHttpUtils;
 import com.tencent.newtime.util.StrUtils;
@@ -42,6 +43,7 @@ public class RegisterActivity extends BaseActivity {
 
     CountDownButton mCountDown;
     ProgressDialog progressDialog;
+    private String identity;
 
 
     TextWatcher mTextWatcher;
@@ -49,7 +51,7 @@ public class RegisterActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
+        identity = getIntent().getStringExtra("identity");
         etName = (EditText) findViewById(R.id.phone);
         etPass = (EditText) findViewById(R.id.login_password);
         etPass2 = (EditText) findViewById(R.id.login_copy_password);
@@ -99,7 +101,13 @@ public class RegisterActivity extends BaseActivity {
         ArrayMap<String,String> param = new ArrayMap<>();
         param.put("phone",etName.getText().toString());
         param.put("type","1");
-        OkHttpUtils.post(StrUtils.SEND_CODE,param,TAG,new OkHttpUtils.SimpleOkCallBack(){
+        String post = StrUtils.SEND_CODE;
+        if (identity.equals("host")){
+            post = StrUtils.SEND_CODE;
+        }else if(identity.equals("guest")){
+            post = StrUtils.SEND_CODE_CUS;
+        }
+        OkHttpUtils.post(post, param, TAG,new OkHttpUtils.SimpleOkCallBack(){
             @Override
             public void onResponse(String s) {
                 LogUtils.d(TAG,s);
@@ -148,7 +156,13 @@ public class RegisterActivity extends BaseActivity {
         param.put("password", passMD5);
         param.put("code",etCode.getText().toString());
         progressDialog = ProgressDialog.show(RegisterActivity.this,null,"正在注册");
-        OkHttpUtils.post(StrUtils.REGISTER_PHONE,param,TAG,new OkHttpUtils.SimpleOkCallBack(){
+        String post = StrUtils.REGISTER_PHONE;
+        if (identity.equals("host")){
+            post = StrUtils.REGISTER_PHONE;
+        }else if(identity.equals("guest")){
+            post = StrUtils.REGISTER_PHONE_CUS;
+        }
+        OkHttpUtils.post(post,param,TAG,new OkHttpUtils.SimpleOkCallBack(){
             @Override
             public void onResponse(String s) {
                 LogUtils.i(TAG,s);
@@ -167,9 +181,16 @@ public class RegisterActivity extends BaseActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Intent i = new Intent(RegisterActivity.this, GuestMainActivity.class);
-                        startActivity(i);
-                        finish();
+                        if (identity.equals("host")){
+                            Intent i = new Intent(RegisterActivity.this, HostMainActivity.class);
+                            startActivity(i);
+                            finish();
+                        }else if(identity.equals("guest")){
+                            Intent i = new Intent(RegisterActivity.this, GuestMainActivity.class);
+                            startActivity(i);
+                            finish();
+                        }
+
                     }
                 }, 1000);
             }

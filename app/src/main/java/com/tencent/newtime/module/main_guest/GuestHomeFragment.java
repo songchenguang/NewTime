@@ -201,8 +201,8 @@ public class GuestHomeFragment extends BaseFragment  implements TencentLocationL
         isRefreshing = true;
         canLoadMore = true;
         ArrayMap<String,String> params = new ArrayMap<>(4);
-//        params.put("token", StrUtils.token());
-        params.put("token", "123456");
+        params.put("token", StrUtils.token());
+//        params.put("token", "123456");
         params.put("page", "1");
         params.put("latitude", latitude);
         params.put("longitude", longitude);
@@ -236,8 +236,8 @@ public class GuestHomeFragment extends BaseFragment  implements TencentLocationL
 
     private void loadPage(int page){
         ArrayMap<String,String> params = new ArrayMap<>(3);
-//        params.put("token", StrUtils.token());
-        params.put("token", "123456");
+        params.put("token", StrUtils.token());
+//        params.put("token", "123456");
         params.put("page", "" + page);
         isLoading = true;
         OkHttpUtils.post(StrUtils.CUSTOMER_HOME_PAGE, params, TAG, new OkHttpUtils.SimpleOkCallBack() {

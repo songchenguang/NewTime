@@ -4,19 +4,31 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.tencent.lbssearch.object.result.TransitResultObject;
 import com.tencent.newtime.APP;
 import com.tencent.newtime.R;
 import com.tencent.newtime.base.BaseFragment;
 import com.tencent.newtime.module.login.LoginActivity;
 import com.tencent.newtime.module.splash.ChoiceActivity;
+import com.tencent.newtime.util.OkHttpUtils;
 import com.tencent.newtime.util.StrUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by 晨光 on 2016-07-09.
@@ -32,6 +44,47 @@ public class GuestMeFragment extends BaseFragment {
     TextView zealNum;
     TextView aboutNewTime;
     Button logoutButton;
+    String creditworthiness="90";
+    String kind="90";
+    String zeal="90";
+    private Handler mHandler;
+
+    private void getDataFromServer(Map map, final Handler mHandler){
+        OkHttpUtils.post(getString(R.string.baseUrl_z) + getString(R.string.person_z), map, TAG, new OkHttpUtils.OkCallBack() {
+            @Override
+            public void onFailure(IOException e) {
+                e.printStackTrace();
+                Log.d(TAG,"获取个人信息失败!");
+            }
+            @Override
+            public void onResponse(String res) {
+                JSONObject j;
+                try {
+                    j = new JSONObject(res);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getActivity(), "返回数据解析失败", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String state = j.optString("state", "");
+                if (state.equals("successful")) {
+                    Toast.makeText(getActivity(), "验证成功", Toast.LENGTH_SHORT).show();
+                    creditworthiness=j.optString("honesty","80");
+                    kind=j.optString("friendly","80");
+                    zeal=j.optString("passion","80");
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            refresh();
+                        }
+                    });
+                } else {
+                    String reason = j.optString("reason");
+                    Toast.makeText(getActivity(), reason, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 
 
     public static GuestMeFragment newInstance() {
@@ -40,6 +93,12 @@ public class GuestMeFragment extends BaseFragment {
         fragment.setArguments(args);
         return fragment;
     }
+    private void refresh(){
+        zealNum.setText(zeal);
+        kindNum.setText(kind);
+        creditworthinessNum.setText(creditworthiness);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -53,6 +112,12 @@ public class GuestMeFragment extends BaseFragment {
         logoutButton = (Button) rootView.findViewById(R.id.logout_button_guest);
         aboutNewTime.setOnClickListener(listener);
         logoutButton.setOnClickListener(listener);
+        mHandler=new Handler();
+        String token=StrUtils.token();
+        Map map=new HashMap();
+        map.put("token",token);
+        getDataFromServer(map,mHandler);
+
 
         return rootView;
     }

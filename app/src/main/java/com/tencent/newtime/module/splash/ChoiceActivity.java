@@ -36,13 +36,13 @@ public class ChoiceActivity extends AppCompatActivity {
                     Intent intentGuest = new Intent(ChoiceActivity.this, LoginActivity.class);
                     intentGuest.putExtra("identity", "guest");
                     startActivity(intentGuest);
-                    finish();
+//                    finish();
                     break;
                 case R.id.button_host:
                     Intent intentHost = new Intent(ChoiceActivity.this, LoginActivity.class);
                     intentHost.putExtra("identity", "host");
                     startActivity(intentHost);
-                    finish();
+//                    finish();
                     break;
             }
         }

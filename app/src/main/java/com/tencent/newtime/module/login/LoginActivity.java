@@ -168,8 +168,9 @@ public class LoginActivity extends AppCompatActivity{
     }
 
     public void register(){
-        startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-        finish();
+        Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+        registerIntent.putExtra("identity", identity);
+        startActivity(registerIntent);
     }
 
     private boolean isMobileValid(String mobile) {

@@ -253,10 +253,14 @@ public class KitchenNdActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //下单，需要传数据到下一个activity里面
-                Intent i=new Intent(KitchenNdActivity.this,PayConfirmActivity.class);
-                i.putExtra("order",order);
-                i.putExtra("kitchen",mKitchen);
-                startActivity(i);
+              if(mKitchen!=null&&order!=null&&order.getDishes()!=null&&order.getDishes().size()>=0){
+                  Toast.makeText(KitchenNdActivity.this,"请点菜后再下单",Toast.LENGTH_LONG).show();
+              }else{
+                  Intent i=new Intent(KitchenNdActivity.this,PayConfirmActivity.class);
+                  i.putExtra("order",order);
+                  i.putExtra("kitchen",mKitchen);
+                  startActivity(i);
+              }
             }
         });
 

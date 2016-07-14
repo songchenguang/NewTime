@@ -131,6 +131,10 @@
     <string name="auth_z">confirmUser</string>
     <string name="commitDish_z">publishFood</string>
 
+
+    <string name="person_z">personInfo</string>
+    <string name="seller_z">sellerInfo</string>
+
     //添加/编辑食物
 
     <string name="dish_name_z">菜品名</string>
@@ -142,6 +146,7 @@
 
     //错误提示
     <string name="get_kitchen_error">获取厨房数据失败</string>
+    <string name="title_activity_test">TestActivity</string>
 
 
 </resources>

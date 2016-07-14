@@ -94,7 +94,6 @@ public class PayConfirmActivity extends AppCompatActivity{
         order.setGuestCount(3);
 
         order.setArrayDate_1(new Date(System.currentTimeMillis()));
-        order.setArrayDate_2(new Date(System.currentTimeMillis()));
         for (int i = 0; i < 3; i++) {
             tempItem = new OrderItem();
             tempItem.setNum(i);

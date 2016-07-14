@@ -15,6 +15,7 @@
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/home_item_food_image_host"
             android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_margin="5dp"
             android:layout_width="50dp"
             android:layout_height="50dp"/>
 
@@ -75,22 +76,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text="20"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:text="状态"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:text="下架中"/>
-
                 </LinearLayout>
 
 
@@ -98,9 +83,9 @@
 
 
             <Button
+                android:id="@+id/is_publish"
                 android:enabled="false"
                 android:layout_margin="5dp"
-                android:id="@+id/is_publish"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_selector2"
