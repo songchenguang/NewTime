@@ -18,7 +18,6 @@ public class Order implements Serializable{
     private int kitchenId;
     private int guestCount;
     private Date arrayDate_1;
-    private Date arrayDate_2;
     private String note;
 
 
@@ -38,13 +37,6 @@ public class Order implements Serializable{
         this.arrayDate_1 = arrayDate_1;
     }
 
-    public Date getArrayDate_2() {
-        return arrayDate_2;
-    }
-
-    public void setArrayDate_2(Date arrayDate_2) {
-        this.arrayDate_2 = arrayDate_2;
-    }
 
     public int getGuestCount() {
         return guestCount;
