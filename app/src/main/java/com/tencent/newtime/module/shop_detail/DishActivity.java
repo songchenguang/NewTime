@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.tencent.newtime.R;
+import com.tencent.newtime.module.main_host.HostMainActivity;
 import com.tencent.newtime.util.OkHttpUtils;
 import com.tencent.newtime.util.StrUtils;
 import com.tencent.newtime.util.UriToFilePath;
@@ -99,7 +100,8 @@ public class DishActivity extends AppCompatActivity {
                                         Map mapPhoto=new HashMap();
                                         mapPhoto.put("token",token);
                                         mapPhoto.put("number",foodId);
-                                        uploadPhoto(TYPE_FOOD_PHOTO,mapPhoto,mBitmap);
+                                        uploadPhoto(TYPE_FOOD_PHOTO,mapPhoto,mBitmap,mHandler);
+
                                     }
                                 });
                             } else {
@@ -148,7 +150,7 @@ public class DishActivity extends AppCompatActivity {
             ImageView view=null;
             Uri selectedImage = data.getData();
             String filePath= UriToFilePath.getImageAbsolutePath(this,selectedImage);
-            Toast.makeText(DishActivity.this,selectedImage.toString()+"\n文件路径："+filePath,Toast.LENGTH_LONG).show();
+//            Toast.makeText(DishActivity.this,selectedImage.toString()+"\n文件路径："+filePath,Toast.LENGTH_LONG).show();
             showPhoto(dishPhotoImageView,filePath);
         }
     }
@@ -169,7 +171,7 @@ public class DishActivity extends AppCompatActivity {
         photo.setMaxHeight(350);
 
     }
-    private void uploadPhoto(final int type, final Map<String,String> map,Bitmap bitmap) {
+    private void uploadPhoto(final int type, final Map<String,String> map, Bitmap bitmap, final Handler mHandler) {
         map.put("type",String.valueOf(type));
         OkHttpUtils.uploadBitmap(getString(R.string.imgBaseUrl_z) + getString(R.string.imageUpload_z), map,bitmap
                 , null, TAG, new OkHttpUtils.OkCallBack() {
@@ -182,6 +184,15 @@ public class DishActivity extends AppCompatActivity {
                         //Toast.makeText(AuthenticationActivity.this,"图片上传成功",Toast.LENGTH_LONG).show();
                         Log.d(TAG,"图片"+type+"上传成功");
                         map.remove("type");
+
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent(DishActivity.this, HostMainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
                     }
                 });
     }

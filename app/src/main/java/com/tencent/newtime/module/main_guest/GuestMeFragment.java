@@ -3,6 +3,7 @@ package com.tencent.newtime.module.main_guest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.util.ArrayMap;
@@ -67,10 +68,13 @@ public class GuestMeFragment extends BaseFragment {
                     LogUtils.d(TAG, "json"+j.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
+
                     Toast.makeText(getActivity(), "返回数据解析失败", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 String state = j.optString("state", "");
+                Uri uri = Uri.parse("http://119.29.233.72:3001/uploadfiles/shiguang/top/top5.jpg");
+                userPhoto.setImageURI(uri);
                 if (state.equals("successful")) {
 //                    Toast.makeText(getActivity(), "验证成功", Toast.LENGTH_SHORT).show();
                     creditworthiness=j.optString("honesty","80");
@@ -108,6 +112,7 @@ public class GuestMeFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.fragment_me_guest, container, false);
         userName = (TextView) rootView.findViewById(R.id.user_name_me_guest);
+        userName.setVisibility(View.INVISIBLE);
         userPhoto = (SimpleDraweeView) rootView.findViewById(R.id.user_photo_me_guest);
         creditworthinessNum = (TextView) rootView.findViewById(R.id.creditworthiness_num);
         kindNum = (TextView) rootView.findViewById(R.id.kind_num);

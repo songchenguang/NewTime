@@ -21,6 +21,7 @@ public class OrdersGuest {
     public String sellerId;
     public String sellerName;
     public String sellerScores;
+    public String payState;
 
     public static OrdersGuest fromJSON(JSONObject j){
         OrdersGuest a = new OrdersGuest();
@@ -37,6 +38,7 @@ public class OrdersGuest {
         a.sellerId = j.optString("sellerId");
         a.sellerName = j.optString("sellerName");
         a.sellerScores = j.optString("sellerScores");
+        a.payState = j.optString("paystate");
         return a;
     }
 

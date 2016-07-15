@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.tencent.map.geolocation.TencentLocation;
@@ -171,6 +172,7 @@ public class GuestHomeFragment extends BaseFragment  implements TencentLocationL
             latitude = ""+(float)tencentLocation.getLatitude();
             Log.d(TAG, "location："+ longitude + " " + latitude + " " + tencentLocation.getLatitude()+" " +tencentLocation.getLongitude());
             location_textview.setText(msg);
+            Toast.makeText(getActivity(), "定位成功", Toast.LENGTH_SHORT).show();
             stopLocation();
         } else {
             // 定位失败
@@ -289,10 +291,7 @@ public class GuestHomeFragment extends BaseFragment  implements TencentLocationL
                 params.height = DimensionUtils.getDisplay().widthPixels/2;
                 v.setLayoutParams(params);
                 vh = new BannerViewHolder(v);
-            }else if(viewType == TYPE_BUTTON){
-                View v = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_home_button, parent, false);
-                vh = new ButtonViewHolder(v);
-            }else{
+            } else{
                 View v = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_home_item_guest, parent, false);
                 vh = new ItemViewHolder(v);
             }
@@ -309,7 +308,7 @@ public class GuestHomeFragment extends BaseFragment  implements TencentLocationL
 
 
             }else if(holder instanceof ItemViewHolder){
-                HomeGuest homeGuest = mHomeGuestList.get(position - 2);
+                HomeGuest homeGuest = mHomeGuestList.get(position - 1);
                 ItemViewHolder item = (ItemViewHolder) holder;
                 Uri uriFoodImg = Uri.parse(homeGuest.foodImg);
                 Uri uriShopImg = Uri.parse(homeGuest.headImg);
@@ -326,9 +325,9 @@ public class GuestHomeFragment extends BaseFragment  implements TencentLocationL
         @Override
         public int getItemCount() {
             if (mHomeGuestList == null){
-                return 2;
+                return 1;
             }else{
-                return 2 + mHomeGuestList.size();
+                return 1 + mHomeGuestList.size();
             }
         }
 
@@ -381,9 +380,9 @@ public class GuestHomeFragment extends BaseFragment  implements TencentLocationL
                 this.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        LogUtils.d(TAG, "id:" + (getAdapterPosition() - 2) + " "+ infoList.get(getAdapterPosition() - 2).sellerId);
+                        LogUtils.d(TAG, "id:" + (getAdapterPosition() - 1) + " "+ infoList.get(getAdapterPosition() - 1).sellerId);
                         Intent detail = new Intent(getActivity(), KitchenNdActivity.class);
-                        detail.putExtra("token", "" + infoList.get(getAdapterPosition() - 2).sellerId);
+                        detail.putExtra("token", "" + infoList.get(getAdapterPosition() - 1).sellerId);
                         startActivity(detail);
                     }
                 });

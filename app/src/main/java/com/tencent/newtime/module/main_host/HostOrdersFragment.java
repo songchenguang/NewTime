@@ -204,27 +204,33 @@ public class HostOrdersFragment extends BaseFragment {
             ItemViewHolder item = (ItemViewHolder) holder;
             Uri uriFoodImg = Uri.parse(ordersHost.customerHeadImg);
             item.customerHeadImg.setImageURI(uriFoodImg);
-            item.customerFriendly.setText(ordersHost.customerFriendly);
-            item.customerHonesty.setText(ordersHost.customerHonesty);
-            item.customerPassion.setText(ordersHost.customerPassion);
+            item.customerFriendly.setText("友好度\n"+ordersHost.customerFriendly);
+            item.customerHonesty.setText("信誉度\n" + ordersHost.customerHonesty);
+            item.customerPassion.setText("热情度\n" + ordersHost.customerPassion);
             item.customerName.setText(ordersHost.customerName);
             item.foodName.setText(ordersHost.foodName);
-            item.foodCounts.setText(ordersHost.foodCounts);
+            item.foodCounts.setText("共"+ ordersHost.foodCounts + "份");
+            item.orderPeopleNumber.setText("人数 "+ ordersHost.orderPeopleNumber);
             switch (orderState){
                 case 0:
-                    item.orderPrice.setText(ordersHost.orderPrice);
+                    item.orderPrice.setText("订单金额 "+ordersHost.orderPrice);
                     item.orderTime.setText(ordersHost.planeEatTime);
+                    item.orderPrice.setVisibility(View.VISIBLE);
+
                     item.orderStateButton.setText("婉拒");
                     item.cashState.setText("接单");
                     break;
                 case 1:
-                    item.orderPrice.setText(ordersHost.orderPrice);
+                    item.orderPrice.setText("订单金额 " + ordersHost.orderPrice);
                     item.orderTime.setText(ordersHost.orderPayTime);
+                    item.orderPrice.setVisibility(View.VISIBLE);
+
                     item.orderStateButton.setText("取消接单");
-                    item.cashState.setText("去结算");
+                    item.cashState.setText("请求支付");
                     break;
                 case 2:
-                    item.orderPrice.setText(ordersHost.orderPayPrice);
+                    item.orderPrice.setText("订单金额 " + ordersHost.orderPayPrice);
+                    item.orderPrice.setVisibility(View.INVISIBLE);
                     item.orderTime.setText(ordersHost.orderPayTime);
                     item.orderStateButton.setText("原价：" + ordersHost.orderPrice);
                     item.cashState.setText("折扣价：" + ordersHost.orderPayPrice);
@@ -270,7 +276,7 @@ public class HostOrdersFragment extends BaseFragment {
                                         switch(which){
                                             case Dialog.BUTTON_POSITIVE:
                                                 final ArrayMap<String,String> params = new ArrayMap<>(3);
-                                                        params.put("token", StrUtils.token());
+                                                params.put("token", StrUtils.token());
 //                                                params.put("token", "123456");
                                                 params.put("orderId", "" + mOrdersHostList.get(getAdapterPosition()).orderId);
                                                 isLoading = true;
@@ -444,10 +450,8 @@ public class HostOrdersFragment extends BaseFragment {
 
                                                     }
                                                 });
-                                                Toast.makeText(getActivity(), "确认" + which, Toast.LENGTH_SHORT).show();
                                                 break;
                                             case Dialog.BUTTON_NEGATIVE:
-                                                Toast.makeText(getActivity(), "取消" + which, Toast.LENGTH_SHORT).show();
                                                 dialog.dismiss();
                                                 break;
                                         }

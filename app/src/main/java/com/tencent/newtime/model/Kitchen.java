@@ -25,7 +25,7 @@ public class Kitchen implements Serializable{
     public static Kitchen fromJSON(JSONObject j){
         Kitchen mkitchen=new Kitchen();
         mkitchen.name=j.optString("username","");
-        mkitchen.isCertification=j.optString("confirm","").equals("1")?true:false;
+        mkitchen.isCertification=j.optBoolean("confirm");
         mkitchen.ownerPhoto=j.optString("headimgurl","");
         mkitchen.photo=j.optString("homeimgurl","");
         mkitchen.location=j.optString("location","");

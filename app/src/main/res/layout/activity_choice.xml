@@ -3,41 +3,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/vertical_margin"
-    android:paddingLeft="@dimen/horizontal_margin"
-    android:paddingRight="@dimen/horizontal_margin"
-    android:paddingTop="@dimen/vertical_margin"
+    android:background="@drawable/choice"
+
     tools:context="com.tencent.newtime.module.splash.ChoiceActivity">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
-        <Button
-            android:background="@drawable/left_corner_shape"
+
+        <LinearLayout
             android:id="@+id/button_guest"
-            android:textColor="@color/colorPrimaryDark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size1"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
-            android:text="@string/guest" />
+        </LinearLayout>
 
-
-
-        <Button
-            android:background="@drawable/right_corner_shape"
-            android:textColor="@color/colorPrimaryDark"
+        <LinearLayout
+            android:orientation="horizontal"
             android:id="@+id/button_host"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
-            android:text="@string/host" />
+        </LinearLayout>
+
+
+
     </LinearLayout>
 
 </RelativeLayout>

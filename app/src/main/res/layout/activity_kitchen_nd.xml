@@ -33,7 +33,7 @@
                 android:orientation="vertical">
                 <TextView
                     android:id="@+id/kitchen_mask_textView"
-                    android:background="#4f2f0f0f"
+                    android:background="@color/popup_bg"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
                 //订购单list以及人数加减。
@@ -106,11 +106,11 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/kitchen_shopping_cart_imageButton"
                     android:layout_width="match_parent"
-                    android:layout_toLeftOf="@+id/kitchen_takeOrder_button"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/kitchen_takeOrder_button">
                     <com.tencent.newtime.widget.IconTextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -122,19 +122,20 @@
                         android:id="@+id/kitchen_bottom_RMB_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_centerVertical="true"
-                        android:textSize="@dimen/kit_bottom_shopping_cart_size"
-                        android:layout_toRightOf="@id/kitchen_shopping_cart_imageButton"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginRight="10dp"
+                        android:textSize="30sp"
                         android:text="@string/if_RMB"/>
                     <TextView
                         android:layout_centerVertical="true"
                         android:id="@+id/kitchen_order_total_price_textView"
-                        android:layout_toRightOf="@id/kitchen_bottom_RMB_textView"
+                        android:layout_toLeftOf="@id/kitchen_bottom_RMB_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:textSize="@dimen/kit_bottom_shopping_cart_size"
                         android:text="35"/>
-                </LinearLayout>
+                </RelativeLayout>
 
                 <Button
                     android:id="@+id/kitchen_takeOrder_button"

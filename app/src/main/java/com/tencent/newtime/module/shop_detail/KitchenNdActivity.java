@@ -31,6 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,14 +59,11 @@ public class KitchenNdActivity extends AppCompatActivity {
 
 
     //底部
-    private LinearLayout shoppingCartImageButton;
+    private RelativeLayout shoppingCartImageButton;
     private TextView kitchenOrderPriceTextView;
     private Button  kitchenTakeOrderButton;
 
     //测试数据
-
-
-
 
     Kitchen mKitchen=new Kitchen();
     ArrayList<Dish>dishList=new ArrayList<Dish>();
@@ -184,19 +182,14 @@ public class KitchenNdActivity extends AppCompatActivity {
 
 
         //底部
-        shoppingCartImageButton=(LinearLayout)this.findViewById(R.id.kitchen_shopping_cart_imageButton);
+        shoppingCartImageButton=(RelativeLayout)this.findViewById(R.id.kitchen_shopping_cart_imageButton);
         kitchenOrderPriceTextView=(TextView)this.findViewById(R.id.kitchen_order_total_price_textView);
         kitchenTakeOrderButton=(Button)this.findViewById(R.id.kitchen_takeOrder_button);
         String token;
         if((token = this.getIntent().getStringExtra("token"))!=null){
             mKitchen.setToken(token);
             LogUtils.d(TAG, "token:" + token);
-        }else{
-            //设置为默认的token
-            mKitchen.setToken("123456");
-            Toast.makeText(this,"没有token",Toast.LENGTH_LONG).show();
         }
-        //  prepareData();
         mKitchen.setDishList(dishList);
         order.setDishes(list);
         order.setGuestCount(1);
@@ -204,7 +197,7 @@ public class KitchenNdActivity extends AppCompatActivity {
         //初始化工作
         kitchenOrderPriceTextView.setText(String.valueOf(order.getTotalPrice()));
         //  kitchenDishesListView.setAdapter(new DishListAdapter(this,android.R.layout.simple_list_item_1,mKitchen.getDishList()));
-       // kitchenDishesListView.setAdapter(new DishListAdapter(mKitchen.getDishList()));
+        // kitchenDishesListView.setAdapter(new DishListAdapter(mKitchen.getDishList()));
         orderDishesListView.setAdapter(new OrderListAdapter(this,android.R.layout.simple_list_item_1,order.getDishes()));
 
         shoppingCartImageButton.setOnClickListener(new View.OnClickListener() {
@@ -254,23 +247,37 @@ public class KitchenNdActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //下单，需要传数据到下一个activity里面
-              if(!(mKitchen!=null&&order!=null&&order.getDishes()!=null&&order.getDishes().size()>=0)){
-                  Toast.makeText(KitchenNdActivity.this,"请点菜后再下单",Toast.LENGTH_LONG).show();
-              }else{
-                  Intent i=new Intent(KitchenNdActivity.this,PayConfirmActivity.class);
-                  i.putExtra("order",order);
-                  i.putExtra("kitchen",mKitchen);
-                  startActivity(i);
-              }
+                if(mKitchen==null||order==null||order.getDishes()==null||order.getDishes().size()==0){
+                    Toast.makeText(KitchenNdActivity.this,"请点菜后再下单",Toast.LENGTH_LONG).show();
+                }else{
+                    Log.d(TAG,"size="+order.getDishes().size());
+                    Intent i=new Intent(KitchenNdActivity.this,PayConfirmActivity.class);
+                    i.putExtra("order",order);
+                    i.putExtra("kitchen",mKitchen);
+                    startActivity(i);
+                }
             }
         });
 
     }
 
     private void refreshData(){
+        /*   kitchenNameTextView.setText(mKitchen.getName());
+        if(mKitchen.isCertification()){
+            kitchenIsCertificationTextView.setText(R.string.if_right);
+        }else{
+            kitchenIsCertificationTextView.setText(R.string.if_wrong);
+        }
+        if(mKitchen.getDescription()!=null){
+            kitchenIntroductionTextView.setText(mKitchen.getDescription());
+        }
+        if(mKitchen.getOwnerPhoto()!=null){
+            kitchenOwnerPhotoImageView.setImageURI(Uri.parse(mKitchen.getOwnerPhoto()));
+        }*/
+
         kitchenOrderPriceTextView.setText(String.valueOf(order.getTotalPrice()));
         kitchenDishesListView.setAdapter(new DishListAdapter(this,android.R.layout.simple_list_item_1,mKitchen.getDishList()));
-       //kitchenDishesListView.setAdapter(new DishListAdapter(mKitchen.getDishList()));
+        //kitchenDishesListView.setAdapter(new DishListAdapter(mKitchen.getDishList()));
         orderDishesListView.setAdapter(new OrderListAdapter(this,android.R.layout.simple_list_item_1,order.getDishes()));
         ((BaseAdapter)kitchenDishesListView.getAdapter()).notifyDataSetChanged();
     }
@@ -278,13 +285,13 @@ public class KitchenNdActivity extends AppCompatActivity {
     class DishListAdapter extends BaseAdapter {
         ArrayList<Dish> dishList;
         public DishListAdapter(Context context, int resource, ArrayList<Dish> dishList) {
-           // super(context, resource, dishList);
+            // super(context, resource, dishList);
 
             this.dishList = dishList;
             Log.d(TAG,String.valueOf(dishList.size()));
         }
-             @Override
-      public int getCount() {
+        @Override
+        public int getCount() {
             return dishList.size()+1;
         }
 
@@ -316,6 +323,7 @@ public class KitchenNdActivity extends AppCompatActivity {
                 Uri kitchenPhotoUri=Uri.parse(mKitchen.getPhoto());
                 kitchenPhotoImageView.setImageURI(kitchenPhotoUri);
                 kitchenNameTextView.setText(mKitchen.getName());
+                LogUtils.i(TAG," isCertification" +mKitchen.isCertification()+"");
                 if(mKitchen.isCertification()){
 
                     kitchenIsCertificationTextView.setText(R.string.if_right);
@@ -324,8 +332,6 @@ public class KitchenNdActivity extends AppCompatActivity {
                     kitchenIsCertificationTextView.setText(R.string.if_wrong);
                     kitchenCertificationTextView.setText("商家未认证");
                 }
-
-
             }else{
                 ViewHolder viewHolder;
                 convertView=getLayoutInflater().inflate(R.layout.kitchen_detail_dises_list_item,null);
@@ -349,12 +355,11 @@ public class KitchenNdActivity extends AppCompatActivity {
 
                             item.setDishName(dishList.get(newPosition).getName());
                             item.setPrice(dishList.get(newPosition).getPrice());
-                            item.setItemTotalPrice(dishList.get(newPosition).getPrice());
+                            item.setItemTotalPrice(iniFloat(dishList.get(newPosition).getPrice()));
                             item.setNum(1);
                             order.getDishes().add(item);
-                            order.setTotalPrice(order.getTotalPrice()+dishList.get(newPosition).getPrice());
+                            order.setTotalPrice(iniFloat(order.getTotalPrice()+dishList.get(newPosition).getPrice()));
                             kitchenOrderPriceTextView.setText(String.valueOf(order.getTotalPrice()));
-
                             ((OrderListAdapter)orderDishesListView.getAdapter()).notifyDataSetChanged();
                         }else{
                             Toast.makeText(KitchenNdActivity.this,"这道菜已添加到购物栏",Toast.LENGTH_SHORT).show();
@@ -424,8 +429,8 @@ public class KitchenNdActivity extends AppCompatActivity {
                     orderTotalPrice+=price;
 
                     orderList.get(position).setNum(count);
-                    orderList.get(position).setItemTotalPrice(totalPrice);
-                    order.setTotalPrice(orderTotalPrice);
+                    orderList.get(position).setItemTotalPrice(iniFloat(totalPrice));
+                    order.setTotalPrice(iniFloat(orderTotalPrice));
 
                     viewHolder.dishCountTextView.setText(String.valueOf(count));
                     viewHolder.dishTotalPriceTextView.setText(String.valueOf(totalPrice));
@@ -444,8 +449,8 @@ public class KitchenNdActivity extends AppCompatActivity {
                         orderTotalPrice-=price;
 
                         orderList.get(position).setNum(count);
-                        orderList.get(position).setItemTotalPrice(totalPrice);
-                        order.setTotalPrice(orderTotalPrice);
+                        orderList.get(position).setItemTotalPrice(iniFloat(totalPrice));
+                        order.setTotalPrice(iniFloat(orderTotalPrice));
 
                         viewHolder.dishCountTextView.setText(String.valueOf(count));
                         viewHolder.dishTotalPriceTextView.setText(String.valueOf(totalPrice));
@@ -458,7 +463,7 @@ public class KitchenNdActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     // orderList.remove(position);
                     Log.d(TAG, "删除订单项——" + position);
-                    order.setTotalPrice(order.getTotalPrice()-orderList.get(position).getItemTotalPrice());
+                    order.setTotalPrice(iniFloat(order.getTotalPrice()-orderList.get(position).getItemTotalPrice()));
                     orderList.remove(position);
                     kitchenOrderPriceTextView.setText(String.valueOf(order.getTotalPrice()));
                     ((OrderListAdapter) orderDishesListView.getAdapter()).notifyDataSetChanged();
@@ -479,8 +484,10 @@ public class KitchenNdActivity extends AppCompatActivity {
             TextView dishCountSubTextView;
             TextView dishOrderDeleteTextView;
         }
-
-
+    }
+    public static float iniFloat(float a){
+        float b = (float)(Math.round(a*100))/100;
+        return b;
     }
 
 }

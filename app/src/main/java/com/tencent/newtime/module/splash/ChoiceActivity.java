@@ -5,28 +5,30 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.tencent.newtime.R;
 import com.tencent.newtime.module.login.LoginActivity;
 import com.tencent.newtime.module.shop_detail.WebBannerActivity;
+import com.tencent.newtime.util.LogUtils;
 
-public class ChoiceActivity extends AppCompatActivity {
+public class ChoiceActivity extends CheckPermissionsActivity {
 
-    Button guestButton;
-    Button hostButton;
+    LinearLayout guestButton;
+    LinearLayout hostButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choice);
 
-        guestButton = (Button) findViewById(R.id.button_guest);
-        hostButton = (Button) findViewById(R.id.button_host);
+        guestButton = (LinearLayout) findViewById(R.id.button_guest);
+        hostButton = (LinearLayout) findViewById(R.id.button_host);
         guestButton.setOnClickListener(listener);
         hostButton.setOnClickListener(listener);
 
     }
-    Button.OnClickListener listener = new Button.OnClickListener(){
+    LinearLayout.OnClickListener listener = new LinearLayout.OnClickListener(){
         public void onClick(View v){
             switch (v.getId()){
                 case R.id.button_guest:

@@ -2,7 +2,6 @@ package com.tencent.newtime.module.main_guest;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
@@ -224,7 +223,11 @@ public class GuestOrdersFragment extends BaseFragment {
                 case 2:
                     LogUtils.d(TAG, "orderState:" + orderState);
 //                    item.orderCancel.setVisibility(View.VISIBLE);
-                    item.orderCancel.setText("去评价");
+                    if (ordersGuest.payState.equals("6")){
+                        item.orderCancel.setText("已评价");
+                    }else {
+                        item.orderCancel.setText("去评价");
+                    }
 //                    item.orderStateButton.setVisibility(View.VISIBLE);
                     item.orderStateButton.setText("实付金额："+ordersGuest.orderPayPrice);
                     break;
@@ -336,13 +339,15 @@ public class GuestOrdersFragment extends BaseFragment {
                                                         }
                                                         if(j.optString("state").equals("fail")){
                                                             Toast.makeText(APP.context(), j.optString("reason"), Toast.LENGTH_SHORT).show();
+                                                        }else {
+                                                            Toast.makeText(getActivity(), "评价成功", Toast.LENGTH_SHORT).show();
+
                                                         }
+
                                                     }
                                                 });
-                                                Toast.makeText(getActivity(), "确认" + which, Toast.LENGTH_SHORT).show();
                                                 break;
                                             case Dialog.BUTTON_NEGATIVE:
-                                                Toast.makeText(getActivity(), "取消" + which, Toast.LENGTH_SHORT).show();
                                                 dialog.dismiss();
                                                 break;
                                         }
@@ -368,53 +373,58 @@ public class GuestOrdersFragment extends BaseFragment {
                             case 0:
                                 break;
                             case 1:
-                                //消费者支付订单
-                                final EditText editText = new EditText(getActivity());
-                                editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                                //先new出一个监听器，设置好监听
-                                DialogInterface.OnClickListener dialogOnclicListener_1=new DialogInterface.OnClickListener(){
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        switch(which){
-                                            case Dialog.BUTTON_POSITIVE:
-                                                String orderScore = editText.getText().toString();
-                                                ArrayMap<String,String> params = new ArrayMap<>(4);
-                                                params.put("token", StrUtils.token());
-//                                                params.put("token", "123456");
-                                                params.put("orderId", "" + mOrdersList.get(getAdapterPosition()).orderId);
-                                                params.put("orderScores", orderScore);
+                                if(!mOrdersList.get(getAdapterPosition()).payState.equals("7")) {
+                                    Toast.makeText(getActivity(), "请等待商家发起支付", Toast.LENGTH_SHORT).show();
+                                }else {
+                                    //消费者支付订单
+                                    final EditText editText = new EditText(getActivity());
+                                    editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                                    //先new出一个监听器，设置好监听
+                                    DialogInterface.OnClickListener dialogOnclicListener_1=new DialogInterface.OnClickListener(){
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            switch(which){
+                                                case Dialog.BUTTON_POSITIVE:
+                                                    String orderScore = editText.getText().toString();
+                                                    final ArrayMap<String,String> params = new ArrayMap<>(4);
+                                                    params.put("token", StrUtils.token());
+    //                                                params.put("token", "123456");
+                                                    params.put("orderId", "" + mOrdersList.get(getAdapterPosition()).orderId);
+                                                    params.put("orderScores", orderScore);
 
-                                                isLoading = true;
-                                                OkHttpUtils.post(StrUtils.CUSTOMER_CONFIRM_PAY, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
-                                                    @Override
-                                                    public void onResponse(String s) {
-                                                        LogUtils.d(TAG, "response" + s);
-                                                        JSONObject j = OkHttpUtils.parseJSON(getActivity(),s);
-                                                        if(j==null){
-                                                            return;
+                                                    isLoading = true;
+                                                    OkHttpUtils.post(StrUtils.CUSTOMER_CONFIRM_PAY, params, TAG, new OkHttpUtils.SimpleOkCallBack() {
+                                                        @Override
+                                                        public void onResponse(String s) {
+                                                            LogUtils.d(TAG, "response" + s);
+                                                            JSONObject j = OkHttpUtils.parseJSON(getActivity(),s);
+                                                            if(j==null){
+                                                                return;
+                                                            }
+                                                            if(j.optString("state").equals("successful")){
+                                                                Toast.makeText(getActivity(), "支付成功", Toast.LENGTH_SHORT).show();
+                                                                loadPage(page);
+                                                            }else {
+                                                                Toast.makeText(APP.context(), j.optString("reason"), Toast.LENGTH_SHORT).show();
+                                                            }
                                                         }
-                                                        if(j.optString("state").equals("fail")){
-                                                            Toast.makeText(APP.context(), j.optString("reason"), Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    }
-                                                });
-                                                Toast.makeText(getActivity(), "确认" + which, Toast.LENGTH_SHORT).show();
-                                                break;
-                                            case Dialog.BUTTON_NEGATIVE:
-                                                Toast.makeText(getActivity(), "取消" + which, Toast.LENGTH_SHORT).show();
-                                                dialog.dismiss();
-                                                break;
+                                                    });
+                                                    break;
+                                                case Dialog.BUTTON_NEGATIVE:
+                                                    dialog.dismiss();
+                                                    break;
+                                            }
                                         }
-                                    }
-                                };
-                                //dialog参数设置
-                                AlertDialog.Builder builder_1=new AlertDialog.Builder(getActivity());  //先得到构造器
-                                builder_1.setTitle("请输入您的评价(0-5分)"); //设置标题
-                                builder_1.setView(editText); // 输入折扣
-                                builder_1.setIcon(R.mipmap.ic_launcher);//设置图标，图片id即可
-                                builder_1.setPositiveButton("确认支付",dialogOnclicListener_1);
-                                builder_1.setNegativeButton("取消", dialogOnclicListener_1);
-                                builder_1.create().show();
+                                    };
+                                    //dialog参数设置
+                                    AlertDialog.Builder builder_1=new AlertDialog.Builder(getActivity());  //先得到构造器
+                                    builder_1.setTitle("请输入您的评价(0-5分)"); //设置标题
+                                    builder_1.setView(editText); // 输入折扣
+                                    builder_1.setIcon(R.mipmap.ic_launcher);//设置图标，图片id即可
+                                    builder_1.setPositiveButton("确认支付",dialogOnclicListener_1);
+                                    builder_1.setNegativeButton("取消", dialogOnclicListener_1);
+                                    builder_1.create().show();
+                                }
                                 break;
                             case 2:
                                 break;

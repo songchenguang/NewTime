@@ -24,6 +24,7 @@ import com.tencent.lbssearch.object.param.Address2GeoParam;
 import com.tencent.lbssearch.object.result.Address2GeoResultObject;
 import com.tencent.newtime.R;
 import com.tencent.newtime.module.main_host.HostMainActivity;
+import com.tencent.newtime.util.LogUtils;
 import com.tencent.newtime.util.OkHttpUtils;
 import com.tencent.newtime.util.StrUtils;
 import com.tencent.newtime.util.UriToFilePath;
@@ -118,7 +119,8 @@ public class AuthenticationActivity extends AppCompatActivity {
                 if(personIdValidation(authIdentificationEditText.getText().toString())){
                     Map map= new HashMap<>();
                     map.put("token",token);
-                    map.put("username",authNameEditText.getText());
+                    map.put("username",authNameEditText.getText().toString());
+                    LogUtils.d(TAG, "username" + authNameEditText.getText().toString());
                     String gender;
                     if(maleRadioButton.isChecked()){
                         gender="M";
@@ -168,7 +170,7 @@ public class AuthenticationActivity extends AppCompatActivity {
             }
             Uri selectedImage = data.getData();
             String filePath= UriToFilePath.getImageAbsolutePath(this,selectedImage);
-            Toast.makeText(AuthenticationActivity.this,selectedImage.toString()+"\n文件路径："+filePath,Toast.LENGTH_LONG).show();
+//            Toast.makeText(AuthenticationActivity.this,selectedImage.toString()+"\n文件路径："+filePath,Toast.LENGTH_LONG).show();
             showPhoto(view,filePath,bitmapIndex);
         }
     }
@@ -258,7 +260,7 @@ public class AuthenticationActivity extends AppCompatActivity {
                 }
                 String state = j.optString("state", "");
                 if (state.equals("sucessful")||state.equals("successful")) {
-                    Toast.makeText(AuthenticationActivity.this, "验证成功", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(AuthenticationActivity.this, "验证成功", Toast.LENGTH_SHORT).show();
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -330,7 +332,7 @@ public class AuthenticationActivity extends AppCompatActivity {
                                     if(successNum==3){
                                         Log.d(TAG,"图片完全上传成功");
                                         new AlertDialog.Builder(AuthenticationActivity.this)
-                                                .setMessage("恭喜您验证成功")
+                                                .setMessage("请等待管理员审核")
                                                 .setTitle("提示")
                                                 .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                                                     @Override

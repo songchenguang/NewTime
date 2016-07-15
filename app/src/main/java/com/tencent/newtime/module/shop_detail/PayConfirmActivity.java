@@ -68,45 +68,6 @@ public class PayConfirmActivity extends AppCompatActivity{
     Order order=new Order();
     ArrayList<OrderItem> list=new ArrayList<OrderItem>();
     OrderItem tempItem;
-
-    private void prepareData() {
-        mKitchen.setPhoto(null);
-        mKitchen.setDescription("description:张大妈按时发生大发送到发送到发送到发送到发送到");
-        mKitchen.setId(100);
-        mKitchen.setCertification(true);
-        mKitchen.setOwnerPhoto(null);
-        mKitchen.setName("张大妈");
-        mKitchen.setLocation("深南大道1006号");
-        for (int i = 0; i < 10; i++) {
-            dishItem = new Dish();
-            dishItem.setId(i);
-            dishItem.setDescription("阿斯顿发送到发送到发生大发生的发生的发生");
-            dishItem.setPrice(i * 2);
-            dishItem.setMonthSales(i * 3);
-            dishItem.setPhoto(null);
-            dishItem.setPid(mKitchen.getId());
-            dishItem.setName("菜品——" + i);
-            dishList.add(dishItem);
-        }
-        mKitchen.setDishList(dishList);
-
-
-        order.setTotalPrice(100);
-        order.setGuestCount(3);
-
-        order.setArrayDate_1(new Date(System.currentTimeMillis()));
-        for (int i = 0; i < 3; i++) {
-            tempItem = new OrderItem();
-            tempItem.setNum(i);
-            tempItem.setDishId(i);
-            tempItem.setPrice(i * 2);
-            tempItem.setDishName("菜名" + i);
-            tempItem.setItemTotalPrice(i * 2 * i);
-            list.add(tempItem);
-        }
-        order.setDishes(list);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,16 +87,14 @@ public class PayConfirmActivity extends AppCompatActivity{
         paySetNoteLayout=(RelativeLayout)this.findViewById(R.id.pay_set_note_layout);
         paySetTimeLayout=(RelativeLayout)this.findViewById(R.id.pay_set_time_layout);
 
-
         if(((order=(Order)getIntent().getSerializableExtra("order"))!=null)
                 &&((mKitchen=(Kitchen) getIntent().getSerializableExtra("kitchen"))!=null)){
-            order.setArrayDate_1(new Date(System.currentTimeMillis()));
+            order.setArrayDate_1(new Date(System.currentTimeMillis()+30*60*1000));
             order.setNote(getString(R.string.pay_note_default));
 
             Log.d(TAG,"头像Uri"+mKitchen.getOwnerPhoto());
         }else{
             Log.d(TAG,"传递数据失败");
-            prepareData();
         }
 
         updateDateTime();
@@ -184,13 +143,12 @@ public class PayConfirmActivity extends AppCompatActivity{
                 final int hour=calendar.get(Calendar.HOUR_OF_DAY);
                 final int minute=calendar.get(Calendar.MINUTE);
 
-
                 View dtView= PayConfirmActivity.this.getLayoutInflater().inflate(R.layout.dialog_date_time,null);
                 final DatePicker datePicker=(DatePicker)dtView.findViewById(R.id.dialog_date_picker);
                 datePicker.init(year, month, day, new DatePicker.OnDateChangedListener() {
                     @Override
                     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        order.setArrayDate_1(new GregorianCalendar(year,monthOfYear,dayOfMonth).getTime());
+                       /* order.setArrayDate_1(new GregorianCalendar(year,monthOfYear,dayOfMonth).getTime());*/
                     }
                 });
 
@@ -210,9 +168,18 @@ public class PayConfirmActivity extends AppCompatActivity{
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                order.setArrayDate_1(new Date(datePicker.getYear(),datePicker.getMonth(),datePicker.getDayOfMonth(),
+                                order.setArrayDate_1(new Date(datePicker.getYear()-1900,datePicker.getMonth(),datePicker.getDayOfMonth(),
                                         timePicker.getHour(),timePicker.getMinute()));
-                                updateDateTime();
+
+                                Date now=new Date(System.currentTimeMillis());
+                                Log.d(TAG,"时间："+datePicker.getYear()+" "+datePicker.getMonth()+" "+datePicker.getDayOfMonth());
+                                if(order.getArrayDate_1().getTime()<now.getTime()+10*60*1000){
+                                    Toast.makeText(PayConfirmActivity.this,"用餐时间需要至少在10分钟之后",Toast.LENGTH_LONG).show();
+                                    order.setArrayDate_1(now);
+                                }else{
+                                    updateDateTime();
+                                }
+                                Log.d(TAG,"now="+now+"\norder="+order.getArrayDate_1());
                             }
                         }).create().show();
             }
@@ -307,39 +274,5 @@ public class PayConfirmActivity extends AppCompatActivity{
             return convertView;
         }
     }
+
 }
-
-//提示框，可以添加时间。
-/*
- new AlertDialog.Builder(PayConfirmActivity.this).setTitle("系统提示")//设置对话框标题
-
-                        .setMessage("请确认所有数据都保存后再推出系统！")//设置显示的内容
-
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {//添加确定按钮
-
-
-                            @Override
-
-                            public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
-
-                                // TODO Auto-generated method stub
-
-                                finish();
-
-                            }
-
-                        }).setNegativeButton("返回", new DialogInterface.OnClickListener() {//添加返回按钮
-
-
-                    @Override
-
-                    public void onClick(DialogInterface dialog, int which) {//响应事件
-
-                        // TODO Auto-generated method stub
-
-                        Log.i("alertdialog", " 请保存数据！");
-
-                    }
-
-                }).show();//在按键响应事件中显示此对话框
- */
